@@ -1,12 +1,12 @@
 # HCV Portfolio
 
-A modern, responsive portfolio website built with Next.js, TypeScript, and Tailwind CSS.
+Modern, responsive personal portfolio built with Next.js, TypeScript, and Tailwind CSS.
 
 ## Features
 
 - 🎨 Modern, responsive design
 - 🚀 Fast performance with Next.js
-- 💬 Contact form component
+- 💬 Contact component linking to socials
 - 📱 Mobile-friendly layout
 - ⚡ Built with TypeScript for type safety
 
@@ -47,14 +47,6 @@ npm run dev
 
 ## Customization
 
-### Update Your Information
-
-Edit the components in the `components/` directory to customize:
-- Your name and introduction in the Hero section
-- Your projects in the Projects component
-- Your bio and skills in the About section
-- Contact information in the Contact section
-
 ### Styling
 
 The project uses Tailwind CSS. Customize colors and styles in:
@@ -72,4 +64,24 @@ The project uses Tailwind CSS. Customize colors and styles in:
 
 ## License
 
-MIT License - feel free to use this template for your portfolio!
+MIT License
+
+Copyright (c) [year] [fullname]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
