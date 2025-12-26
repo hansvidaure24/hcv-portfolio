@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Hans Portfolio',
-  description: 'A sleek, responsive portfolio website built with Next.js, TypeScript, and Tailwind CSS. Showcases your projects, skills, and contact information with a clean design, fast performance, and mobile-friendly experience.',
+  title: 'Hans Chandler Vidaure Portfolio',
+  description: 'Portfolio website built with Next.js, TypeScript, and Tailwind CSS. Showcases projects, skills, and contact information along with a clean design, fast performance, and mobile-friendly experience.',
   keywords: [
     "portfolio",
     "developer",
@@ -37,15 +37,14 @@ export default function RootLayout({
         <link rel="apple-touch-icon" sizes="180x180" href="/icons/folder.png" />
         <meta name="theme-color" content="#0B1C2D" />
         {/* Open Graph Meta Tags for social sharing */}
-        <meta property="og:title" content="Hans Portfolio – Modern Developer Portfolio" />
-        <meta property="og:description" content="A sleek, responsive portfolio website built with Next.js, TypeScript, and Tailwind CSS. Showcases your projects, skills, and contact information with a clean design, fast performance, and mobile-friendly experience." />
+        <meta property="og:title" content="Hans Chandler Vidaure Portfolio" />
+        <meta property="og:description" content="Portfolio website built with Next.js, TypeScript, and Tailwind CSS. Showcases projects, skills, and contact information along with a clean design, fast performance, and mobile-friendly experience." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://your-deployed-site-url.com" />
         <meta property="og:image" content="/icons/folder.png" />
         {/* Twitter Card Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Hans Portfolio – Modern Developer Portfolio" />
-        <meta name="twitter:description" content="A sleek, responsive portfolio website built with Next.js, TypeScript, and Tailwind CSS. Showcases your projects, skills, and contact information with a clean design, fast performance, and mobile-friendly experience." />
+        <meta name="twitter:title" content="Hans Chandler Vidaure Portfolio" />
+        <meta name="twitter:description" content="Portfolio website built with Next.js, TypeScript, and Tailwind CSS. Showcases projects, skills, and contact information along with a clean design, fast performance, and mobile-friendly experience." />
         <meta name="twitter:image" content="/icons/folder.png" />
       </head>
       <body>
