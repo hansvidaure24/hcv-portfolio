@@ -59,8 +59,10 @@
   transition: transform 0.3s;
   transform-origin: center;
 }
-.navLink:hover::after {
-  transform: scaleX(1);
+@media (min-width: 767px) {
+  .navLink:hover::after {
+    transform: scaleX(1);
+  }
 }
 
 .hamburger {
@@ -145,6 +147,9 @@
   transition: transform 0.3s;
   transform-origin: center;
 }
-.mobileNavLink:hover::after {
+
+@media (min-width: 767px) {
+  .mobileNavLink:hover::after {
   transform: scaleX(0.5);
+  }
 }
