@@ -2,6 +2,22 @@
   "name": "hans-portfolio",
   "version": "1.0.0",
   "private": true,
+  "keywords": [
+    "portfolio",
+    "developer",
+    "web developer",
+    "frontend",
+    "personal website",
+    "React",
+    "JavaScript",
+    "UI/UX",
+    "responsive design",
+    "web app",
+    "software engineer",
+    "showcase",
+    "projects",
+    "digital resume"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
