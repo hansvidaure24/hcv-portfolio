@@ -1,0 +1,150 @@
+.navBar {
+  width: 100vw;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  background: rgba(10, 20, 40, 0.95);
+  backdrop-filter: blur(8px);
+}
+
+.navContainer {
+  max-width: 72rem;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.homeLink {
+  display: block;
+}
+
+.homeIcon {
+  transition: transform 0.3s;
+  display: block;
+}
+.homeLink:hover .homeIcon {
+  transform: scale(1.25) rotate(-12deg);
+}
+
+.navList {
+  display: none;
+}
+@media (min-width: 768px) {
+  .navList {
+    display: flex;
+    gap: 2rem;
+    font-size: 1.125rem;
+  }
+}
+
+.navItem {
+  position: relative;
+}
+
+.navLink {
+  transition: color 0.3s;
+  position: relative;
+  padding-bottom: 0.25rem;
+}
+.navLink::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: #fff;
+  transform: scaleX(0);
+  transition: transform 0.3s;
+  transform-origin: center;
+}
+.navLink:hover::after {
+  transform: scaleX(1);
+}
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-right: 0.375rem;
+  outline: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+@media (min-width: 768px) {
+  .hamburger {
+    display: none;
+  }
+}
+
+.hamburgerBar {
+  width: 1.75rem;
+  height: 0.25rem;
+  background: #fff;
+  border-radius: 0.25rem;
+  transition: all 0.3s;
+}
+.hamburgerBar + .hamburgerBar {
+  margin-top: 0.25rem;
+}
+
+.hamburgerOpen .bar1 {
+  transform: rotate(45deg) translateY(0.5rem);
+}
+.hamburgerOpen .bar2 {
+  opacity: 0;
+}
+.hamburgerOpen .bar3 {
+  transform: rotate(-45deg) translateY(-0.5rem);
+}
+
+.mobileMenu {
+  display: block;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  transition: all 0.3s;
+  background: rgba(30, 60, 120, 0.10);
+  border: 1px solid rgba(30, 60, 120, 0.20);
+  border-radius: 1rem;
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  padding: 0;
+}
+.mobileMenuOpen {
+  max-height: 24rem;
+  padding: 1.5rem;
+}
+
+.mobileNavList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  font-size: 1.125rem;
+  text-align: center;
+  width: 100%;
+}
+
+.mobileNavLink {
+  display: block;
+  width: 100%;
+  transition: color 0.3s;
+  padding: 0.5rem 0;
+  position: relative;
+}
+.mobileNavLink::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: #fff;
+  transform: scaleX(0);
+  transition: transform 0.3s;
+  transform-origin: center;
+}
+.mobileNavLink:hover::after {
+  transform: scaleX(0.5);
+}
