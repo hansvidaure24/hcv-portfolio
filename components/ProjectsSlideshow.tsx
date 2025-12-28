@@ -37,11 +37,11 @@ export default function ProjectsSlideshow({ projects }: { projects: Project[] })
   return (
     <div
       ref={containerRef}
-      className="flex flex-col items-center justify-center w-[80vw] relative rounded-2xl bg-[#0B1C2D] shadow-lg z-10 border-2 border-black overflow-hidden"
+      className="flex flex-col items-center justify-center w-[80vw] relative bg-[#0B1C2D] shadow-lg z-10 border-2 border-black overflow-hidden"
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{ cursor: hovered ? 'auto' : 'auto', aspectRatio: '16/9', maxHeight: '70vh' }}
+      style={{ cursor: hovered ? 'auto' : 'auto', aspectRatio: '1/1', maxWidth: '45vw', maxHeight: '45vw', minHeight: '18rem', minWidth: '18rem' }}
     >
       <div className="w-full flex items-center justify-center relative overflow-hidden h-full">
         {projects.map((project, idx) => (
