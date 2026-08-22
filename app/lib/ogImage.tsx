@@ -7,7 +7,11 @@ let cachedFontData: ArrayBuffer | null = null;
 function loadPokePixelFont(): ArrayBuffer {
   if (!cachedFontData) {
     const fontPath = path.join(process.cwd(), "public", "fonts", "pokepixel-gba.ttf");
-    cachedFontData = fs.readFileSync(fontPath).buffer as ArrayBuffer;
+    const buf = fs.readFileSync(fontPath);
+    // Buffer.buffer can be a larger, offset view into Node's shared buffer
+    // pool rather than the file's own bytes — slice out exactly this
+    // buffer's range so satori doesn't get a misaligned/garbage font.
+    cachedFontData = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
   }
   return cachedFontData;
 }
