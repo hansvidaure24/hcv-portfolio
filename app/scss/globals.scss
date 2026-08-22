@@ -9,13 +9,13 @@
   box-sizing: border-box;
 }
 
-/* Default to non-selectable: this site is almost entirely stylized pixel-art
-   UI chrome (titles, buttons, badges, nav) rather than copyable prose, and
-   dragging a text-selection over elements using `-webkit-text-fill-color:
-   transparent` + gradient `background-clip: text` (e.g. the Hero title) is a
-   known trigger for Chromium/Edge getting stuck in a selection state that
-   swallows every click afterward. Real content blocks (bio story, quest log,
-   project descriptions, contact info) explicitly opt back in below. */
+/* Default to non-selectable. Most of this site is stylized pixel-art UI
+   chrome (titles, buttons, badges, nav), not copyable prose, and dragging a
+   text selection over elements that use `-webkit-text-fill-color:
+   transparent` plus gradient `background-clip: text` (like the Hero title)
+   can get Chromium/Edge stuck in a selection state that swallows every
+   click afterward. Real content blocks (bio story, quest log, project
+   descriptions, contact info) opt back in below. */
 body {
   scroll-behavior: smooth;
   color: white;
@@ -31,9 +31,9 @@ html, body {
   min-height: 100vh;
 }
 
-/* SceneStage locks scroll on desktop only after JS detects the viewport width;
-   hiding overflow here at the CSS layer prevents a scrollbar flash while that
-   detection runs on mount. */
+/* SceneStage only locks scroll on desktop after JS detects the viewport
+   width, so hiding overflow here at the CSS layer stops a scrollbar flash
+   while that detection runs on mount. */
 @media (min-width: 1024px) {
   html, body {
     height: 100vh;
@@ -44,10 +44,10 @@ html, body {
 
 /* Driven by the `reduce-motion` class on <html> (set pre-paint by the inline
    boot script in layout.tsx, then kept in sync by MotionPreferenceProvider)
-   rather than the raw `prefers-reduced-motion` media query directly — that's
-   what lets the site's own "Reduce motion" toggle override the OS setting in
-   either direction instead of only ever being able to add reduced motion on
-   top of it. */
+   instead of the raw `prefers-reduced-motion` media query directly. That's
+   what lets the site's own "Reduce motion" toggle override the OS setting
+   in either direction, instead of only ever being able to add reduced
+   motion on top of it. */
 html.reduce-motion {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
