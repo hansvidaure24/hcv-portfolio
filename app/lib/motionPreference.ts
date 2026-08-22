@@ -36,8 +36,8 @@ export function resolveEffectiveReducedMotion(pref: MotionPreference): boolean {
   return systemPrefersReducedMotion();
 }
 
-/** One-shot read for imperative call sites that just need "should I reduce
- * motion right now" without subscribing to future changes. */
+/** One-shot check for code that just needs to know "reduce motion right
+ * now or not" without subscribing to future changes. */
 export function getEffectiveReducedMotion(): boolean {
   return resolveEffectiveReducedMotion(getStoredMotionPreference());
 }

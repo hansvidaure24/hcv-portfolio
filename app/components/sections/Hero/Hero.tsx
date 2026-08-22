@@ -182,7 +182,7 @@ export default function Hero() {
               <ellipse fill="#facc15" cx="1370" cy="840" rx="170" ry="80" className={styles.floatSlowReverse} />
             </g>
 
-            {/* Water band along the base — dark, moving ocean */}
+            {/* Water band along the base, dark and moving */}
             <g className={styles.layerWater}>
               <path fill="url(#waterGradientDeep)" d="M0 780 C240 740 460 810 700 770 C920 735 1100 800 1340 765 C1450 748 1540 775 1600 762 L1600 1000 L0 1000 Z">
                 <animate attributeName="d" dur="22s" repeatCount="indefinite" values="M0 780 C240 740 460 810 700 770 C920 735 1100 800 1340 765 C1450 748 1540 775 1600 762 L1600 1000 L0 1000 Z;M0 770 C240 800 460 740 700 790 C920 815 1100 750 1340 785 C1450 800 1540 765 1600 780 L1600 1000 L0 1000 Z;M0 780 C240 740 460 810 700 770 C920 735 1100 800 1340 765 C1450 748 1540 775 1600 762 L1600 1000 L0 1000 Z" />
