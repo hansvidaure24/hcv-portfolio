@@ -1,0 +1,95 @@
+@use './fonts.scss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Default to non-selectable: this site is almost entirely stylized pixel-art
+   UI chrome (titles, buttons, badges, nav) rather than copyable prose, and
+   dragging a text-selection over elements using `-webkit-text-fill-color:
+   transparent` + gradient `background-clip: text` (e.g. the Hero title) is a
+   known trigger for Chromium/Edge getting stuck in a selection state that
+   swallows every click afterward. Real content blocks (bio story, quest log,
+   project descriptions, contact info) explicitly opt back in below. */
+body {
+  scroll-behavior: smooth;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* SceneStage locks scroll on desktop only after JS detects the viewport width;
+   hiding overflow here at the CSS layer prevents a scrollbar flash while that
+   detection runs on mount. */
+@media (min-width: 1024px) {
+  html, body {
+    height: 100vh;
+    overflow: hidden;
+  }
+}
+
+
+/* Driven by the `reduce-motion` class on <html> (set pre-paint by the inline
+   boot script in layout.tsx, then kept in sync by MotionPreferenceProvider)
+   rather than the raw `prefers-reduced-motion` media query directly — that's
+   what lets the site's own "Reduce motion" toggle override the OS setting in
+   either direction instead of only ever being able to add reduced motion on
+   top of it. */
+html.reduce-motion {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Visible keyboard-focus ring, site-wide, styled like the corner-bracket
+   selection cursor from Pokemon Emerald's menus (four floating corner
+   brackets instead of a solid ring), bobbing the same way the Pokedex art
+   does on the hero (see `pokedexBob` in Hero.module.scss). Individual
+   components may still define their own focus-visible treatment; this is
+   the fallback for anything that doesn't. */
+:focus-visible {
+  outline: none;
+  position: relative;
+}
+
+:focus-visible::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  pointer-events: none;
+  animation: focusBracketBob 1s steps(1, end) infinite;
+  /* Corner length scales with the focused element itself (min(30%, 16px) of
+     its own box) instead of a fixed pixel size, so brackets on small
+     elements (e.g. a short text link) stay as separated corners rather than
+     merging into what reads as a solid rectangle. */
+  background:
+    linear-gradient(#22c55e, #22c55e) top left / min(30%, 16px) 3px no-repeat,
+    linear-gradient(#22c55e, #22c55e) top left / 3px min(30%, 16px) no-repeat,
+    linear-gradient(#22c55e, #22c55e) top right / min(30%, 16px) 3px no-repeat,
+    linear-gradient(#22c55e, #22c55e) top right / 3px min(30%, 16px) no-repeat,
+    linear-gradient(#22c55e, #22c55e) bottom left / min(30%, 16px) 3px no-repeat,
+    linear-gradient(#22c55e, #22c55e) bottom left / 3px min(30%, 16px) no-repeat,
+    linear-gradient(#22c55e, #22c55e) bottom right / min(30%, 16px) 3px no-repeat,
+    linear-gradient(#22c55e, #22c55e) bottom right / 3px min(30%, 16px) no-repeat;
+}
+
+@keyframes focusBracketBob {
+  0%, 50% { transform: translateY(0); }
+  50.01%, 100% { transform: translateY(-3px); }
+}

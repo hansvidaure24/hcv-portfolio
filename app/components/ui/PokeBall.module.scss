@@ -1,0 +1,253 @@
+.ball {
+  position: relative;
+  width: clamp(4.5rem, 10vw, 7rem);
+  height: clamp(4.5rem, 10vw, 7rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  filter: drop-shadow(2px 4px 0 rgba(0, 0, 0, 0.35));
+  -webkit-user-drag: none;
+}
+
+.ball:focus-within,
+.ballArmed {
+  z-index: 10;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ball:hover {
+    z-index: 10;
+  }
+}
+
+.ballLarge {
+  width: clamp(9rem, 20vw, 14rem);
+  height: clamp(9rem, 20vw, 14rem);
+  filter: none;
+}
+
+@media (max-width: 640px) {
+  .ballLarge {
+    width: clamp(5rem, 24vw, 6.5rem);
+    height: clamp(5rem, 24vw, 6.5rem);
+  }
+}
+
+.ballLarge::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  bottom: 3%;
+  width: 60%;
+  height: 16%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.42) 0%, rgba(0, 0, 0, 0.28) 55%, transparent 78%);
+}
+
+.ballSvg {
+  position: relative;
+  z-index: 1;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+  transform-origin: 50% 85%;
+  -webkit-user-drag: none;
+}
+
+.ballLarge .ballSvg {
+  animation: ball-wobble-idle 3.4s ease-in-out infinite;
+  animation-delay: var(--wobble-delay, 0s);
+}
+
+.ballEngaged .ballSvg {
+  animation: ball-wobble 0.5s ease-in-out infinite;
+  animation-delay: 0s;
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.55)) brightness(0.88);
+}
+
+.ballSettling .ballSvg {
+  animation: none;
+  transform: rotate(0deg);
+  transition: transform 0.22s ease-out;
+}
+
+.ballSelected .ballSvg {
+  animation: ball-wobble 0.35s ease-in-out infinite;
+}
+
+.ballGlow.ballEngaged .ballSvg,
+.ballGlow.ballSettling .ballSvg,
+.ballGlow.ballSelected .ballSvg {
+  animation: none;
+  transform: rotate(0deg);
+}
+
+.ballGlow.ballEngaged .ballSvg,
+.ballGlow.ballSelected .ballSvg {
+  animation: ball-glow-pulse 1s ease-in-out infinite;
+}
+
+@keyframes ball-glow-pulse {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(214, 69, 65, 0)); }
+  50% { filter: drop-shadow(0 0 28px rgba(214, 69, 65, 0.95)); }
+}
+
+:global(.reduce-motion) {
+  .ballGlow .ballSvg {
+    animation: none;
+  }
+}
+
+.ballLabel {
+  position: absolute;
+  top: -2.4rem;
+  left: 50%;
+  min-width: max-content;
+  max-width: 10rem;
+  padding: 0.25rem 0.6rem;
+  transform: translate(-50%, 4px);
+  opacity: 0;
+  pointer-events: none;
+  font-family: 'PokePixel', monospace;
+  font-size: 0.65rem;
+  color: #2A2A1E;
+  background: #F8EFD8;
+  border: 2px solid #2A2A1E;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.35);
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.ball:focus-visible .ballLabel {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ball:hover .ballLabel {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.preview {
+  position: absolute;
+  bottom: calc(100% + 0.6rem);
+  left: 50%;
+  width: 22.5rem;
+  height: 22.5rem;
+  clip-path: polygon(39.583% 0%, 39.583% 2.083%, 33.333% 2.083%, 33.333% 4.167%, 27.083% 4.167%, 27.083% 6.25%, 25% 6.25%, 25% 8.333%, 20.833% 8.333%, 20.833% 10.417%, 18.75% 10.417%, 18.75% 12.5%, 16.667% 12.5%, 16.667% 14.583%, 14.583% 14.583%, 14.583% 16.667%, 12.5% 16.667%, 12.5% 18.75%, 10.417% 18.75%, 10.417% 20.833%, 8.333% 20.833%, 8.333% 22.917%, 8.333% 25%, 6.25% 25%, 6.25% 27.083%, 4.167% 27.083%, 4.167% 29.167%, 4.167% 31.25%, 4.167% 33.333%, 2.083% 33.333%, 2.083% 35.417%, 2.083% 37.5%, 2.083% 39.583%, 0% 39.583%, 0% 41.667%, 0% 43.75%, 0% 45.833%, 0% 47.917%, 0% 50%, 0% 52.083%, 0% 54.167%, 0% 56.25%, 0% 58.333%, 0% 60.417%, 2.083% 60.417%, 2.083% 62.5%, 2.083% 64.583%, 2.083% 66.667%, 4.167% 66.667%, 4.167% 68.75%, 4.167% 70.833%, 4.167% 72.917%, 6.25% 72.917%, 6.25% 75%, 8.333% 75%, 8.333% 77.083%, 8.333% 79.167%, 10.417% 79.167%, 10.417% 81.25%, 12.5% 81.25%, 12.5% 83.333%, 14.583% 83.333%, 14.583% 85.417%, 16.667% 85.417%, 16.667% 87.5%, 18.75% 87.5%, 18.75% 89.583%, 20.833% 89.583%, 20.833% 91.667%, 25% 91.667%, 25% 93.75%, 27.083% 93.75%, 27.083% 95.833%, 33.333% 95.833%, 33.333% 97.917%, 39.583% 97.917%, 39.583% 100%, 60.417% 100%, 60.417% 97.917%, 66.667% 97.917%, 66.667% 95.833%, 72.917% 95.833%, 72.917% 93.75%, 75% 93.75%, 75% 91.667%, 79.167% 91.667%, 79.167% 89.583%, 81.25% 89.583%, 81.25% 87.5%, 83.333% 87.5%, 83.333% 85.417%, 85.417% 85.417%, 85.417% 83.333%, 87.5% 83.333%, 87.5% 81.25%, 89.583% 81.25%, 89.583% 79.167%, 91.667% 79.167%, 91.667% 77.083%, 91.667% 75%, 93.75% 75%, 93.75% 72.917%, 95.833% 72.917%, 95.833% 70.833%, 95.833% 68.75%, 95.833% 66.667%, 97.917% 66.667%, 97.917% 64.583%, 97.917% 62.5%, 97.917% 60.417%, 100% 60.417%, 100% 58.333%, 100% 56.25%, 100% 54.167%, 100% 52.083%, 100% 50%, 100% 47.917%, 100% 45.833%, 100% 43.75%, 100% 41.667%, 100% 39.583%, 97.917% 39.583%, 97.917% 37.5%, 97.917% 35.417%, 97.917% 33.333%, 95.833% 33.333%, 95.833% 31.25%, 95.833% 29.167%, 95.833% 27.083%, 93.75% 27.083%, 93.75% 25%, 91.667% 25%, 91.667% 22.917%, 91.667% 20.833%, 89.583% 20.833%, 89.583% 18.75%, 87.5% 18.75%, 87.5% 16.667%, 85.417% 16.667%, 85.417% 14.583%, 83.333% 14.583%, 83.333% 12.5%, 81.25% 12.5%, 81.25% 10.417%, 79.167% 10.417%, 79.167% 8.333%, 75% 8.333%, 75% 6.25%, 72.917% 6.25%, 72.917% 4.167%, 66.667% 4.167%, 66.667% 2.083%, 60.417% 2.083%, 60.417% 0%);
+  overflow: hidden;
+  border: 3px solid #2A2A1E;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.35);
+  background: #F8EFD8;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 6px);
+  transition: opacity 0.15s, transform 0.15s;
+  z-index: 5;
+}
+
+.ball:focus-visible .preview,
+.ballArmed .preview {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.previewFollow {
+  bottom: auto;
+  transform: translate(-50%, calc(-100% - 14px));
+  transition: opacity 0.1s;
+}
+
+.ball:focus-visible .previewFollow {
+  transform: translate(-50%, calc(-100% - 14px));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ball:hover .preview {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  .ball:hover .previewFollow {
+    transform: translate(-50%, calc(-100% - 14px));
+  }
+}
+
+.previewImg {
+  object-fit: cover;
+}
+
+.nameBanner {
+  position: absolute;
+  top: calc(100% + 0.7rem);
+  left: 50%;
+  min-width: max-content;
+  max-width: 18rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 0.9rem;
+  background: #F5F3EC;
+  border: 3px solid #17877A;
+  outline: 2px solid #F5F3EC;
+  outline-offset: -6px;
+  box-shadow: 3px 4px 0 0 rgba(0, 0, 0, 0.35);
+  color: #2A2A1E;
+  font-family: 'PokePixel', monospace;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  text-align: center;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -6px);
+  transition: opacity 0.18s, transform 0.18s;
+  z-index: 5;
+}
+
+.nameBanner::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -0.5rem;
+  width: 65%;
+  height: 0.3rem;
+  transform: translateX(-50%);
+  background-image: repeating-linear-gradient(90deg, #17877A 0, #17877A 4px, transparent 4px, transparent 8px);
+  opacity: 0.85;
+}
+
+.ball:focus-visible .nameBanner,
+.ballArmed .nameBanner {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ball:hover .nameBanner {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.ballSelected .preview,
+.ballSelected .nameBanner {
+  opacity: 0;
+}
+
+@keyframes ball-wobble {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
+}
+
+@keyframes ball-wobble-idle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}

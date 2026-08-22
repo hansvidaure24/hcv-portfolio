@@ -30,10 +30,14 @@ yarn-error.log*
 
 # IDE
 .vscode
+.vs
 .idea
 *.swp
 *.swo
 *~
+
+# TypeScript incremental build info
+*.tsbuildinfo
 
 # OS
 .DS_Store

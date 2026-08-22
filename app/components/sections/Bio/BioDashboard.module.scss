@@ -1,0 +1,387 @@
+.dashboard {
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .dashboard {
+    width: 92%;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: linear-gradient(90deg, #E896C8 0%, #B87FD9 45%, #7C5FC0 100%);
+  border: 3px solid #2A2A1E;
+  border-radius: 999px;
+  padding: 0.65rem 1.4rem;
+  box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.4);
+  margin-bottom: 1rem;
+}
+
+.headerTitle {
+  font-family: 'PokePixel', monospace;
+  font-size: clamp(0.85rem, 2vw, 1.15rem);
+  letter-spacing: 0.06em;
+  color: #F8EFD8;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.1rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 3px solid #2A2A1E;
+  box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.4);
+  min-height: 20rem;
+}
+
+.panelHeader {
+  font-family: 'PokePixel', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.05em;
+  background: linear-gradient(90deg, #FDE68A, #F5B942);
+  color: #2A2A1E;
+  padding: 0.45rem 0.8rem;
+  border-bottom: 3px solid #2A2A1E;
+}
+
+.panelBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1.2rem 1.4rem;
+  min-width: 0;
+}
+
+/* --- Trainer card panel --- */
+.trainerPanel {
+  background: linear-gradient(180deg, #CFEFE0 0%, #9FD9BE 100%);
+}
+
+.idRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'PokePixel', monospace;
+  font-size: 0.6rem;
+  color: #2A2A1E;
+  letter-spacing: 0.04em;
+}
+
+.typeBadges {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-family: 'PokePixel', monospace;
+  font-size: 0.5rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  border: 2px solid #2A2A1E;
+  color: #F8EFD8;
+  letter-spacing: 0.03em;
+}
+
+.badgeCode {
+  background: #3E9575;
+}
+
+.badgeGame {
+  background: #6B4FA0;
+}
+
+.portrait {
+  border: 3px solid #2A2A1E;
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+  background: #000;
+}
+
+.portrait video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.nameplate {
+  text-align: center;
+}
+
+.name {
+  font-family: 'PokePixel', monospace;
+  font-size: 0.9rem;
+  color: #2A2A1E;
+  letter-spacing: 0.03em;
+}
+
+.levelRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-top: 0.3rem;
+  font-family: 'PokePixel', monospace;
+  font-size: 0.55rem;
+  color: #2A2A1E;
+}
+
+.levelBall {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  border: 1px solid #2A2A1E;
+  background: linear-gradient(#D64541 50%, #F8EFD8 50%);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.levelBall::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.28rem;
+  height: 0.28rem;
+  background: #F8EFD8;
+  border: 1px solid #2A2A1E;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.tagline {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.8rem;
+  font-style: italic;
+  line-height: 1.4;
+  text-align: center;
+  color: #0E4A44;
+}
+
+.miniRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.7rem;
+  margin-top: auto;
+}
+
+.miniCell {
+  background: #F8EFD8;
+  border: 2px solid #2A2A1E;
+}
+
+.miniLabel {
+  font-family: 'PokePixel', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.04em;
+  background: linear-gradient(90deg, #FDE68A, #F5B942);
+  color: #2A2A1E;
+  padding: 0.3rem 0.5rem;
+  border-bottom: 2px solid #2A2A1E;
+}
+
+.interestTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.5rem;
+}
+
+.interestTag {
+  font-family: 'PokePixel', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.02em;
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  border: 2px solid #2A2A1E;
+  color: #F8EFD8;
+  white-space: nowrap;
+}
+
+/* Use darker tag colors for readable text. */
+.tagCode {
+  background: #2A6B52;
+}
+
+.tagGame {
+  background: #6B4FA0;
+}
+
+.tagSecurity {
+  background: #B23328;
+}
+
+.storyPanel,
+.questPanel {
+  background: #5B4FA0;
+  color: #F8EFD8;
+}
+
+.storyText {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #F8EFD8;
+  user-select: text;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.questClip {
+  border: 3px solid #2A2A1E;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  flex-shrink: 0;
+}
+
+.questClip video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.questLog {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  justify-content: center;
+}
+
+.questItem {
+  display: flex;
+  gap: 0.5rem;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1rem;
+  color: #F8EFD8;
+  line-height: 1.5;
+  user-select: text;
+}
+
+.questBullet {
+  font-family: 'PokePixel', monospace;
+  color: #FDE68A;
+  flex-shrink: 0;
+}
+
+.statsPanel {
+  background: #2C6E52;
+  color: #F8EFD8;
+  justify-content: center;
+}
+
+.statsPanel .panelBody {
+  justify-content: center;
+}
+
+.tickerWrap {
+  width: 100%;
+  overflow: hidden;
+  border: 2px solid #2A2A1E;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1.1rem 0;
+}
+
+.tickerWrapReduced {
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: grab;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.tickerWrapReduced::-webkit-scrollbar {
+  display: none;
+}
+
+.dragging {
+  cursor: grabbing;
+}
+
+.tickerTrack {
+  display: flex;
+  width: max-content;
+  gap: 2.5rem;
+  white-space: nowrap;
+  animation: ticker-scroll 22s linear infinite;
+}
+
+.tickerGroup {
+  display: flex;
+  gap: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+.tickerItem {
+  font-family: 'PokePixel', monospace;
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  letter-spacing: 0.04em;
+  color: #F8EFD8;
+}
+
+.tickerEasterEgg {
+  color: #FDE68A;
+  text-shadow: 0 0 10px rgba(253, 230, 138, 0.7);
+}
+
+.tickerSep {
+  color: #5FCB9E;
+}
+
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+:global(.reduce-motion) {
+  .tickerTrack {
+    animation: none;
+  }
+
+  .tickerWrap {
+    overflow-x: auto;
+    overflow-y: hidden;
+    cursor: grab;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    touch-action: pan-y;
+    user-select: none;
+  }
+
+  .tickerWrap::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerTitle {
+    font-size: 0.75rem;
+  }
+}

@@ -1,87 +1,98 @@
-# HCV Portfolio
+# Hans Chandler Vidaure — Portfolio
 
-Modern, responsive personal portfolio built with Next.js, TypeScript, and Tailwind CSS.
+Next.js 15 / TypeScript portfolio site.
 
-## Features
+## Getting started
 
-- 🎨 Modern, responsive design
-- 🚀 Fast performance with Next.js
-- 💬 Contact component linking to socials
-- 📱 Mobile-friendly layout
-- ⚡ Built with TypeScript for type safety
-
-## Sections
-
-- **Hero**: Eye-catching introduction section
-- **Projects**: Showcase of featured projects
-- **About**: Personal introduction and skills
-- **Contact**: Contact section with social links
-- **Navigation**: Fixed navigation bar with smooth scrolling
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+ and npm/yarn
-
-### Installation
-
-1. Install dependencies:
 ```bash
 npm install
+npm run dev
 ```
 
-2. Run the development server:
+## Contact form (Resend) setup
+
+The contact form (opened from the mail icon in the Contact section) posts to
+[`app/api/contact/route.ts`](app/api/contact/route.ts), which sends email via
+[Resend](https://resend.com).
+
+### 1. Install dependencies
+
+Already included in `package.json` — `npm install` pulls in the `resend`
+package. If it's ever missing:
+
+```bash
+npm install resend
+```
+
+### 2. Environment variables
+
+Copy the example file and fill in real values:
+
+```bash
+cp .env.local.example .env.local
+```
+
+| Variable | Description |
+| --- | --- |
+| `RESEND_API_KEY` | API key from the [Resend dashboard](https://resend.com/api-keys). Server-side only — never exposed to the browser. |
+| `CONTACT_EMAIL` | Inbox that receives new contact form submissions (`hansvidaure24@gmail.com`). |
+| `EMAIL_FROM` | The "from" address used for both the notification and the visitor's confirmation email. Must be on a domain verified in Resend (see below). |
+
+`.env.local` is already git-ignored — never commit real API keys.
+
+### 3. Verify a sending domain
+
+Resend requires the `from` address's domain to be verified before it will
+send to arbitrary recipients (like a visitor's own email address for the
+confirmation receipt). In the [Resend dashboard → Domains](https://resend.com/domains):
+
+1. Add your domain (e.g. `hansvidaure.dev`).
+2. Add the DNS records Resend gives you (SPF/DKIM) at your DNS provider.
+3. Wait for the domain to show as "Verified".
+4. Set `EMAIL_FROM` to an address on that domain, e.g. `contact@hansvidaure.dev`.
+
+**Before a domain is verified**, Resend's shared sender
+(`onboarding@resend.dev`) can be used for local testing only — it can send,
+but only to the email address on your own Resend account, so the visitor
+receipt won't reliably reach arbitrary visitors. **Do not deploy to
+production with an unverified domain** — set a real verified `EMAIL_FROM`
+before going live.
+
+### 4. Local testing
+
 ```bash
 npm run dev
 ```
 
-3. Open [http://localhost:3000](http://localhost:3000) to see the result.
+Open the site, click the mail icon in the Contact section, and submit the
+form. Check your terminal for `console.error` output if something fails —
+the API route never returns Resend's raw error details to the browser.
 
-## Scripts
+### 5. Rate limiting
 
-- `npm run dev` - Start development server
-- `npm run build` - Create production build
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
+The API route includes a basic in-memory rate limiter (5 submissions per IP
+per 10 minutes). This is **process-local** — it resets on every restart/deploy
+and does not share state across multiple server instances or serverless
+invocations. If this ever needs to hold up under real abuse or a
+multi-instance/serverless deployment, replace it with a shared store (e.g.
+[Upstash Redis](https://upstash.com/) or Vercel KV) keyed the same way
+(client IP) — see the comment at the top of
+[`app/api/contact/route.ts`](app/api/contact/route.ts).
 
-## Customization
+### 6. Production deployment
 
-### Styling
+- Set `RESEND_API_KEY`, `CONTACT_EMAIL`, and `EMAIL_FROM` as environment
+  variables in your hosting provider's dashboard (never in committed files).
+- Confirm the `EMAIL_FROM` domain shows "Verified" in Resend before going
+  live.
+- Consider swapping the in-memory rate limiter for a shared store if
+  deploying to a multi-instance or serverless platform (see above).
 
-The project uses Tailwind CSS. Customize colors and styles in:
-- `tailwind.config.ts` - Tailwind configuration
-- `app/globals.css` - Global styles
-- Component files - Component-specific styles
+## Accessibility
 
-## Technology Stack
-
-- **Framework**: Next.js 15+
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Linting**: ESLint
-- **Node Modules**: PostCSS, Autoprefixer
-
-## License
-
-MIT License
-
-Copyright (c) 2025 Hans Chandler Vidaure
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+- Reduced motion: the "Reduce motion" toggle in the site menu (bottom-right)
+  overrides the OS `prefers-reduced-motion` setting in either direction and
+  persists the choice in `localStorage`. See
+  [`app/lib/motionPreference.ts`](app/lib/motionPreference.ts).
+- The contact terminal dialog is keyboard-accessible: it traps focus while
+  open, restores focus to the mail icon on close, and closes on <kbd>Escape</kbd>.

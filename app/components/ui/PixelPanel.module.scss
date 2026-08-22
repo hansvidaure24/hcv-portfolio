@@ -1,0 +1,34 @@
+.panel {
+  position: relative;
+  background: #F8EFD8;
+  color: #2A2A1E;
+  border: 3px solid #2A2A1E;
+  outline: 2px solid #F8EFD8;
+  outline-offset: -6px;
+  box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.4);
+}
+
+.panelTitle {
+  font-family: 'PokePixel', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  padding: 0.6rem 0.9rem;
+  border-bottom: 3px solid #2A2A1E;
+  background: rgba(42, 42, 30, 0.08);
+}
+
+.panelBody {
+  padding: 1.1rem 1.35rem;
+}
+
+.panelWood {
+  background: linear-gradient(180deg, #C99A5B 0%, #8A6D4B 100%);
+  color: #2A2A1E;
+  border-color: #4A3620;
+  outline-color: #C99A5B;
+}
+
+.panelWood .panelTitle {
+  border-bottom-color: #4A3620;
+  background: rgba(42, 24, 8, 0.15);
+}

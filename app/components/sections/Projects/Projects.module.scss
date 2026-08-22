@@ -1,0 +1,180 @@
+.projectsBg {
+  background-color: #4FAE87;
+  overflow: hidden;
+}
+
+.projectsBg::before {
+  content: '';
+  position: absolute;
+  inset: -35% -15% -15%;
+  background-repeat: repeat, repeat;
+  background-size: 96px 96px, 28px 28px;
+  background-image:
+    url("/graphics/grass-speckle.svg"),
+    repeating-linear-gradient(115deg, #46A17C 0px, #46A17C 14px, #4FAE87 14px, #4FAE87 28px);
+  image-rendering: pixelated;
+  filter: brightness(0.6);
+  transform: perspective(100rem) rotateX(20deg) scale(1.35);
+  transform-origin: center bottom;
+}
+
+.projectsContent {
+  padding: 6rem 1.5rem 4rem;
+  justify-content: center;
+}
+
+@media (max-width: 640px) {
+  .projectsContent {
+    padding: 3rem 1rem 2rem;
+  }
+}
+
+.sceneWrap {
+  width: 100%;
+  max-width: 48rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.scene {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.clusterLabel {
+  font-family: 'PokePixel', monospace;
+  font-size: 0.85rem;
+  text-align: center;
+  color: #F8EFD8;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.05em;
+}
+
+.cluster {
+  position: relative;
+  width: clamp(24rem, 52vw, 40rem);
+  height: clamp(20rem, 40vw, 30rem);
+  margin: 1.5rem auto 2.5rem;
+}
+
+.bag {
+  position: absolute;
+  top: -25%;
+  left: 50%;
+  width: 45%;
+  aspect-ratio: 1 / 1;
+  transform: translateX(-50%);
+}
+
+.bag::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  left: 45%;
+  bottom: 5%;
+  width: 75%;
+  height: 14%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.28) 65%, transparent 78%);
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding-bottom: 0.5rem;
+  font-family: 'PokePixel', monospace;
+  font-size: 0.75rem;
+}
+
+.pagerBtn {
+  background: none;
+  border: 2px solid #2A2A1E;
+  color: #2A2A1E;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+  font-family: inherit;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(42, 42, 30, 0.12);
+  }
+}
+
+.pagerLabel {
+  min-width: 3.5rem;
+  text-align: center;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(20, 20, 15, 0.55);
+}
+
+.detail {
+  width: 100%;
+  max-width: 26rem;
+}
+
+.detailImage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 3px solid #2A2A1E;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.detailImageInner {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.detailDescription {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  white-space: pre-line;
+  margin-bottom: 1rem;
+  user-select: text;
+}
+
+.backBtn {
+  font-family: 'PokePixel', monospace;
+  font-size: 0.75rem;
+  background: #2A2A1E;
+  color: #F8EFD8;
+  border: none;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: #4A3620;
+  }
+}
+
+@media (max-width: 640px) {
+  .cluster {
+    width: min(90vw, 22rem);
+    height: min(78vw, 19rem);
+    margin-bottom: 3.5rem;
+  }
+}
+
