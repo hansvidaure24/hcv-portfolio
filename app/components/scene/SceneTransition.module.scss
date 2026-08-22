@@ -1,0 +1,11 @@
+.band {
+  position: fixed;
+  left: -40vw;
+  top: -20vh;
+  width: 180vw;
+  height: 140vh;
+  z-index: 90;
+  pointer-events: none;
+  background: #0e1439;
+  box-shadow: inset 10px 0 0 0 #F8EFD8;
+}

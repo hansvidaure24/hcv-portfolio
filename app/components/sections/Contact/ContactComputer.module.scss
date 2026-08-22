@@ -1,0 +1,299 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(4, 6, 4, 0.72);
+  backdrop-filter: blur(3px);
+  animation: fadeIn 0.18s ease-out both;
+}
+
+:global(.reduce-motion) {
+  .backdrop {
+    animation: none;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.terminal {
+  position: relative;
+  width: 100%;
+  max-width: 34rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #0a0f0a;
+  color: #9be89b;
+  border: 4px solid #2A2A1E;
+  outline: 3px solid #4ade80;
+  outline-offset: -9px;
+  box-shadow: 8px 8px 0 0 rgba(0, 0, 0, 0.55);
+  border-radius: 0.5rem;
+  animation: bootFlicker 0.32s ease-out both;
+}
+
+:global(.reduce-motion) .terminal {
+  animation: none;
+}
+
+@keyframes bootFlicker {
+  0% { opacity: 0; transform: scale(0.97); filter: brightness(1.8); }
+  40% { opacity: 1; filter: brightness(0.8); }
+  60% { filter: brightness(1.3); }
+  100% { opacity: 1; transform: scale(1); filter: brightness(1); }
+}
+
+.screenGlow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 0.3rem;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(74, 222, 128, 0.05) 0px,
+    rgba(74, 222, 128, 0.05) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+.titleBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.6rem 0.9rem;
+  background: #16301c;
+  border-bottom: 3px solid #2A2A1E;
+}
+
+.titleBarText {
+  font-family: 'PokePixel', monospace;
+  font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+  letter-spacing: 0.06em;
+  color: #4ade80;
+}
+
+.closeBtn {
+  width: 1.8rem;
+  height: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F8EFD8;
+  color: #2A2A1E;
+  border: 2px solid #2A2A1E;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.1s ease-out, background 0.1s;
+
+  &:hover,
+  &:focus-visible {
+    background: #fde68a;
+    transform: scale(1.08);
+  }
+}
+
+.body {
+  padding: 1rem 1.25rem 1.35rem;
+  position: relative;
+}
+
+.heading {
+  margin: 0 0 0.75rem;
+  font-family: 'PokePixel', monospace;
+  font-size: clamp(0.95rem, 2.2vw, 1.2rem);
+  letter-spacing: 0.05em;
+  color: #fde68a;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+.liveRegion {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.honeypotWrap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.legend {
+  font-family: 'PokePixel', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: #6ee7a3;
+  padding: 0;
+  margin-bottom: 0.2rem;
+}
+
+.fieldRow {
+  display: flex;
+  gap: 0.75rem;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
+}
+
+.field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+
+  label {
+    font-family: 'PokePixel', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    color: #6ee7a3;
+  }
+
+  input,
+  textarea {
+    font-family: 'PokePixel', monospace;
+    font-size: 0.85rem;
+    padding: 0.5rem 0.6rem;
+    background: #04120a;
+    color: #d1fae5;
+    border: 2px solid #2f5a3a;
+    border-radius: 0.25rem;
+    resize: vertical;
+
+    &::placeholder {
+      color: #3f6b4d;
+    }
+
+    &:focus-visible {
+      outline: 3px solid #facc15;
+      outline-offset: 1px;
+      border-color: #4ade80;
+    }
+
+    &[aria-invalid="true"] {
+      border-color: #f87171;
+    }
+  }
+}
+
+.fieldError {
+  margin: 0;
+  font-family: 'PokePixel', monospace;
+  font-size: 0.65rem;
+  color: #f87171;
+}
+
+.submitError {
+  margin: 0;
+  padding: 0.6rem 0.75rem;
+  background: rgba(248, 113, 113, 0.12);
+  border: 2px solid #f87171;
+  border-radius: 0.25rem;
+  font-family: 'PokePixel', monospace;
+  font-size: 0.7rem;
+  color: #fca5a5;
+
+  &:focus {
+    outline: 3px solid #facc15;
+    outline-offset: 2px;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.25rem;
+}
+
+.submitBtn,
+.cancelBtn {
+  padding: 0.55rem 1.1rem;
+  font-family: 'PokePixel', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: transform 0.1s ease-out, background 0.1s;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.submitBtn {
+  background: #4ade80;
+  color: #04120a;
+  border: 2px solid #2A2A1E;
+
+  &:hover:not(:disabled),
+  &:focus-visible:not(:disabled) {
+    background: #86efac;
+    transform: translateY(-1px);
+  }
+}
+
+.cancelBtn {
+  background: transparent;
+  color: #9be89b;
+  border: 2px solid #2f5a3a;
+
+  &:hover:not(:disabled),
+  &:focus-visible:not(:disabled) {
+    background: rgba(74, 222, 128, 0.1);
+  }
+}
+
+.successScreen {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem 0 0.5rem;
+}
+
+.successBig {
+  margin: 0;
+  font-family: 'PokePixel', monospace;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  color: #4ade80;
+  text-shadow: 0 0 10px rgba(74, 222, 128, 0.6);
+}
+
+.successBody {
+  margin: 0;
+  font-family: 'PokePixel', monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: #d1fae5;
+}

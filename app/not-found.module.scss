@@ -1,0 +1,78 @@
+.wrap {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: #060606;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  text-align: center;
+  padding: 2.5rem 2.75rem;
+  max-width: 30rem;
+
+  background: #0a0a0a;
+  border: 3px solid #F8EFD8;
+  outline: 2px solid #16213a;
+  outline-offset: -8px;
+  box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.6);
+}
+
+.routeCode {
+  margin: 0;
+  font-family: 'PokePixel', monospace;
+  font-size: clamp(0.7rem, 1.6vw, 0.85rem);
+  letter-spacing: 0.1em;
+  color: #4ade80;
+  text-shadow: 0 0 6px rgba(74, 222, 128, 0.55);
+}
+
+.title {
+  margin: 0;
+  font-family: 'PokePixel', monospace;
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+  letter-spacing: 0.06em;
+  color: #FDE68A;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+.body {
+  margin: 0;
+  font-family: 'PokePixel', monospace;
+  font-size: clamp(0.72rem, 1.6vw, 0.85rem);
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  color: #F8EFD8;
+}
+
+.homeLink {
+  display: block;
+  width: 100%;
+  margin-top: 0.4rem;
+  padding: 0.7rem 1rem;
+  background: #F8EFD8;
+  border: 3px solid #2A2A1E;
+  box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.5);
+  font-family: 'PokePixel', monospace;
+  font-size: clamp(0.75rem, 1.6vw, 0.9rem);
+  letter-spacing: 0.04em;
+  color: #2A2A1E;
+  text-decoration: none;
+  transition: transform 0.1s ease-out, background 0.1s;
+
+  &:hover,
+  &:focus-visible {
+    background: #fde68a;
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.5);
+  }
+}

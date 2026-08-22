@@ -1,0 +1,385 @@
+.contactBg {
+  background: url('/backgrounds/pokemonbackground.png') center center/cover no-repeat;
+}
+
+.contactContent {
+  padding: 6rem 1.5rem 4rem;
+  gap: 1rem;
+  justify-content: center;
+}
+
+@media (max-width: 640px) {
+  .contactContent {
+    justify-content: flex-start;
+    padding: 3rem 1.25rem 2rem;
+  }
+}
+
+.typingWrap {
+  width: fit-content;
+  max-width: 90vw;
+}
+
+.typingText {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: bottom;
+  border-right: 4px solid #F8EFD8;
+  font-family: 'PokePixel', monospace;
+  font-size: clamp(1.75rem, 4.5vw, 3rem);
+  color: #F8EFD8;
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: 640px) {
+  .typingText {
+    font-size: clamp(0.5rem, 4vw, 4rem);
+    white-space: normal;
+    word-break: break-word;
+  }
+}
+
+.typingBlink {
+  animation: caretBlink 0.8s step-end infinite;
+}
+
+@keyframes caretBlink {
+  0%, 100% { border-color: #F8EFD8; }
+  50% { border-color: transparent; }
+}
+
+:global(.reduce-motion) {
+  .typingBlink {
+    animation: none;
+  }
+}
+
+.contactScene {
+  width: 100%;
+  max-width: 64rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.torchicWrap {
+  position: absolute;
+  left: calc(50% + clamp(23rem, 29vw, 29rem) + 2rem);
+  bottom: clamp(1rem, 8vh, 4rem);
+  z-index: 3;
+  width: clamp(195px, 18vw, 330px);
+}
+
+@media (max-width: 1400px) {
+  .torchicWrap {
+    left: auto;
+    right: clamp(6.5rem, 22vw, 8rem);
+    bottom: clamp(0.75rem, 4vw, 1.5rem);
+    width: clamp(80px, 20vw, 140px);
+    z-index: 4;
+  }
+}
+
+.torchicButton {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.15s ease-out;
+
+  &:hover,
+  &:focus-visible {
+    transform: scale(1.05);
+  }
+}
+
+.torchicWrap::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  bottom: -6%;
+  width: 65%;
+  height: 16%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 60%, transparent 78%);
+}
+
+.torchicGif {
+  width: 100%;
+  height: auto;
+  display: block;
+  image-rendering: pixelated;
+  filter: drop-shadow(4px 6px 0 rgba(0, 0, 0, 0.35));
+  pointer-events: none;
+}
+
+.speechBubble {
+  position: absolute;
+  bottom: 100%;
+  left: 55%;
+  margin-bottom: 0.75rem;
+  min-width: 12rem;
+  max-width: 16rem;
+  width: max-content;
+  background: #fff;
+  color: #2A2A1E;
+  border: 3px solid #2A2A1E;
+  border-radius: 1.5rem;
+  padding: 0.85rem 1.25rem;
+  font-family: 'PokePixel', monospace;
+  font-size: clamp(0.75rem, 1.6vw, 1rem);
+  text-align: center;
+  box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.35);
+  z-index: 10;
+  pointer-events: none;
+  animation: bubblePopIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  transform-origin: bottom left;
+}
+
+@keyframes bubblePopIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+:global(.reduce-motion) {
+  .speechBubble {
+    animation: none;
+  }
+}
+
+.speechBubble::after,
+.speechBubble::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+}
+
+.speechBubble::after {
+  bottom: -13px;
+  left: 18%;
+  border-top: 13px solid #2A2A1E;
+}
+
+.speechBubble::before {
+  bottom: -8px;
+  left: 18%;
+  margin-left: 3px;
+  border-left-width: 7px;
+  border-right-width: 7px;
+  border-top: 8px solid #fff;
+}
+
+@media (max-width: 1400px) {
+  .speechBubble {
+    display: none;
+  }
+}
+
+.trainerCard {
+  width: 100%;
+  max-width: clamp(46rem, 58vw, 58rem);
+  background: #F8EFD8;
+  border: 3px solid #2A2A1E;
+  outline: 2px solid #F8EFD8;
+  outline-offset: -6px;
+  box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.4);
+  border-radius: 1.25rem;
+  overflow: hidden;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  background: #146b6a;
+  border-bottom: 3px solid #2A2A1E;
+}
+
+.cardHeaderBadge {
+  font-family: 'PokePixel', monospace;
+  font-size: clamp(0.75rem, 1.6vw, 1rem);
+  letter-spacing: 0.05em;
+  color: #F8EFD8;
+}
+
+.cardId {
+  font-family: 'PokePixel', monospace;
+  font-size: clamp(0.6rem, 1.2vw, 0.75rem);
+  color: rgba(248, 239, 216, 0.8);
+}
+
+.cardBody {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 1.25rem;
+}
+
+.cardInfo {
+  flex: 1 1 16rem;
+  min-width: 14rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cardName {
+  font-family: 'PokePixel', monospace;
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  color: #2A2A1E;
+  border-bottom: 2px solid #2A2A1E;
+  padding-bottom: 0.4rem;
+  margin: 0;
+  user-select: text;
+}
+
+.cardStatRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background: #fff;
+  border: 2px solid #2A2A1E;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.3);
+  padding: 0.5rem 0.7rem;
+}
+
+.cardStatLabel {
+  font-family: 'PokePixel', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: #6b6a5a;
+}
+
+.cardStatValue {
+  font-family: 'PokePixel', monospace;
+  font-size: clamp(0.75rem, 1.6vw, 0.9rem);
+  color: #146b6a;
+  user-select: text;
+}
+
+.badgeSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.badgesLabel {
+  font-family: 'PokePixel', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: #facc15;
+  -webkit-text-stroke: 0.5px #2A2A1E;
+}
+
+.badgeRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  background: #fff;
+  border: 2px solid #2A2A1E;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.3);
+  padding: 0.6rem;
+}
+
+.skillBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.6rem;
+  background: #F8EFD8;
+  border: 2px solid #2A2A1E;
+  border-radius: 999px;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.25);
+}
+
+.skillIcon {
+  width: 1.2rem;
+  height: 1.2rem;
+  flex-shrink: 0;
+  display: inline-flex;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.skillName {
+  font-family: 'PokePixel', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.02em;
+  color: #2A2A1E;
+  white-space: nowrap;
+}
+
+.linkBadge {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F8EFD8;
+  border: 2px solid #2A2A1E;
+  border-radius: 50%;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease-out, background 0.15s;
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-2px);
+    background: #fde68a;
+  }
+}
+
+.linkBadgeIcon {
+  width: 1.35rem;
+  height: 1.35rem;
+  object-fit: contain;
+}
+
+.cardPortrait {
+  flex: 0 1 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portraitImage {
+  width: 100%;
+  height: auto;
+  max-width: 12rem;
+  border-radius: 0.5rem;
+  border: 2px solid #2A2A1E;
+  box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 640px) {
+  .cardBody {
+    flex-direction: column-reverse;
+    align-items: center;
+    text-align: left;
+  }
+
+  .cardPortrait {
+    flex: none;
+  }
+
+  .trainerCard {
+    margin-bottom: 2.5rem;
+  }
+}
