@@ -117,15 +117,22 @@
   inset: 0;
   z-index: 60;
   display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 1.5rem;
   background: rgba(20, 20, 15, 0.55);
+  // Long descriptions scroll here instead of running off the screen.
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+// Auto margins center the panel but keep its top reachable when it overflows.
+.detailWrap {
+  margin: auto;
+  width: 100%;
+  max-width: 26rem;
 }
 
 .detail {
   width: 100%;
-  max-width: 26rem;
 }
 
 .detailImage {
@@ -150,9 +157,50 @@
   font-family: 'Quicksand', sans-serif;
   font-size: 0.95rem;
   line-height: 1.5;
-  white-space: pre-line;
   margin-bottom: 1rem;
   user-select: text;
+
+  > * + * {
+    margin-top: 0.75rem;
+  }
+
+  p {
+    white-space: pre-line;
+  }
+
+  h3 {
+    font-family: 'PokePixel', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    margin-top: 1.25rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 2px solid rgba(42, 42, 30, 0.25);
+  }
+
+  ul {
+    list-style: square;
+    padding-left: 1.1rem;
+  }
+
+  li + li {
+    margin-top: 0.3rem;
+  }
+
+  strong {
+    font-weight: 700;
+  }
+
+  a {
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+
+    &:hover,
+    &:focus-visible {
+      background: rgba(42, 42, 30, 0.12);
+    }
+  }
 }
 
 .backBtn {

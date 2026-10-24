@@ -1,0 +1,26 @@
+SliceOfPie splits a bill by item or evenly. Scan the receipt with your phone: the text recognition runs in the browser and works offline. It installs like an app, with no accounts, no server and no tracking.
+
+## By the numbers
+- Lighthouse on mobile: 99 performance, 100 accessibility, 100 best practices, 100 SEO
+- 0 ms blocking time and no layout shift
+- About 23 KB of gzipped JavaScript at startup
+- The 36 MB receipt scanner only downloads when you ask for it, then works offline
+- axe finds no accessibility issues on any screen, in light or dark mode
+- 198 unit tests and 47 end-to-end tests, each run on phone and desktop, on every push
+- No framework, about 4,900 lines of TypeScript
+
+## What was hard
+**Reading receipts on the phone.** Tesseract.js got every price right on 4 of my 16 test receipts. PaddleOCR on ONNX Runtime, in a Web Worker, got 16 of 16. Then I had to deal with its size (ask before downloading, keep it for offline), make it fast enough, and pair prices back up with items after straightening tilted photos.
+
+**Money that always adds up.** Shares are worked out in whole cents and whoever paid takes the leftover cent, so $100 three ways is $33.33, $33.33 and $33.34. Everything rounds through one function, so 178.365 can't round two different ways.
+
+**A bug only a real iPhone showed.** Installed on the Home Screen, the app opened with its tab bar floating above the bottom of the screen. It never happened in a browser or a test. I added a size readout to Settings and went through a screen recording frame by frame to find out why. The fix is shipped and I'm still confirming it on a device.
+
+## Built with
+Vite 8, TypeScript, Workbox service worker, PaddleOCR (PP-OCRv5) on ONNX Runtime Web, IndexedDB, Vitest, Playwright + axe-core, Lighthouse CI on GitHub Actions, strict Content-Security-Policy.
+
+## Links
+- [Try it live](https://slice-of-pie-xi.vercel.app)
+- [Code on GitHub](https://github.com/hansvidaure24/SliceOfPie)
+- [v1.0 release](https://github.com/hansvidaure24/SliceOfPie/releases/tag/v1.0.0)
+- [Write-up: the iPhone bug](https://github.com/hansvidaure24/SliceOfPie/blob/main/docs/ios-pwa-launch-bug.md)
