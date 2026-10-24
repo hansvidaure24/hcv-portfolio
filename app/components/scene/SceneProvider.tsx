@@ -20,6 +20,11 @@ export function useScene() {
 
 const EASE = [0.65, 0, 0.35, 1] as const;
 
+// Leave the wheel and arrow keys to the open menu or dialog instead of changing sections.
+function menuOrDialogOpen() {
+  return Boolean(document.getElementById("battle-menu") || document.querySelector('[aria-modal="true"]'));
+}
+
 export default function SceneProvider({ sectionIds, children }: { sectionIds: string[]; children: ReactNode }) {
   const [isDesktop, setIsDesktop] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -132,7 +137,7 @@ export default function SceneProvider({ sectionIds, children }: { sectionIds: st
     if (!isDesktop) return;
 
     function handleWheel(e: WheelEvent) {
-      if (document.getElementById("battle-menu")) return;
+      if (menuOrDialogOpen()) return;
       if (!document.documentElement.classList.contains("hero-revealed")) return;
       if (lockedRef.current) {
         e.preventDefault();
@@ -161,7 +166,7 @@ export default function SceneProvider({ sectionIds, children }: { sectionIds: st
     }
 
     function handleKey(e: KeyboardEvent) {
-      if (document.getElementById("battle-menu")) return;
+      if (menuOrDialogOpen()) return;
       if (!document.documentElement.classList.contains("hero-revealed")) return;
       if (lockedRef.current) return;
       if (e.key === "ArrowDown" || e.key === "PageDown") {

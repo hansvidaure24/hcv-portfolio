@@ -1,7 +1,7 @@
 "use client";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import NextImage from "next/image";
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Project } from "../../../data/projects-data";
 import Bag from "../../ui/Bag";
@@ -9,6 +9,7 @@ import PixelPanel from "../../ui/PixelPanel";
 import PokeBall from "../../ui/PokeBall";
 import { useScene } from "../../scene/SceneProvider";
 import { playSound } from "../../../lib/sound";
+import ProjectDescription from "./ProjectDescription";
 import styles from "./Projects.module.scss";
 
 const PAGE_SIZE = 3;
@@ -46,6 +47,7 @@ export default function ProjectSelectScene({ projects }: { projects: Project[] }
   const [armedIndex, setArmedIndex] = useState<number | null>(null);
   // Render the detail overlay at the document root so fixed positioning covers the viewport.
   const [portalReady, setPortalReady] = useState(false);
+  const overlayRef = useRef<HTMLDivElement>(null);
   useEffect(() => setPortalReady(true), []);
 
   const pageCount = Math.max(1, Math.ceil(projects.length / PAGE_SIZE));
@@ -76,6 +78,9 @@ export default function ProjectSelectScene({ projects }: { projects: Project[] }
 
     // Prevent touch scrolling on browsers that ignore the body styles.
     function blockTouchScroll(e: TouchEvent) {
+      // Still let a long project description scroll inside the overlay.
+      const overlay = overlayRef.current;
+      if (overlay && overlay.contains(e.target as Node) && overlay.scrollHeight > overlay.clientHeight) return;
       e.preventDefault();
     }
     document.addEventListener("touchmove", blockTouchScroll, { passive: false });
@@ -174,6 +179,7 @@ export default function ProjectSelectScene({ projects }: { projects: Project[] }
           <AnimatePresence>
             {activeProject && (
               <motion.div
+                ref={overlayRef}
                 className={styles.overlay}
                 role="dialog"
                 aria-modal="true"
@@ -188,6 +194,7 @@ export default function ProjectSelectScene({ projects }: { projects: Project[] }
                 transition={{ duration: 0.22, ease: "easeOut" }}
               >
                 <motion.div
+                  className={styles.detailWrap}
                   onClick={(e) => e.stopPropagation()}
                   initial={reduceMotion ? false : { opacity: 0, scale: 0.94 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -219,7 +226,7 @@ export default function ProjectSelectScene({ projects }: { projects: Project[] }
                         />
                       )}
                     </div>
-                    <p className={styles.detailDescription}>{activeProject.description}</p>
+                    <ProjectDescription text={activeProject.description} />
                     <button
                       type="button"
                       className={styles.backBtn}
