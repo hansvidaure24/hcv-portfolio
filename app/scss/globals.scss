@@ -31,14 +31,9 @@ html, body {
   min-height: 100vh;
 }
 
-/* SceneStage only locks scroll on desktop after JS detects the viewport
-   width, so hiding overflow here at the CSS layer stops a scrollbar flash
-   while that detection runs on mount. */
-@media (min-width: 1024px) {
-  html, body {
-    height: 100vh;
-    overflow: hidden;
-  }
+html {
+  scroll-behavior: smooth;
+  --topbar-height: 56px;
 }
 
 

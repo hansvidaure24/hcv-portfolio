@@ -1,5 +1,18 @@
+const STORAGE_KEY = "sound-enabled";
+
+function readStoredSoundEnabled(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage.getItem(STORAGE_KEY) === "true";
+  } catch {
+    return false;
+  }
+}
+
 // Keep the sound preference at module scope so all callers share it.
-let soundEnabled = true;
+// Sound stays off until the visitor turns it on.
+let soundEnabled = readStoredSoundEnabled();
+const soundListeners = new Set<() => void>();
 
 let backgroundMusic: HTMLAudioElement | null = null;
 let backgroundFadeTimer: ReturnType<typeof setInterval> | null = null;
@@ -13,11 +26,27 @@ function clearBackgroundFade() {
 
 export function setSoundEnabled(enabled: boolean) {
   soundEnabled = enabled;
-  if (!enabled) stopBackgroundMusic();
+  try {
+    if (enabled) window.localStorage.setItem(STORAGE_KEY, "true");
+    else window.localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // Storage may be unavailable in private browsing or after a quota error.
+  }
+  if (enabled) startBackgroundMusic();
+  else stopBackgroundMusic();
+  soundListeners.forEach((listener) => listener());
 }
 
 export function isSoundEnabled() {
   return soundEnabled;
+}
+
+/** For useSyncExternalStore: re-render toggles when the preference changes. */
+export function subscribeSound(listener: () => void) {
+  soundListeners.add(listener);
+  return () => {
+    soundListeners.delete(listener);
+  };
 }
 
 export function playSound(src: string, volume = 1) {

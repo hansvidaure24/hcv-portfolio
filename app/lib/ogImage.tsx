@@ -20,7 +20,7 @@ export function getOgFonts() {
   return [{ name: "PokePixel", data: loadPokePixelFont(), style: "normal" as const, weight: 400 as const }];
 }
 
-const SKILLS = ["FULL-STACK DEV", "UI/UX", "WEB DESIGN", "APP SECURITY"];
+const SKILLS = ["C# / .NET", "REACT", "SQL", "APP SECURITY"];
 
 /** Shared social preview layout for Open Graph and Twitter images. */
 export function TrainerCardOgImage() {
@@ -77,7 +77,7 @@ export function TrainerCardOgImage() {
               width: 620,
             }}
           >
-            <div style={{ display: "flex", color: "#6b6a5a", fontSize: 16, letterSpacing: 1 }}>STATUS</div>
+            <div style={{ display: "flex", color: "#6b6a5a", fontSize: 16, letterSpacing: 1 }}>FISERV · ONLINE BANKING</div>
             <div style={{ display: "flex", color: "#146b6a", fontSize: 24 }}>FULL-STACK SOFTWARE ENGINEER</div>
           </div>
 

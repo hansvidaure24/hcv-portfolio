@@ -1,0 +1,199 @@
+.card {
+  height: 100%;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  height: 100%;
+}
+
+// The featured card puts media beside the text on wide screens.
+@media (min-width: 1024px) {
+  .featured .layout {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 1.75rem;
+  }
+  .featured .media {
+    flex: 0 0 40%;
+    aspect-ratio: 1 / 1;
+  }
+  // Keep the buttons under the text instead of pinned to the bottom of the tall media.
+  .featured .links {
+    margin-top: 0.5rem;
+  }
+}
+
+/* --- Media --- */
+.media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border: 3px solid #2A2A1E;
+  background: #1a1a14;
+  overflow: hidden;
+}
+
+.mediaInner {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.playBtn {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+
+  font-family: 'PokePixel', monospace;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  color: #2A2A1E;
+  background: #FDE68A;
+  border: 3px solid #2A2A1E;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+
+  &:hover {
+    background: #fff3c4;
+  }
+}
+
+/* --- Text --- */
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.kind {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'PokePixel', monospace;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #6b5a3a;
+}
+
+// A tiny pixel Pokéball, drawn with gradients so it needs no image.
+.kindBall {
+  width: 12px;
+  height: 12px;
+  border: 2px solid #2A2A1E;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #e74c3c 0 45%, #2A2A1E 45% 58%, #f5f5f5 58%);
+}
+
+.title {
+  font-family: 'PokePixel', monospace;
+  font-size: clamp(1.8rem, 2.4vw, 2.3rem);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: #2A2A1E;
+}
+
+.featured .title {
+  font-size: clamp(2.1rem, 3vw, 2.8rem);
+}
+
+.tagline {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: #3a3a2c;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.metrics {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2A2A1E;
+  user-select: text;
+  -webkit-user-select: text;
+
+  li {
+    display: flex;
+    gap: 0.55rem;
+  }
+
+  li::before {
+    content: '▶';
+    flex: none;
+    font-size: 0.7em;
+    line-height: 2;
+    color: #1c8a72;
+  }
+}
+
+.stack {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+
+  li {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.2rem 0.55rem;
+    color: #2A2A1E;
+    background: rgba(42, 42, 30, 0.08);
+    border: 2px solid rgba(42, 42, 30, 0.35);
+  }
+}
+
+/* --- Links --- */
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+%linkButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.8rem;
+  font-family: 'PokePixel', monospace;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border: 3px solid #2A2A1E;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.35);
+  transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+
+  &:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35);
+  }
+}
+
+.primaryLink {
+  @extend %linkButton;
+  color: #F8EFD8;
+  background: #2A2A1E;
+}
+
+.link {
+  @extend %linkButton;
+  color: #2A2A1E;
+  background: #fffaf0;
+}

@@ -2,6 +2,8 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
+  // Leave room for the fixed top bar.
+  padding-top: var(--topbar-height);
   overflow: hidden;
   display: flex;
   align-items: center;
