@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useScene } from "../scene/SceneProvider";
 import { useMotionSettings } from "../providers/MotionPreferenceProvider";
 import { playSound } from "../../lib/sound";
+import { useSoundSetting } from "../../lib/useSoundSetting";
 import styles from "./Navigation.module.scss";
 
 type MenuItem = {
@@ -16,14 +17,17 @@ const ITEMS: MenuItem[] = [
   { label: "WORK", id: "projects" },
   { label: "BIO", id: "about" },
   { label: "CONTACT", id: "contact" },
-  { label: "QUIT", id: "hero" },
+  { label: "TOP", id: "hero" },
   { label: "→" },
 ];
 
-// The "Reduce motion" row is appended after ITEMS in both the rendered list
-// and the arrow-key cycle (index === ITEMS.length), rather than living inside
-// ITEMS itself, since it toggles a preference instead of navigating/closing.
-const TOTAL_ROWS = ITEMS.length + 1;
+// The "Reduce motion" and "Sound" rows are appended after ITEMS in both the
+// rendered list and the arrow-key cycle (index ITEMS.length and ITEMS.length + 1),
+// rather than living inside ITEMS itself, since they toggle preferences instead
+// of navigating/closing.
+const MOTION_ROW = ITEMS.length;
+const SOUND_ROW = ITEMS.length + 1;
+const TOTAL_ROWS = ITEMS.length + 2;
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -32,6 +36,7 @@ export default function Navigation() {
   const reduceMotion = useReducedMotion();
   const scene = useScene();
   const motionSettings = useMotionSettings();
+  const sound = useSoundSetting();
 
   const selectItem = useCallback((index: number) => {
     playSound("/sounds/button.mp3");
@@ -45,9 +50,19 @@ export default function Navigation() {
     motionSettings.toggleReduced();
   }
 
+  function toggleSound() {
+    // Play the click after turning sound on, so the toggle itself is audible.
+    sound.toggle();
+    playSound("/sounds/button.mp3");
+  }
+
   function activateRow(index: number) {
-    if (index === ITEMS.length) {
+    if (index === MOTION_ROW) {
       toggleReducedMotion();
+      return;
+    }
+    if (index === SOUND_ROW) {
+      toggleSound();
       return;
     }
     selectItem(index);
@@ -155,17 +170,37 @@ export default function Navigation() {
                     aria-checked={motionSettings.reduced}
                     className={styles.menuButton}
                     whileTap={reduceMotion ? undefined : { scale: 0.94 }}
-                    onMouseEnter={() => moveTo(ITEMS.length)}
-                    onFocus={() => moveTo(ITEMS.length)}
+                    onMouseEnter={() => moveTo(MOTION_ROW)}
+                    onFocus={() => moveTo(MOTION_ROW)}
                     onClick={toggleReducedMotion}
                   >
                     <span
-                      className={`${styles.cursor}${activeIndex === ITEMS.length ? ' ' + styles.cursorActive : ''}`}
+                      className={`${styles.cursor}${activeIndex === MOTION_ROW ? ' ' + styles.cursorActive : ''}`}
                       aria-hidden="true"
                     >
                       ▶
                     </span>
                     REDUCE MOTION: {motionSettings.reduced ? "ON" : "OFF"}
+                  </motion.button>
+                </li>
+                <li className={styles.menuRow}>
+                  <motion.button
+                    type="button"
+                    role="menuitemcheckbox"
+                    aria-checked={sound.enabled}
+                    className={styles.menuButton}
+                    whileTap={reduceMotion ? undefined : { scale: 0.94 }}
+                    onMouseEnter={() => moveTo(SOUND_ROW)}
+                    onFocus={() => moveTo(SOUND_ROW)}
+                    onClick={toggleSound}
+                  >
+                    <span
+                      className={`${styles.cursor}${activeIndex === SOUND_ROW ? ' ' + styles.cursorActive : ''}`}
+                      aria-hidden="true"
+                    >
+                      ▶
+                    </span>
+                    SOUND: {sound.enabled ? "ON" : "OFF"}
                   </motion.button>
                 </li>
               </ul>

@@ -272,6 +272,17 @@
   user-select: text;
 }
 
+.cardEmail {
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  -webkit-user-select: text;
+
+  &:hover {
+    color: #0f4d5e;
+  }
+}
+
 .badgeSection {
   display: flex;
   flex-direction: column;

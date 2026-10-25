@@ -1,6 +1,9 @@
 // Shared origin used by metadata, sitemap, robots, and JSON-LD.
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://hans-portfolio-one.vercel.app").replace(/\/+$/, "");
 
-export const SITE_NAME = "HCV Portfolio";
+export const SITE_NAME = "Hans Vidaure — Full-Stack Software Engineer";
 export const SITE_DESCRIPTION =
-  "Portfolio website built with Next.js, TypeScript, and Tailwind CSS. Showcases projects, skills, and contact information along with a clean design, fast performance, and mobile-friendly experience.";
+  "Full-stack engineer at Fiserv building secure online banking features in C#/.NET, React and SQL. Projects, case studies and resume.";
+
+export const CONTACT_EMAIL = "hansvidaure24@gmail.com";
+export const RESUME_URL = "/resume/hcv-resume.pdf";

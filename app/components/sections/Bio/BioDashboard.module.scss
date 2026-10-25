@@ -299,85 +299,42 @@
   justify-content: center;
 }
 
-.tickerWrap {
+.skillGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   width: 100%;
-  overflow: hidden;
+  padding: 0.9rem;
   border: 2px solid #2A2A1E;
   background: rgba(0, 0, 0, 0.3);
-  padding: 1.1rem 0;
 }
 
-.tickerWrapReduced {
-  overflow-x: auto;
-  overflow-y: hidden;
-  cursor: grab;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  touch-action: pan-y;
-  user-select: none;
-}
-
-.tickerWrapReduced::-webkit-scrollbar {
-  display: none;
-}
-
-.dragging {
-  cursor: grabbing;
-}
-
-.tickerTrack {
+.skillGroup {
   display: flex;
-  width: max-content;
-  gap: 2.5rem;
-  white-space: nowrap;
-  animation: ticker-scroll 22s linear infinite;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
-.tickerGroup {
-  display: flex;
-  gap: 2.5rem;
-  padding-right: 2.5rem;
-}
-
-.tickerItem {
+.skillLabel {
   font-family: 'PokePixel', monospace;
-  font-size: clamp(1rem, 2vw, 1.4rem);
-  letter-spacing: 0.04em;
-  color: #F8EFD8;
-}
-
-.tickerEasterEgg {
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
   color: #FDE68A;
-  text-shadow: 0 0 10px rgba(253, 230, 138, 0.7);
 }
 
-.tickerSep {
-  color: #5FCB9E;
+.skillList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
 }
 
-@keyframes ticker-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-:global(.reduce-motion) {
-  .tickerTrack {
-    animation: none;
-  }
-
-  .tickerWrap {
-    overflow-x: auto;
-    overflow-y: hidden;
-    cursor: grab;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    touch-action: pan-y;
-    user-select: none;
-  }
-
-  .tickerWrap::-webkit-scrollbar {
-    display: none;
-  }
+.skillItem {
+  font-family: 'PokePixel', monospace;
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  letter-spacing: 0.03em;
+  padding: 0.15rem 0.55rem;
+  color: #F8EFD8;
+  border: 2px solid rgba(248, 239, 216, 0.55);
 }
 
 @media (max-width: 480px) {

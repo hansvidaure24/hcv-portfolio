@@ -1,7 +1,7 @@
 import Navigation from '@/app/components/navigation/Navigation'
+import TopBar from '@/app/components/navigation/TopBar'
 import SceneProvider from '@/app/components/scene/SceneProvider'
 import SceneStage from '@/app/components/scene/SceneStage'
-import BootScreen from '@/app/components/ui/BootScreen'
 import Hero from '@/app/components/sections/Hero/Hero'
 import Projects from '@/app/components/sections/Projects/Projects'
 import Bio from '@/app/components/sections/Bio/Bio'
@@ -12,9 +12,9 @@ const SECTION_IDS = ['hero', 'projects', 'about', 'contact']
 export default function Home() {
   return (
     <div id="main-content-wrapper">
-      <BootScreen />
       <main role="main" className="min-h-screen">
         <SceneProvider sectionIds={SECTION_IDS}>
+          <TopBar />
           <Navigation />
           <SceneStage
             sections={[

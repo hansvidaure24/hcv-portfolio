@@ -1,8 +1,6 @@
 .sign {
-  position: absolute;
-  top: clamp(1rem, 4vw, 2.5rem);
-  left: clamp(1rem, 4vw, 2.5rem);
-  z-index: 3;
+  position: relative;
+  align-self: flex-start;
   display: inline-block;
   padding: 1rem 2rem;
   background: linear-gradient(180deg, #C97C3D 0%, #A85A2A 55%, #8A431C 100%);
@@ -39,15 +37,5 @@
 @media (max-width: 480px) {
   .signText {
     white-space: normal;
-  }
-}
-
-@media (max-width: 640px) {
-  .sign {
-    left: 0;
-    right: 0;
-    width: fit-content;
-    margin-inline: auto;
-    top: clamp(0.75rem, 4vw, 1.5rem);
   }
 }

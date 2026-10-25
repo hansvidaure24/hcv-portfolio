@@ -1,0 +1,50 @@
+.description {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  margin-bottom: 1rem;
+  user-select: text;
+
+  > * + * {
+    margin-top: 0.75rem;
+  }
+
+  p {
+    white-space: pre-line;
+  }
+
+  h2 {
+    font-family: 'PokePixel', monospace;
+    font-size: 1.7rem;
+    letter-spacing: 0.03em;
+    margin-top: 1.75rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 2px solid rgba(42, 42, 30, 0.25);
+  }
+
+  ul {
+    list-style: square;
+    padding-left: 1.1rem;
+  }
+
+  li + li {
+    margin-top: 0.3rem;
+  }
+
+  strong {
+    font-weight: 700;
+  }
+
+  a {
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+
+    &:hover,
+    &:focus-visible {
+      background: rgba(42, 42, 30, 0.12);
+    }
+  }
+}
+
