@@ -1,12 +1,13 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import ParallaxSection from "../../scene/ParallaxSection";
 import { useScene } from "../../scene/SceneProvider";
-import { useContactDialog } from "../../providers/ContactDialogProvider";
 import { playSound } from "../../../lib/sound";
-import { getEffectiveReducedMotion } from "../../../lib/motionPreference";
+import { CONTACT_EMAIL, RESUME_URL } from "../../../lib/site";
 import styles from "./Hero.module.scss";
+
+const PROOF_POINTS = ["Fiserv · 3 yrs", "1,150+ security findings fixed", "24k ACH records automated"];
 
 const TILE_COLS = 10;
 const TILE_ROWS = 6;
@@ -36,53 +37,47 @@ function PixelCloud({ x, y, scale = 1, fill, opacity }: { x: number; y: number; 
 const introTiles = Array.from({ length: TILE_COLS * TILE_ROWS }, (_, i) => {
   const col = i % TILE_COLS;
   const row = Math.floor(i / TILE_COLS);
-  const delay = (col + row) * 0.045;
+  const delay = (col + row) * 0.03;
   return { key: i, delay };
 });
 
-// Matches the last-scheduled reveal in Hero.module.scss (.footerReveal:
-// 1.6s delay + 0.5s duration = 2.1s), plus a small buffer. Everything else
-// (tile wipe, title/subtitle/pressStart) finishes sooner than this.
-const HERO_REVEAL_DURATION_MS = 2150;
-
 export default function Hero() {
   const scene = useScene();
-  const { openDialog } = useContactDialog();
+  const [copied, setCopied] = useState(false);
+  const copiedTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const emailRef = useRef<HTMLAnchorElement>(null);
 
-  // Tell SceneProvider when the hero reveal is complete.
-  useEffect(() => {
-    const reduceMotion = getEffectiveReducedMotion();
+  useEffect(() => () => clearTimeout(copiedTimer.current), []);
 
-    function markRevealed() {
-      document.documentElement.classList.add("hero-revealed");
-    }
-
-    function onBooted() {
-      if (reduceMotion) {
-        markRevealed();
-      } else {
-        setTimeout(markRevealed, HERO_REVEAL_DURATION_MS);
+  async function copyEmail() {
+    let ok = false;
+    try {
+      await navigator.clipboard.writeText(CONTACT_EMAIL);
+      ok = true;
+    } catch {
+      // The async clipboard API can be blocked (permissions, embedded browsers).
+      // Fall back to selecting the address, which also leaves it ready for Ctrl+C.
+      const el = emailRef.current;
+      const selection = window.getSelection();
+      if (el && selection) {
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        ok = document.execCommand("copy");
       }
     }
-
-    if (document.documentElement.classList.contains("app-booted")) {
-      onBooted();
-      return;
-    }
-
-    const observer = new MutationObserver(() => {
-      if (document.documentElement.classList.contains("app-booted")) {
-        observer.disconnect();
-        onBooted();
-      }
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
-  }, []);
+    if (!ok) return;
+    playSound("/sounds/button.mp3");
+    setCopied(true);
+    clearTimeout(copiedTimer.current);
+    copiedTimer.current = setTimeout(() => setCopied(false), 1500);
+  }
 
   return (
     <ParallaxSection
       id="hero"
+      reveal={false}
       bgClassName={styles.heroBg}
       contentClassName={styles.heroContent}
       overlay={
@@ -232,14 +227,6 @@ export default function Hero() {
 
         {/* Floating clouds that pop up during tile transition */}
         <svg className={styles.transitionClouds} viewBox="0 0 1600 1000" preserveAspectRatio="none" aria-hidden="true">
-          {/* Left side clouds */}
-          <g className={styles.cloudPopLeft}>
-            <PixelCloud x={-10} y={150} scale={0.9} fill="#f0fdf4" opacity={0.75} />
-          </g>
-          <g className={styles.cloudPopLeft} style={{ animationDelay: "0.15s" }}>
-            <PixelCloud x={20} y={600} scale={0.85} fill="#f8fffb" opacity={0.8} />
-          </g>
-
           {/* Right side clouds */}
           <g className={styles.cloudPopRight}>
             <PixelCloud x={1330} y={230} scale={0.95} fill="#f0fdf4" opacity={0.75} />
@@ -251,87 +238,111 @@ export default function Hero() {
         </>
       }
     >
-      <h1 className={`${styles.title} ${styles.titleReveal}`}>HANS VIDAURE</h1>
-      <p className={`${styles.subtitle} ${styles.subtitleReveal}`}>
-        Building the future, one bug fix at a time.
-      </p>
-      <div className={styles.pokedexContainer}>
-        <svg viewBox="0 0 380 480" className={styles.pokedexSvg} preserveAspectRatio="xMidYMid meet">
-          <defs>
-            <linearGradient id="pokedexTop" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#e74c3c" />
-              <stop offset="1" stopColor="#c0392b" />
-            </linearGradient>
-            <linearGradient id="pokedexBottom" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#2c3e50" />
-              <stop offset="1" stopColor="#34495e" />
-            </linearGradient>
-            <filter id="pokedexScan">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="0.5" />
-            </filter>
-          </defs>
+      <div className={styles.heroGrid}>
+        <div className={styles.heroText}>
+          <p className={`${styles.statusChip} ${styles.reveal1}`}>
+            <span className={styles.statusDot} aria-hidden="true" />
+            Open to full-stack roles · NYC / remote
+          </p>
+          <h1 className={`${styles.title} ${styles.reveal1}`}>HANS VIDAURE</h1>
+          <p className={`${styles.role} ${styles.reveal2}`}>
+            Full-Stack Software Engineer
+            <span className={styles.roleStack}>C# / .NET · React · SQL</span>
+          </p>
+          <p className={`${styles.summary} ${styles.reveal2}`}>
+            3 years shipping and securing features on Fiserv&apos;s online banking platform. On the side I build
+            fast, well-tested web apps, like a bill splitter that reads receipts offline in the browser.
+          </p>
+          <div className={`${styles.ctaRow} ${styles.reveal3}`}>
+            <a
+              href="#projects"
+              className={styles.primaryCta}
+              onClick={(e) => {
+                if (!scene) return;
+                e.preventDefault();
+                // Play the sound only when navigation actually starts.
+                scene.goTo("projects", () => playSound("/sounds/press-start.mp3"));
+              }}
+            >
+              See my work <span className={styles.ctaCursor} aria-hidden="true">▶</span>
+            </a>
+            <a href={RESUME_URL} target="_blank" rel="noopener noreferrer" className={styles.secondaryCta}>
+              Resume (PDF)
+            </a>
+          </div>
+          <div className={`${styles.emailRow} ${styles.reveal3}`}>
+            <a ref={emailRef} href={`mailto:${CONTACT_EMAIL}`} className={styles.email}>
+              {CONTACT_EMAIL}
+            </a>
+            <button type="button" className={styles.copyBtn} onClick={copyEmail}>
+              <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>
+            </button>
+          </div>
+          <ul className={`${styles.proofStrip} ${styles.reveal3}`}>
+            {PROOF_POINTS.map((point) => (
+              <li key={point}>{point}</li>
+            ))}
+          </ul>
+        </div>
 
-          {/* Top red section */}
-          <path fill="url(#pokedexTop)" d="M 30 20 L 350 20 Q 360 20 360 30 L 360 120 Q 360 130 350 130 L 30 130 Q 20 130 20 120 L 20 30 Q 20 20 30 20 Z" />
+        <div className={`${styles.heroPhoto} ${styles.reveal2}`}>
+          <div className={styles.pokedexContainer}>
+            <svg viewBox="0 0 380 480" className={styles.pokedexSvg} preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <linearGradient id="pokedexTop" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stopColor="#e74c3c" />
+                  <stop offset="1" stopColor="#c0392b" />
+                </linearGradient>
+                <linearGradient id="pokedexBottom" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stopColor="#2c3e50" />
+                  <stop offset="1" stopColor="#34495e" />
+                </linearGradient>
+                <filter id="pokedexScan">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="0.5" />
+                </filter>
+              </defs>
 
-          {/* Center bezel (white screen area) */}
-          <rect x="20" y="130" width="340" height="260" rx="8" fill="#f5f5f5" />
+              {/* Top red section */}
+              <path fill="url(#pokedexTop)" d="M 30 20 L 350 20 Q 360 20 360 30 L 360 120 Q 360 130 350 130 L 30 130 Q 20 130 20 120 L 20 30 Q 20 20 30 20 Z" />
 
-          {/* Screen content area (where image goes) */}
-          <rect x="28" y="138" width="324" height="244" rx="4" fill="#fff" />
+              {/* Center bezel (white screen area) */}
+              <rect x="20" y="130" width="340" height="260" rx="8" fill="#f5f5f5" />
 
-          {/* Bottom dark section */}
-          <path fill="url(#pokedexBottom)" d="M 30 390 L 350 390 Q 360 390 360 400 L 360 450 Q 360 460 350 460 L 30 460 Q 20 460 20 450 L 20 400 Q 20 390 30 390 Z" />
+              {/* Screen content area (where image goes) */}
+              <rect x="28" y="138" width="324" height="244" rx="4" fill="#fff" />
 
-          {/* Pokédex details - top buttons */}
-          <circle cx="100" cy="60" r="8" fill="#fff" opacity="0.8" />
-          <circle cx="140" cy="50" r="6" fill="#fff" opacity="0.6" />
-          <circle cx="175" cy="65" r="7" fill="#fff" opacity="0.7" />
+              {/* Bottom dark section */}
+              <path fill="url(#pokedexBottom)" d="M 30 390 L 350 390 Q 360 390 360 400 L 360 450 Q 360 460 350 460 L 30 460 Q 20 460 20 450 L 20 400 Q 20 390 30 390 Z" />
 
-          {/* Bottom indicators */}
-          <rect x="60" y="410" width="14" height="14" rx="2" fill="#2ecc71" opacity="0.8" />
-          <rect x="90" y="415" width="10" height="10" rx="1" fill="#f39c12" opacity="0.7" />
-          <rect x="115" y="410" width="12" height="12" rx="2" fill="#3498db" opacity="0.8" />
+              {/* Pokédex details - top buttons */}
+              <circle cx="100" cy="60" r="8" fill="#fff" opacity="0.8" />
+              <circle cx="140" cy="50" r="6" fill="#fff" opacity="0.6" />
+              <circle cx="175" cy="65" r="7" fill="#fff" opacity="0.7" />
 
-          {/* Animated scan line */}
-          <g className={styles.scanLineGroup}>
-            <line x1="28" y1="138" x2="352" y2="138" stroke="#0ff" strokeWidth="2" opacity="0.6" filter="url(#pokedexScan)" />
-          </g>
-        </svg>
-        <div className={styles.pokedexImageFrame}>
-          <Image
-            src="/graphics/hero-avatar.jpg"
-            alt="Hans Vidaure"
-            fill
-            sizes="(max-width: 640px) 60vw, 425px"
-            style={{ objectFit: "cover" }}
-            className={styles.pokedexImage}
-            priority
-          />
+              {/* Bottom indicators */}
+              <rect x="60" y="410" width="14" height="14" rx="2" fill="#2ecc71" opacity="0.8" />
+              <rect x="90" y="415" width="10" height="10" rx="1" fill="#f39c12" opacity="0.7" />
+              <rect x="115" y="410" width="12" height="12" rx="2" fill="#3498db" opacity="0.8" />
+
+              {/* Animated scan line */}
+              <g className={styles.scanLineGroup}>
+                <line x1="28" y1="138" x2="352" y2="138" stroke="#0ff" strokeWidth="2" opacity="0.6" filter="url(#pokedexScan)" />
+              </g>
+            </svg>
+            <div className={styles.pokedexImageFrame}>
+              <Image
+                src="/graphics/hero-avatar.jpg"
+                alt="Photo of Hans Vidaure"
+                fill
+                sizes="(max-width: 900px) 55vw, 340px"
+                style={{ objectFit: "cover" }}
+                className={styles.pokedexImage}
+                priority
+              />
+            </div>
+          </div>
         </div>
       </div>
-      <a
-        href="#projects"
-        className={`${styles.pressStart} ${styles.pressStartReveal}`}
-        onClick={(e) => {
-          e.preventDefault();
-          // Play the sound only when navigation actually starts.
-          scene?.goTo("projects", () => playSound("/sounds/press-start.mp3"));
-        }}
-      >
-        PRESS START
-      </a>
-      <button
-        type="button"
-        className={`${styles.secondaryCta} ${styles.secondaryCtaReveal}`}
-        onClick={() => {
-          playSound("/sounds/button.mp3");
-          openDialog();
-        }}
-      >
-        or send a message
-      </button>
-      <footer className={`${styles.footerLine} ${styles.footerReveal}`}>© 2000 Queens, NY</footer>
     </ParallaxSection>
   );
 }

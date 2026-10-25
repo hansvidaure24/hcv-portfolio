@@ -7,6 +7,7 @@ import { useScene } from "../../scene/SceneProvider";
 import { getFirstGesturePromise, isSoundEnabled, playSound } from "../../../lib/sound";
 import { getEffectiveReducedMotion } from "../../../lib/motionPreference";
 import { useContactDialog } from "../../providers/ContactDialogProvider";
+import { CONTACT_EMAIL, RESUME_URL } from "../../../lib/site";
 import styles from "./Contact.module.scss";
 
 export const Socials = {
@@ -46,13 +47,13 @@ type Skill = {
   icon: string;
 };
 
-const TYPING_MESSAGE = "Got an idea worth debugging?...";
+const TYPING_MESSAGE = "Hiring for a full-stack role? Let's talk.";
 const TYPING_INTERVAL_MS = 68;
 
 const SKILLS: Skill[] = [
   { name: 'Full-Stack Development', icon: '/icons/icon-fullstack.svg' },
-  { name: 'UI/UX', icon: '/icons/icon-uiux.svg' },
-  { name: 'Web Design', icon: '/icons/icon-webdesign.svg' },
+  { name: '.NET APIs', icon: '/icons/icon-api.svg' },
+  { name: 'React UI', icon: '/icons/icon-ui.svg' },
   { name: 'Application Security', icon: '/icons/icon-appsecurity.svg' },
 ];
 
@@ -204,9 +205,6 @@ export default function Contact() {
     // Start audio when the browser allows it without blocking the text effect.
     const ready = await ensureAudioReady();
 
-    // Do not start audio if the user left Contact while it was loading.
-    if (scene?.isDesktop && scene.activeId !== "contact") return;
-
     if (ready) {
       beginTypeSoundPlayback(ready.ctx, ready.buffer);
     } else {
@@ -228,11 +226,6 @@ export default function Contact() {
   useEffect(() => {
     if (typingActive) return;
 
-    if (scene?.isDesktop) {
-      if (scene.activeId === "contact") activateTyping();
-      return;
-    }
-
     const el = typingRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
@@ -247,7 +240,7 @@ export default function Contact() {
     observer.observe(el);
     return () => observer.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scene?.isDesktop, scene?.activeId, typingActive]);
+  }, [typingActive]);
 
   const messageItem: MenuItem = {
     key: 'message',
@@ -319,11 +312,18 @@ export default function Contact() {
 
           <div className={styles.cardBody}>
             <div className={styles.cardInfo}>
-              <p className={styles.cardName}>NAME: Hans</p>
+              <p className={styles.cardName}>NAME: Hans Vidaure</p>
 
               <div className={styles.cardStatRow}>
                 <span className={styles.cardStatLabel}>STATUS</span>
-                <span className={styles.cardStatValue}>Actively Open to Work + Freelance</span>
+                <span className={styles.cardStatValue}>Open to full-stack roles · NYC / remote</span>
+              </div>
+
+              <div className={styles.cardStatRow}>
+                <span className={styles.cardStatLabel}>EMAIL</span>
+                <a href={`mailto:${CONTACT_EMAIL}`} className={`${styles.cardStatValue} ${styles.cardEmail}`}>
+                  {CONTACT_EMAIL}
+                </a>
               </div>
 
               <div className={styles.badgeSection}>
@@ -397,7 +397,7 @@ export default function Contact() {
                     );
                   })}
                   <a
-                    href="/resume/hcv-resume.pdf"
+                    href={RESUME_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.linkBadge}

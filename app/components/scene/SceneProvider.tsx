@@ -1,6 +1,7 @@
 "use client";
-import { useAnimate, useReducedMotion, motion } from "framer-motion";
+import { useAnimate, motion } from "framer-motion";
 import { ReactNode, createContext, useContext, useEffect, useRef, useState } from "react";
+import { useMotionSettings } from "../providers/MotionPreferenceProvider";
 import styles from "./SceneTransition.module.scss";
 
 type SceneContextValue = {
@@ -20,15 +21,10 @@ export function useScene() {
 
 const EASE = [0.65, 0, 0.35, 1] as const;
 
-// Leave the wheel and arrow keys to the open menu or dialog instead of changing sections.
-function menuOrDialogOpen() {
-  return Boolean(document.getElementById("battle-menu") || document.querySelector('[aria-modal="true"]'));
-}
-
 export default function SceneProvider({ sectionIds, children }: { sectionIds: string[]; children: ReactNode }) {
   const [isDesktop, setIsDesktop] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const reduceMotion = useReducedMotion();
+  const { reduced: reduceMotion } = useMotionSettings();
   const [scope, animate] = useAnimate();
   const lockedRef = useRef(false);
 
@@ -39,6 +35,26 @@ export default function SceneProvider({ sectionIds, children }: { sectionIds: st
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
   }, []);
+
+  // The page scrolls normally, so the active section is whichever one
+  // crosses the middle of the viewport.
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const index = sectionIds.indexOf(entry.target.id);
+          if (index !== -1) setActiveIndex(index);
+        }
+      },
+      { rootMargin: "-50% 0px -50% 0px" }
+    );
+    for (const id of sectionIds) {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    }
+    return () => observer.disconnect();
+  }, [sectionIds]);
 
   // Keep the URL in sync with the active section without duplicate history entries.
   function syncHash(id: string) {
@@ -51,40 +67,25 @@ export default function SceneProvider({ sectionIds, children }: { sectionIds: st
   }
 
   async function goTo(id: string, onStart?: () => void): Promise<boolean> {
-    // Wait for the hero reveal before allowing navigation.
-    if (!document.documentElement.classList.contains("hero-revealed")) return false;
-
     const nextIndex = sectionIds.indexOf(id);
-    if (nextIndex === -1) return false;
+    const target = document.getElementById(id);
+    if (nextIndex === -1 || !target || lockedRef.current) return false;
 
-    if (!isDesktop) {
-      onStart?.();
-      // Track the active section on mobile too, even though sections scroll normally.
+    onStart?.();
+
+    // Mobile and reduced motion just scroll; desktop hides the jump behind the band wipe.
+    if (!isDesktop || reduceMotion || !scope.current) {
+      target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
       setActiveIndex(nextIndex);
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
       syncHash(id);
       return true;
     }
 
-    if (lockedRef.current || nextIndex === activeIndex) return false;
     lockedRef.current = true;
-    onStart?.();
-
     // Always release the navigation lock, including when animation fails.
     try {
-      if (reduceMotion) {
-        setActiveIndex(nextIndex);
-        syncHash(id);
-        return true;
-      }
-
-      if (!scope.current) {
-        setActiveIndex(nextIndex);
-        syncHash(id);
-        return true;
-      }
-
       await animate(scope.current, { x: "0vw", skewX: -12 }, { duration: 0.35, ease: EASE });
+      target.scrollIntoView({ behavior: "instant", block: "start" });
       setActiveIndex(nextIndex);
       syncHash(id);
       await animate(scope.current, { x: "200vw", skewX: -12 }, { duration: 0.35, ease: EASE });
@@ -95,117 +96,18 @@ export default function SceneProvider({ sectionIds, children }: { sectionIds: st
     }
   }
 
-  // Effects with stable dependencies use the latest navigation function.
-  const goToRef = useRef(goTo);
-  useEffect(() => {
-    goToRef.current = goTo;
-  });
-
-  // Restore a valid deep link after the hero reveal completes.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const requestedId = window.location.hash.slice(1);
-    if (!requestedId || !sectionIds.includes(requestedId) || requestedId === sectionIds[0]) return;
-
-    let cancelled = false;
-    function restore() {
-      if (cancelled) return;
-      goToRef.current(requestedId);
-    }
-
-    if (document.documentElement.classList.contains("hero-revealed")) {
-      restore();
-      return;
-    }
-
-    const observer = new MutationObserver(() => {
-      if (document.documentElement.classList.contains("hero-revealed")) {
-        observer.disconnect();
-        restore();
-      }
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => {
-      cancelled = true;
-      observer.disconnect();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (!isDesktop) return;
-
-    function handleWheel(e: WheelEvent) {
-      if (menuOrDialogOpen()) return;
-      if (!document.documentElement.classList.contains("hero-revealed")) return;
-      if (lockedRef.current) {
-        e.preventDefault();
-        return;
-      }
-      if (Math.abs(e.deltaY) < 4) return;
-
-      const goingDown = e.deltaY > 0;
-      const activeId = sectionIds[activeIndex];
-      const activeEl = document.querySelector<HTMLElement>(`[data-slide="${activeId}"]`);
-
-      if (activeEl) {
-        const { scrollTop, scrollHeight, clientHeight } = activeEl;
-        const atBottom = scrollTop + clientHeight >= scrollHeight - 2;
-        const atTop = scrollTop <= 2;
-        if (goingDown && !atBottom) return;
-        if (!goingDown && !atTop) return;
-      }
-
-      const nextIndex = activeIndex + (goingDown ? 1 : -1);
-      if (nextIndex < 0 || nextIndex >= sectionIds.length) return;
-
-      e.preventDefault();
-      const nextSectionId = sectionIds[nextIndex];
-      if (nextSectionId) goTo(nextSectionId);
-    }
-
-    function handleKey(e: KeyboardEvent) {
-      if (menuOrDialogOpen()) return;
-      if (!document.documentElement.classList.contains("hero-revealed")) return;
-      if (lockedRef.current) return;
-      if (e.key === "ArrowDown" || e.key === "PageDown") {
-        if (activeIndex < sectionIds.length - 1) {
-          e.preventDefault();
-          const nextSectionId = sectionIds[activeIndex + 1];
-          if (nextSectionId) goTo(nextSectionId);
-        }
-      } else if (e.key === "ArrowUp" || e.key === "PageUp") {
-        if (activeIndex > 0) {
-          e.preventDefault();
-          const previousSectionId = sectionIds[activeIndex - 1];
-          if (previousSectionId) goTo(previousSectionId);
-        }
-      }
-    }
-
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    window.addEventListener("keydown", handleKey);
-    return () => {
-      window.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("keydown", handleKey);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDesktop, activeIndex, sectionIds, reduceMotion]);
-
-  // Handle browser back and forward on both desktop and mobile.
+  // Handle browser back and forward.
   useEffect(() => {
     function handlePopState() {
       const id = window.location.hash.slice(1) || sectionIds[0];
       if (!id || !sectionIds.includes(id)) return;
-      if (id === sectionIds[activeIndex]) return;
       goTo(id);
     }
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeIndex, sectionIds]);
+  }, [sectionIds, isDesktop, reduceMotion]);
 
   return (
     <SceneContext.Provider

@@ -1,0 +1,108 @@
+.bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  height: var(--topbar-height);
+  padding: 0 clamp(1rem, 3vw, 2rem);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  background: rgba(10, 30, 42, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom: 3px solid #2A2A1E;
+  box-shadow: 0 3px 0 rgba(248, 239, 216, 0.12);
+}
+
+.brand {
+  font-family: 'PokePixel', monospace;
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
+  color: #fde047;
+  text-decoration: none;
+  text-shadow: 2px 2px 0 #1e3a8a;
+  white-space: nowrap;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.link {
+  font-family: 'PokePixel', monospace;
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  color: #F8EFD8;
+  text-decoration: none;
+  padding: 0.25rem 0;
+  border-bottom: 3px solid transparent;
+
+  &:hover,
+  &[aria-current="true"] {
+    color: #fde68a;
+    border-bottom-color: #fde68a;
+  }
+}
+
+.resume {
+  font-family: 'PokePixel', monospace;
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  color: #2A2A1E;
+  background: #F8EFD8;
+  text-decoration: none;
+  padding: 0.3rem 0.75rem;
+  border: 3px solid #2A2A1E;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.45);
+  white-space: nowrap;
+  transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+
+  &:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.45);
+  }
+}
+
+.sound {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  color: #F8EFD8;
+  background: transparent;
+  border: 3px solid rgba(248, 239, 216, 0.5);
+  cursor: pointer;
+
+  &:hover,
+  &[aria-pressed="true"] {
+    color: #fde68a;
+    border-color: #fde68a;
+  }
+}
+
+// Phones keep the Pokéball menu for section links.
+@media (max-width: 640px) {
+  .bar {
+    padding: 0 0.75rem;
+  }
+  .nav {
+    gap: 0.6rem;
+  }
+  .link {
+    display: none;
+  }
+  .brand {
+    font-size: 1.1rem;
+  }
+  .resume {
+    font-size: 1rem;
+    padding: 0.2rem 0.6rem;
+  }
+}

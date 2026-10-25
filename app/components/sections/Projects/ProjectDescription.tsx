@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import styles from "./Projects.module.scss";
+import styles from "./ProjectDescription.module.scss";
 
 // Matches **bold** and [label](https://link) inside a line.
 const INLINE_PATTERN = /\*\*(.+?)\*\*|\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g;
@@ -62,9 +62,9 @@ export default function ProjectDescription({ text }: { text: string }) {
   }
 
   return (
-    <div className={styles.detailDescription}>
+    <div className={styles.description}>
       {blocks.map((block, i) => {
-        if (block.kind === "heading") return <h3 key={i}>{block.text}</h3>;
+        if (block.kind === "heading") return <h2 key={i}>{block.text}</h2>;
         if (block.kind === "list") {
           return (
             <ul key={i}>

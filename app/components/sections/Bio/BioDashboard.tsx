@@ -1,100 +1,27 @@
-"use client";
-
-import { useRef } from "react";
-import { useMotionSettings } from "../../providers/MotionPreferenceProvider";
+import LazyVideo from "../../ui/LazyVideo";
 import styles from "./BioDashboard.module.scss";
 
-const BIRTHDATE = new Date(2000, 7, 24);
-
-function getAge(birthDate: Date): number {
-  const today = new Date();
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const hasHadBirthdayThisYear =
-    today.getMonth() > birthDate.getMonth() ||
-    (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
-  if (!hasHadBirthdayThisYear) age--;
-  return age;
-}
-
-const STATS = [
-  "JAVASCRIPT",
-  "REACT",
-  "C#",
-  ".NET",
-  "JAVA",
-  "PYTHON",
-  "SCSS / TAILWIND",
-  "SQL",
-  "ASP.NET",
-  "UNITY",
+const SKILL_GROUPS = [
+  { label: "AT WORK", skills: ["C#", "ASP.NET", "React", "SQL"] },
+  { label: "ALSO", skills: ["TypeScript", "Next.js", "Java / Spring Boot", "Python", "Unity"] },
 ];
 
 const ORIGIN_PARAGRAPHS = [
-  "I grew up in the Philippines and later moved to the US, where video games first sparked my passion for programming. Today I build and secure the software that moves people's money as a Software Development Engineer at Fiserv. I work full-stack on a secure enterprise online banking platform used by retail and business customers.",
-  "Alongside that, my love for games never left. I've been self-studying Unity and C# game programming, tackling RPG combat systems and 3D game development. I'm chasing a long-term goal of growing into game dev the same way I grew into banking software.",
+  "I'm a full-stack engineer at Fiserv, working on an enterprise online banking platform used by retail and business customers. Most days that means C#/ASP.NET APIs, React UI and SQL, plus the parts that keep a bank safe: security fixes, concurrency bugs and production incidents.",
+  "I grew up in the Philippines and got into programming through video games. I still build games in Unity for fun, which is where Wakebound, my co-op action RPG, comes from.",
 ];
 
-const LOOKING_FOR = "Growing into a senior full-stack role with more ownership & technical leadership.";
+const LOOKING_FOR = "Looking for a team where I own features end to end, from API to UI, and grow toward a senior role.";
 
 const QUEST_LOG = [
-  "Building and securing an enterprise online banking platform at Fiserv",
-  "Working full-stack across C#, ASP.NET, React, and SQL",
-  "Treating security as part of the design, not an afterthought by validating inputs, guarding auth flows, keeping data safe by default",
-  "Self-studying Unity & C# game programming: RPG combat systems, 3D game dev",
-  "Organizing modular, reusable components as codebases grow",
+  "Shipped 10+ features and third-party integrations across C#, ASP.NET, React and SQL",
+  "Fixed thread-safety and cache-isolation defects in a multi-account download feature running against five banking cores",
+  "Replaced hand-maintained routing tables with a scheduled sync job covering 24,000+ ACH and wire records",
+  "Remediated 1,150+ Fortify security findings during feature work",
+  "Wrote standardized incident runbooks that improved cross-team incident response",
 ];
 
-function TickerGroup({ ariaHidden }: { ariaHidden?: boolean }) {
-  return (
-    <span className={styles.tickerGroup} aria-hidden={ariaHidden}>
-      {STATS.map((stat) => (
-        <span key={stat} className={styles.tickerItem}>
-          {stat} <span className={styles.tickerSep}>◆</span>
-        </span>
-      ))}
-    </span>
-  );
-}
-
 export default function BioDashboard() {
-  const { reduced: reduceMotion } = useMotionSettings();
-  const tickerRef = useRef<HTMLDivElement | null>(null);
-  const dragState = useRef({
-    dragging: false,
-    startX: 0,
-    startScrollLeft: 0,
-  });
-  const draggingClass = ((styles as Record<string, string>).dragging ?? "dragging") as string;
-  const reducedTickerClass = ((styles as Record<string, string>).tickerWrapReduced ?? "tickerWrapReduced") as string;
-
-  function onTickerPointerDown(event: React.PointerEvent<HTMLDivElement>) {
-    if (!reduceMotion || !tickerRef.current) return;
-
-    dragState.current = {
-      dragging: true,
-      startX: event.clientX,
-      startScrollLeft: tickerRef.current.scrollLeft,
-    };
-
-    tickerRef.current.setPointerCapture(event.pointerId);
-    tickerRef.current.classList.add(draggingClass);
-  }
-
-  function onTickerPointerMove(event: React.PointerEvent<HTMLDivElement>) {
-    if (!reduceMotion || !dragState.current.dragging || !tickerRef.current) return;
-
-    const dx = event.clientX - dragState.current.startX;
-    tickerRef.current.scrollLeft = dragState.current.startScrollLeft - dx;
-  }
-
-  function endTickerDrag(event?: React.PointerEvent<HTMLDivElement>) {
-    if (!tickerRef.current) return;
-
-    dragState.current.dragging = false;
-    tickerRef.current.classList.remove(draggingClass);
-    if (event) tickerRef.current.releasePointerCapture(event.pointerId);
-  }
-
   return (
     <div className={styles.dashboard}>
       <div className={styles.header}>
@@ -109,16 +36,7 @@ export default function BioDashboard() {
               <span>TRAINER</span>
             </div>
             <div className={styles.portrait}>
-              <video
-                src="/videos/video1.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                disablePictureInPicture
-                disableRemotePlayback
-                controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
-              />
+              <LazyVideo src="/videos/bio-photos.mp4" poster="/videos/bio-photos.jpg" />
             </div>
             <div className={styles.nameplate}>
               <div className={styles.name}>HANS VIDAURE</div>
@@ -128,9 +46,9 @@ export default function BioDashboard() {
               <div className={styles.miniCell}>
                 <div className={styles.miniLabel}>INTERESTS</div>
                 <div className={styles.interestTags}>
-                  <span className={`${styles.interestTag} ${styles.tagCode}`}>Software Engineering</span>
-                  <span className={`${styles.interestTag} ${styles.tagGame}`}>Game Development/Design</span>
-                  <span className={`${styles.interestTag} ${styles.tagSecurity}`}>Code Security</span>
+                  <span className={`${styles.interestTag} ${styles.tagCode}`}>Full-stack engineering</span>
+                  <span className={`${styles.interestTag} ${styles.tagSecurity}`}>Application security</span>
+                  <span className={`${styles.interestTag} ${styles.tagGame}`}>Game dev (hobby)</span>
                 </div>
               </div>
             </div>
@@ -147,7 +65,7 @@ export default function BioDashboard() {
         </div>
 
         <div className={`${styles.panel} ${styles.questPanel}`}>
-          <h3 className={styles.panelHeader}>WHAT I&apos;VE BEEN DOING</h3>
+          <h3 className={styles.panelHeader}>WHAT I&apos;VE SHIPPED AT FISERV</h3>
           <div className={styles.panelBody}>
             <div className={styles.questLog}>
               {QUEST_LOG.map((item) => (
@@ -161,35 +79,25 @@ export default function BioDashboard() {
         </div>
 
         <div className={`${styles.panel} ${styles.statsPanel}`}>
-          <h3 className={styles.panelHeader}>STATS</h3>
+          <h3 className={styles.panelHeader}>SKILLS</h3>
           <div className={styles.panelBody}>
             <div className={styles.questClip}>
-              <video
-                src="/videos/video2.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                disablePictureInPicture
-                disableRemotePlayback
-                controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
-              />
+              <LazyVideo src="/videos/bio-thoughts.mp4" poster="/videos/bio-thoughts.jpg" />
             </div>
-            <div
-              ref={tickerRef}
-              className={`${styles.tickerWrap} ${reduceMotion ? reducedTickerClass : ""}`}
-              onPointerDown={onTickerPointerDown}
-              onPointerMove={onTickerPointerMove}
-              onPointerUp={endTickerDrag}
-              onPointerLeave={endTickerDrag}
-              onPointerCancel={endTickerDrag}
-              aria-label="Skill ticker. Drag to scroll horizontally."
-            >
-              <div className={styles.tickerTrack}>
-                <TickerGroup />
-                <TickerGroup ariaHidden />
-              </div>
-            </div>
+            <dl className={styles.skillGroups}>
+              {SKILL_GROUPS.map((group) => (
+                <div key={group.label} className={styles.skillGroup}>
+                  <dt className={styles.skillLabel}>{group.label}</dt>
+                  <dd className={styles.skillList}>
+                    {group.skills.map((skill) => (
+                      <span key={skill} className={styles.skillItem}>
+                        {skill}
+                      </span>
+                    ))}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </div>
       </div>
