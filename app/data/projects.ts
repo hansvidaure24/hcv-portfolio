@@ -55,13 +55,26 @@ const PROJECTS: Project[] = [
     published: true,
   },
   {
-    slug: "fiserv-draft-c",
-    title: "Fiserv draft C",
+    slug: "fiserv-draft-a",
+    title: "Fiserv draft A",
     kind: "Work",
     tagline:
       "Unpublished draft.",
     role: "Software Development Engineer, Fiserv",
     stack: ["C#", "ASP.NET", "SQL"],
+    metrics: [],
+    links: [],
+    // Publish once the write-up is cleared against Fiserv's disclosure policy.
+    published: false,
+  },
+  {
+    slug: "fiserv-draft-b",
+    title: "Fiserv draft B",
+    kind: "Work",
+    tagline:
+      "Unpublished draft.",
+    role: "Software Development Engineer, Fiserv",
+    stack: ["C#", ".NET", "NuGet"],
     metrics: [],
     links: [],
     // Publish once the write-up is cleared against Fiserv's disclosure policy.
@@ -112,8 +125,16 @@ export function getPublishedProjects(): Project[] {
   return [...published.filter((p) => p.featured), ...published.filter((p) => !p.featured)];
 }
 
+/** In `next dev` only, drafts get a case-study page too, so they can be reviewed before publishing. */
+export const SHOW_DRAFTS = process.env.NODE_ENV === "development";
+
 export function getProject(slug: string): Project | undefined {
-  return PROJECTS.find((p) => p.slug === slug && p.published);
+  return PROJECTS.find((p) => p.slug === slug && (p.published || SHOW_DRAFTS));
+}
+
+/** Drafts, for the dev-only preview list. Always empty in production builds. */
+export function getDraftProjects(): Project[] {
+  return SHOW_DRAFTS ? PROJECTS.filter((p) => !p.published) : [];
 }
 
 /** The long-form case study, kept in content/projects so it isn't served raw from public/. */

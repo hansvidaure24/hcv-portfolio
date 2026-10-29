@@ -20,6 +20,14 @@
   font-size: 1.25rem;
   letter-spacing: 0.04em;
   text-decoration: none;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .back,
+  .brand {
+    font-size: 1.05rem;
+  }
 }
 
 .back {
@@ -137,5 +145,20 @@
 
   &:hover {
     background: #4A3620;
+  }
+}
+
+.draftBanner {
+  margin-bottom: 1.25rem;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #2A2A1E;
+  background: #FDE68A;
+  border: 2px dashed #2A2A1E;
+
+  code {
+    font-family: ui-monospace, monospace;
+    font-size: 0.85em;
   }
 }
