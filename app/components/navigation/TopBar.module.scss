@@ -43,6 +43,7 @@
   text-decoration: none;
   padding: 0.25rem 0;
   border-bottom: 3px solid transparent;
+  white-space: nowrap;
 
   &:hover,
   &[aria-current="true"] {
@@ -84,6 +85,20 @@
   &[aria-pressed="true"] {
     color: #fde68a;
     border-color: #fde68a;
+  }
+}
+
+// Tablets fit four section links by tightening the bar a little.
+@media (min-width: 641px) and (max-width: 900px) {
+  .nav {
+    gap: 0.6rem;
+  }
+  .brand {
+    font-size: 1.15rem;
+  }
+  .link,
+  .resume {
+    font-size: 1rem;
   }
 }
 

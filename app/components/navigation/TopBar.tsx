@@ -8,6 +8,7 @@ import styles from "./TopBar.module.scss";
 const LINKS = [
   { label: "Work", id: "projects" },
   { label: "About", id: "about" },
+  { label: "Why me", id: "party" },
   { label: "Contact", id: "contact" },
 ];
 

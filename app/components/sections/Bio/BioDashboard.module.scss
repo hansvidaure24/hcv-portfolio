@@ -24,7 +24,7 @@
 
 .headerTitle {
   font-family: 'PokePixel', monospace;
-  font-size: clamp(0.85rem, 2vw, 1.15rem);
+  font-size: clamp(1.3rem, 2.6vw, 1.8rem);
   letter-spacing: 0.06em;
   color: #F8EFD8;
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
@@ -54,7 +54,7 @@
 
 .panelHeader {
   font-family: 'PokePixel', monospace;
-  font-size: 0.6rem;
+  font-size: 1.15rem;
   letter-spacing: 0.05em;
   background: linear-gradient(90deg, #FDE68A, #F5B942);
   color: #2A2A1E;
@@ -81,7 +81,7 @@
   justify-content: space-between;
   align-items: center;
   font-family: 'PokePixel', monospace;
-  font-size: 0.6rem;
+  font-size: 1rem;
   color: #2A2A1E;
   letter-spacing: 0.04em;
 }
@@ -94,7 +94,7 @@
 
 .badge {
   font-family: 'PokePixel', monospace;
-  font-size: 0.5rem;
+  font-size: 0.9rem;
   padding: 0.25rem 0.55rem;
   border-radius: 999px;
   border: 2px solid #2A2A1E;
@@ -131,7 +131,7 @@
 
 .name {
   font-family: 'PokePixel', monospace;
-  font-size: 0.9rem;
+  font-size: 1.4rem;
   color: #2A2A1E;
   letter-spacing: 0.03em;
 }
@@ -143,7 +143,7 @@
   gap: 0.35rem;
   margin-top: 0.3rem;
   font-family: 'PokePixel', monospace;
-  font-size: 0.55rem;
+  font-size: 0.9rem;
   color: #2A2A1E;
 }
 
@@ -172,7 +172,7 @@
 
 .tagline {
   font-family: 'Quicksand', sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   font-style: italic;
   line-height: 1.4;
   text-align: center;
@@ -193,7 +193,7 @@
 
 .miniLabel {
   font-family: 'PokePixel', monospace;
-  font-size: 0.5rem;
+  font-size: 0.95rem;
   letter-spacing: 0.04em;
   background: linear-gradient(90deg, #FDE68A, #F5B942);
   color: #2A2A1E;
@@ -210,7 +210,7 @@
 
 .interestTag {
   font-family: 'PokePixel', monospace;
-  font-size: 0.5rem;
+  font-size: 0.9rem;
   letter-spacing: 0.02em;
   padding: 0.3rem 0.55rem;
   border-radius: 999px;
@@ -339,6 +339,6 @@
 
 @media (max-width: 480px) {
   .headerTitle {
-    font-size: 0.75rem;
+    font-size: 1.15rem;
   }
 }

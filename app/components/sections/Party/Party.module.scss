@@ -1,0 +1,222 @@
+/* A PC-box style tile floor, between the Bio's dark green and the Contact scene. */
+.partyBg {
+  background-color: #23415E;
+  background-image:
+    linear-gradient(45deg, rgba(255, 255, 255, 0.05) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.05) 75%),
+    linear-gradient(45deg, rgba(255, 255, 255, 0.05) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.05) 75%),
+    linear-gradient(to bottom, #1B3B2C 0%, #23415E 18%, #1A3350 100%);
+  background-size: 48px 48px, 48px 48px, 100% 100%;
+  background-position: 0 0, 24px 24px, 0 0;
+}
+
+.partyContent {
+  padding: 5rem clamp(1rem, 4vw, 2.5rem);
+}
+
+.inner {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(90deg, #F5B942 0%, #E8834A 50%, #D64541 100%);
+  border: 3px solid #2A2A1E;
+  border-radius: 999px;
+  padding: 0.65rem 1.4rem;
+  box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.4);
+  margin-bottom: 1.25rem;
+}
+
+.headerTitle {
+  font-family: 'PokePixel', monospace;
+  font-size: clamp(1.4rem, 3.2vw, 2.1rem);
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+  text-align: center;
+  color: #F8EFD8;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* Phone and tablet: one column. Desktop: moves get the wider column. */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+  .layoutSingle {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 48rem;
+    margin: 0 auto;
+  }
+}
+
+.panel {
+  min-width: 0;
+  color: #2A2A1E;
+  background: #F8EFD8;
+  border: 3px solid #2A2A1E;
+  outline: 2px solid #F8EFD8;
+  outline-offset: -6px;
+  box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.4);
+}
+
+.panelHeader {
+  font-family: 'PokePixel', monospace;
+  font-size: 1.3rem;
+  letter-spacing: 0.05em;
+  padding: 0.55rem 1rem;
+  background: linear-gradient(90deg, #FDE68A, #F5B942);
+  border-bottom: 3px solid #2A2A1E;
+}
+
+.moves {
+  list-style: none;
+  display: grid;
+  gap: 0.9rem;
+  padding: 1rem;
+}
+
+/* Tablet: the three moves sit side by side; phone and desktop stack them. */
+@media (min-width: 700px) and (max-width: 1023px) {
+  .moves {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.move {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.8rem 0.9rem;
+  background: #FFFDF5;
+  border: 2px solid #2A2A1E;
+  box-shadow: 2px 2px 0 rgba(42, 42, 30, 0.25);
+}
+
+.moveTop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem 0.75rem;
+}
+
+.moveName {
+  font-family: 'PokePixel', monospace;
+  font-size: 1.45rem;
+  letter-spacing: 0.03em;
+  line-height: 1.1;
+}
+
+.type {
+  font-family: 'PokePixel', monospace;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  padding: 0.15rem 0.55rem;
+  color: #F8EFD8;
+  border: 2px solid #2A2A1E;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.typeSECURITY {
+  background: #3E7CB1;
+}
+
+.typeRANGE {
+  background: #3E9575;
+}
+
+.typeAUTONOMY {
+  background: #B4503A;
+}
+
+.effect,
+.proof,
+.quoteText,
+.quoteBy,
+.placeholder {
+  font-family: 'Quicksand', sans-serif;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.effect {
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.proof {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #3a3a2c;
+}
+
+.proofLabel {
+  font-family: 'PokePixel', monospace;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  margin-right: 0.25rem;
+  color: #6b5a3a;
+}
+
+.quotes {
+  list-style: none;
+  display: grid;
+  gap: 0.9rem;
+  padding: 1rem;
+}
+
+.quote {
+  padding: 0.8rem 0.9rem;
+  background: #FFFDF5;
+  border: 2px solid #2A2A1E;
+}
+
+.quoteText {
+  font-size: 1.02rem;
+  line-height: 1.55;
+}
+
+.quoteBy {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  font-weight: 700;
+  font-size: 0.95rem;
+
+  a {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+}
+
+.quoteRole {
+  font-weight: 400;
+  color: #6b5a3a;
+}
+
+.placeholder {
+  margin: 1rem;
+  padding: 0.75rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  background: #FDE68A;
+  border: 2px dashed #2A2A1E;
+
+  code {
+    font-family: ui-monospace, monospace;
+    font-size: 0.85em;
+  }
+}
