@@ -16,6 +16,7 @@ type MenuItem = {
 const ITEMS: MenuItem[] = [
   { label: "WORK", id: "projects" },
   { label: "BIO", id: "about" },
+  { label: "WHY ME", id: "party" },
   { label: "CONTACT", id: "contact" },
   { label: "TOP", id: "hero" },
   { label: "→" },

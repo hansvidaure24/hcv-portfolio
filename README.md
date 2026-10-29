@@ -1,8 +1,8 @@
 # Hans Chandler Vidaure — Portfolio
 
 A Pokémon Emerald–themed personal portfolio site: a scrollable "scene" flow
-(Hero → Bio → Projects → Contact) styled after the GBA Pokédex/menu UI, with
-a working contact form that emails through Resend.
+(Hero → Projects → Bio → "Add Hans to your party?" → Contact) styled after the
+GBA Pokédex/menu UI, with a working contact form that emails through Resend.
 
 **Live:** [hansvidaure.dev](https://hansvidaure.dev)
 
@@ -20,6 +20,19 @@ a working contact form that emails through Resend.
 npm install
 npm run dev
 ```
+
+## Editing content
+
+| What | Where |
+| --- | --- |
+| Project cards and case-study metadata | [`app/data/projects.ts`](app/data/projects.ts) |
+| Case-study write-ups | `content/projects/<slug>.md` (`## ` headings, `- ` lists, `**bold**`, `[links](https://…)`) |
+| "Why me" moves and testimonials | [`app/data/party.ts`](app/data/party.ts) |
+
+A project with `published: false` is a draft: it's left out of the grid,
+sitemap and production build, but `npm run dev` gives it a page with a DRAFT
+banner and lists it at the bottom of the Work section. The testimonials panel
+works the same way: hidden in production until `TESTIMONIALS` has an entry.
 
 ## Environment variables
 

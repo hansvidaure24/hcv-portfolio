@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProject, getProjectBody, getPublishedProjects } from "../../data/projects";
+import { getDraftProjects, getProject, getProjectBody, getPublishedProjects } from "../../data/projects";
 import PixelPanel from "../../components/ui/PixelPanel";
 import ProjectMedia from "../../components/sections/Projects/ProjectMedia";
 import ProjectDescription from "../../components/sections/Projects/ProjectDescription";
@@ -12,7 +12,8 @@ import styles from "./page.module.scss";
 type Params = { slug: string };
 
 export function generateStaticParams(): Params[] {
-  return getPublishedProjects().map((p) => ({ slug: p.slug }));
+  // Drafts are only added under `next dev`; production builds get published projects alone.
+  return [...getPublishedProjects(), ...getDraftProjects()].map((p) => ({ slug: p.slug }));
 }
 
 // Drafts and unknown slugs 404 instead of rendering on demand.
@@ -48,6 +49,11 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
       </nav>
 
       <PixelPanel as="article" className={styles.article}>
+        {!project.published && (
+          <p className={styles.draftBanner} role="note">
+            DRAFT: only visible in dev. Set <code>published: true</code> in app/data/projects.ts to make it public.
+          </p>
+        )}
         <header className={styles.header}>
           <p className={styles.kind}>{project.kind}</p>
           <h1 className={styles.title}>{project.title}</h1>

@@ -55,14 +55,27 @@ const PROJECTS: Project[] = [
     published: true,
   },
   {
-    slug: "fiserv-concurrency",
-    title: "Concurrency fixes across five banking cores",
+    slug: "fiserv-pagination",
+    title: "Ending timeouts on transaction history",
     kind: "Work",
     tagline:
-      "Found and removed shared-state defects in a multi-account download feature on Fiserv's online banking platform.",
+      "Replaced a load-everything transaction history with cursor-based pagination, ending multi-minute timeouts for high-volume accounts.",
     role: "Software Development Engineer, Fiserv",
     stack: ["C#", "ASP.NET", "SQL"],
-    metrics: ["5 banking cores, one shared code path", "Thread-safety and cache-isolation defects eliminated"],
+    metrics: ["Multi-minute timeouts → normal load times", "10–40x less data per request", "5 account types, 2 cursor strategies"],
+    links: [],
+    // Publish once the write-up is cleared against Fiserv's disclosure policy.
+    published: false,
+  },
+  {
+    slug: "fiserv-cve-upgrade",
+    title: "20 CVEs, 17 projects, one upgrade",
+    kind: "Work",
+    tagline:
+      "Closed 20 high-severity CVEs in one release by upgrading a shared library across a banking monorepo in a single coordinated change.",
+    role: "Software Development Engineer, Fiserv",
+    stack: ["C#", ".NET", "NuGet"],
+    metrics: ["20 high-severity CVEs closed", "17 projects upgraded together", "Became the team's upgrade playbook"],
     links: [],
     // Publish once the write-up is cleared against Fiserv's disclosure policy.
     published: false,
@@ -112,8 +125,16 @@ export function getPublishedProjects(): Project[] {
   return [...published.filter((p) => p.featured), ...published.filter((p) => !p.featured)];
 }
 
+/** In `next dev` only, drafts get a case-study page too, so they can be reviewed before publishing. */
+export const SHOW_DRAFTS = process.env.NODE_ENV === "development";
+
 export function getProject(slug: string): Project | undefined {
-  return PROJECTS.find((p) => p.slug === slug && p.published);
+  return PROJECTS.find((p) => p.slug === slug && (p.published || SHOW_DRAFTS));
+}
+
+/** Drafts, for the dev-only preview list. Always empty in production builds. */
+export function getDraftProjects(): Project[] {
+  return SHOW_DRAFTS ? PROJECTS.filter((p) => !p.published) : [];
 }
 
 /** The long-form case study, kept in content/projects so it isn't served raw from public/. */
