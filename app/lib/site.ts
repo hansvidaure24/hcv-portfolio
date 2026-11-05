@@ -5,5 +5,5 @@ export const SITE_NAME = "Hans Vidaure — Full-Stack Software Engineer";
 export const SITE_DESCRIPTION =
   "Full-stack engineer at Fiserv building secure online banking features in C#/.NET, React and SQL. Projects, case studies and resume.";
 
-export const CONTACT_EMAIL = "hansvidaure24@gmail.com";
+export const CONTACT_EMAIL = "contact@hansvidaure.dev";
 export const RESUME_URL = "/resume/hcv-resume.pdf";
