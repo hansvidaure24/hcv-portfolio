@@ -6,7 +6,8 @@ const isPreview = process.env.VERCEL_ENV === 'preview'
 const toolbar = isPreview ? ' https://vercel.live' : ''
 
 // Everything is self-hosted (fonts via next/font, images, video, sound), so
-// the only third party is Google Analytics. Inline scripts stay allowed:
+// the only third parties are Google Analytics and, inside the contact form,
+// Cloudflare Turnstile. Inline scripts stay allowed:
 // Next's App Router streams its data in inline <script> tags, and so do the
 // pre-paint boot scripts in layout.tsx. Nonces would mean rendering every
 // page per request. Everything else is locked to this origin.
@@ -14,16 +15,19 @@ const toolbar = isPreview ? ' https://vercel.live' : ''
 // www.google.com/g/collect (seen in testing; leaving it out silently drops
 // those pageviews), and to doubleclick when Google signals is on.
 const GA = 'https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.google.com https://*.g.doubleclick.net'
+// Cloudflare Turnstile (the contact form's bot check): its script and the
+// iframe it draws the challenge in. Loaded only when the contact form opens.
+const TURNSTILE = 'https://challenges.cloudflare.com'
 
 const CSP = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://*.googletagmanager.com${toolbar}`,
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://*.googletagmanager.com ${TURNSTILE}${toolbar}`,
   `connect-src 'self' ${GA}${toolbar}`,
   `img-src 'self' data: ${GA}${toolbar}`,
   "style-src 'self' 'unsafe-inline'",
   "font-src 'self'",
   "media-src 'self'",
-  `frame-src ${isPreview ? 'https://vercel.live' : "'none'"}`,
+  `frame-src ${TURNSTILE}${toolbar}`,
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",

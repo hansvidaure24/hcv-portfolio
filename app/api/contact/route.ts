@@ -8,6 +8,7 @@ import {
   validateContactForm,
   type ContactFormValues,
 } from "@/app/lib/validateContact";
+import { verifyTurnstile } from "@/app/lib/turnstile";
 
 export const runtime = "nodejs";
 
@@ -31,7 +32,7 @@ function getClientIp(req: NextRequest): string {
   return req.headers.get("x-real-ip") ?? "unknown";
 }
 
-type ContactPayload = ContactFormValues & { company?: string; elapsedMs?: unknown };
+type ContactPayload = ContactFormValues & { company?: string; elapsedMs?: unknown; turnstileToken?: unknown };
 
 function isContactPayload(value: unknown): value is ContactPayload {
   if (!value || typeof value !== "object") return false;
@@ -95,6 +96,26 @@ export async function POST(req: NextRequest) {
   const fieldErrors = validateContactForm(values);
   if (hasContactErrors(fieldErrors)) {
     return NextResponse.json({ error: "Please fix the highlighted fields.", fieldErrors }, { status: 400 });
+  }
+
+  // Cloudflare Turnstile: enforced only where TURNSTILE_SECRET_KEY is set
+  // (production), so local dev and previews work without keys.
+  const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+  if (turnstileSecret) {
+    const check = await verifyTurnstile({
+      token: parsed.turnstileToken,
+      secret: turnstileSecret,
+      ip: ip === "unknown" ? undefined : ip,
+    });
+    if (!check.ok) {
+      if (check.reason === "missing-or-invalid-token" && !process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
+        console.error("TURNSTILE_SECRET_KEY is set but NEXT_PUBLIC_TURNSTILE_SITE_KEY isn't, so the form can't get a token.");
+      }
+      return NextResponse.json(
+        { error: "The anti-spam check didn't go through. Please try again, or email contact@hansvidaure.dev directly." },
+        { status: 400 }
+      );
+    }
   }
 
   const apiKey = process.env.RESEND_API_KEY;

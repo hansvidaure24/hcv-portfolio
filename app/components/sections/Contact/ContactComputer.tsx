@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { playSound } from "../../../lib/sound";
 import { useDialogFocus } from "../../../lib/useDialogFocus";
 import { useDialogue } from "../../providers/DialogueProvider";
+import Turnstile from "../../ui/Turnstile";
 import {
   hasContactErrors,
   validateContactForm,
@@ -16,6 +17,10 @@ import styles from "./ContactComputer.module.scss";
 
 const EMPTY_VALUES: ContactFormValues = { firstName: "", lastName: "", email: "", message: "" };
 
+// Cloudflare Turnstile. Unset (local dev, previews), the form works without
+// it; the server only demands a token when TURNSTILE_SECRET_KEY is set.
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
 
 export default function ContactComputer({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [values, setValues] = useState<ContactFormValues>(EMPTY_VALUES);
@@ -23,6 +28,9 @@ export default function ContactComputer({ open, onClose }: { open: boolean; onCl
   const [fieldErrors, setFieldErrors] = useState<ContactFieldErrors>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  // Bumped after every submit: a Turnstile token can only be used once.
+  const [turnstileReset, setTurnstileReset] = useState(0);
 
   const dialogRef = useRef<HTMLDivElement>(null);
   const firstFieldRef = useRef<HTMLInputElement>(null);
@@ -45,6 +53,7 @@ export default function ContactComputer({ open, onClose }: { open: boolean; onCl
     setFieldErrors({});
     setSubmitError(null);
     setSubmitting(false);
+    setTurnstileToken(null);
     onClose();
   }
 
@@ -79,6 +88,13 @@ export default function ContactComputer({ open, onClose }: { open: boolean; onCl
       return;
     }
 
+    // Turnstile usually finishes on its own within a second or two of opening.
+    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      setSubmitError("Still checking that you're not a bot. Press Send again in a moment.");
+      requestAnimationFrame(() => submitErrorRef.current?.focus());
+      return;
+    }
+
     setSubmitting(true);
     setSubmitError(null);
     playSound("/sounds/button.mp3");
@@ -91,9 +107,12 @@ export default function ContactComputer({ open, onClose }: { open: boolean; onCl
           ...values,
           company: honeypot,
           elapsedMs: Math.round(performance.now() - openedAtRef.current),
+          turnstileToken,
         }),
       });
       const data = await res.json().catch(() => null);
+      // The token is spent either way; fetch a fresh one for a retry.
+      setTurnstileReset((n) => n + 1);
 
       if (!res.ok) {
         if (data?.fieldErrors) setFieldErrors(data.fieldErrors);
@@ -113,6 +132,7 @@ export default function ContactComputer({ open, onClose }: { open: boolean; onCl
     } catch {
       setSubmitError("Couldn't reach the server. Check your connection and try again.");
       setSubmitting(false);
+      setTurnstileReset((n) => n + 1);
       requestAnimationFrame(() => submitErrorRef.current?.focus());
     }
   }
@@ -243,6 +263,15 @@ export default function ContactComputer({ open, onClose }: { open: boolean; onCl
                   </p>
                 )}
               </div>
+
+              {TURNSTILE_SITE_KEY && (
+                <Turnstile
+                  siteKey={TURNSTILE_SITE_KEY}
+                  onToken={setTurnstileToken}
+                  resetKey={turnstileReset}
+                  className={styles.turnstile}
+                />
+              )}
 
               {submitError && (
                 <p id={errorId} ref={submitErrorRef} role="alert" tabIndex={-1} className={styles.submitError}>
