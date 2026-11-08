@@ -6,8 +6,12 @@ import ParallaxSection from "../../scene/ParallaxSection";
 import { useScene } from "../../scene/SceneProvider";
 import { getFirstGesturePromise, isSoundEnabled, playSound } from "../../../lib/sound";
 import { getEffectiveReducedMotion } from "../../../lib/motionPreference";
+import { getTextSpeed } from "../../../lib/preferences";
 import { useContactDialog } from "../../providers/ContactDialogProvider";
+import { useDialogue } from "../../providers/DialogueProvider";
 import { CONTACT_EMAIL, RESUME_URL } from "../../../lib/site";
+import PixelPanel from "../../ui/PixelPanel";
+import SectionHeading from "../../ui/SectionHeading";
 import styles from "./Contact.module.scss";
 
 export const Socials = {
@@ -15,32 +19,13 @@ export const Socials = {
     {
       name: 'GitHub',
       url: 'https://github.com/hansvidaure24',
-      icon: '/icons/icon-github.png',
-      description: 'GitHub: View my GitHub profile and projects',
     },
     {
       name: 'LinkedIn',
       url: 'https://www.linkedin.com/in/hans-chandler-vidaure/',
-      icon: '/icons/icon-linkedin.png',
-      description: 'LinkedIn: Connect with me professionally',
     },
   ],
 }
-
-function getIconSrc(icon: string, active: boolean, hasHoverVariant: boolean) {
-  if (!hasHoverVariant || !active) return icon;
-  return icon.replace('.png', '-hover.png');
-}
-
-type MenuItem = {
-  key: string;
-  label: string;
-  href?: string;
-  icon: string;
-  hasHoverVariant: boolean;
-  external: boolean;
-  description?: string;
-};
 
 type Skill = {
   name: string;
@@ -48,7 +33,8 @@ type Skill = {
 };
 
 const TYPING_MESSAGE = "Hiring for a full-stack role? Let's talk.";
-const TYPING_INTERVAL_MS = 68;
+// 41 characters in about 1.3s; a click finishes the line at once.
+const TYPING_INTERVAL_MS = 32;
 
 const SKILLS: Skill[] = [
   { name: 'Full-Stack Development', icon: '/icons/icon-fullstack.svg' },
@@ -58,7 +44,6 @@ const SKILLS: Skill[] = [
 ];
 
 export default function Contact() {
-  const [hovered, setHovered] = useState<string | null>(null);
   const { openDialog } = useContactDialog();
   const currentYear = new Date().getFullYear();
   const scene = useScene();
@@ -66,6 +51,8 @@ export default function Contact() {
   const [typedLength, setTypedLength] = useState(0);
   const [typingDone, setTypingDone] = useState(false);
   const typingRef = useRef<HTMLDivElement>(null);
+  const typingIntervalRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
+  const typingDoneRef = useRef(false);
   // Decode the typing sound once so playback starts with the text.
   const audioCtxRef = useRef<AudioContext | null>(null);
   const typeBufferRef = useRef<AudioBuffer | null>(null);
@@ -73,7 +60,7 @@ export default function Contact() {
   const typeBufferPromiseRef = useRef<Promise<AudioBuffer> | null>(null);
   // Store the cleanup function for whichever playback path is active.
   const stopTypeSoundRef = useRef<(() => void) | null>(null);
-  const [torchicBubbleVisible, setTorchicBubbleVisible] = useState(false);
+  const { say } = useDialogue();
   const torchicAudioRef = useRef<HTMLAudioElement>(null);
   // Use a ref to block rapid clicks before state updates are applied.
   const torchicPlayingRef = useRef(false);
@@ -159,9 +146,9 @@ export default function Contact() {
 
   function handleTorchicClick() {
     if (torchicPlayingRef.current) return;
-    setTorchicBubbleVisible(true);
+    say("TORCHIC: Tor-chic! Have a good day!");
 
-    // Keep the bubble interactive when sound is disabled.
+    // The line shows even when sound is off.
     if (!isSoundEnabled()) return;
 
     torchicPlayingRef.current = true;
@@ -180,8 +167,9 @@ export default function Contact() {
   async function activateTyping() {
     setTypingActive(true);
 
-    const reduceMotion = getEffectiveReducedMotion();
-    if (reduceMotion) {
+    // Reduced motion and text speed "Fast" both show the whole line at once.
+    if (getEffectiveReducedMotion() || getTextSpeed() === "fast") {
+      typingDoneRef.current = true;
       setTypedLength(TYPING_MESSAGE.length);
       setTypingDone(true);
       return;
@@ -189,14 +177,10 @@ export default function Contact() {
 
     // Start the visual effect independently of audio permissions.
     let i = 0;
-    const interval = setInterval(() => {
+    typingIntervalRef.current = setInterval(() => {
       i += 1;
       setTypedLength(i);
-
-      if (i >= TYPING_MESSAGE.length) {
-        clearInterval(interval);
-        setTypingDone(true);
-      }
+      if (i >= TYPING_MESSAGE.length) finishTyping();
     }, TYPING_INTERVAL_MS);
 
     // The typewriter still runs when sound is disabled.
@@ -204,6 +188,8 @@ export default function Contact() {
 
     // Start audio when the browser allows it without blocking the text effect.
     const ready = await ensureAudioReady();
+    // The line may already be done by the time audio is allowed to start.
+    if (typingDoneRef.current) return;
 
     if (ready) {
       beginTypeSoundPlayback(ready.ctx, ready.buffer);
@@ -214,6 +200,18 @@ export default function Contact() {
       stopTypeSoundRef.current = () => audio.pause();
     }
   }
+
+  // End the typewriter now: full line, caret blinking, and the clack sound stops with it.
+  function finishTyping() {
+    if (typingDoneRef.current) return;
+    typingDoneRef.current = true;
+    clearInterval(typingIntervalRef.current);
+    setTypedLength(TYPING_MESSAGE.length);
+    setTypingDone(true);
+    stopTypeSound();
+  }
+
+  useEffect(() => () => clearInterval(typingIntervalRef.current), []);
 
   // Stop the clip when the user leaves Contact.
   useEffect(() => {
@@ -242,27 +240,6 @@ export default function Contact() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typingActive]);
 
-  const messageItem: MenuItem = {
-    key: 'message',
-    label: 'Send me a message',
-    icon: '/icons/message.png',
-    hasHoverVariant: false,
-    external: false,
-  };
-
-  const menuItems: MenuItem[] = [
-    messageItem,
-    ...Socials.links.map((link) => ({
-      key: link.name,
-      label: link.name,
-      href: link.url,
-      icon: link.icon,
-      hasHoverVariant: true,
-      external: true,
-      description: link.description,
-    })),
-  ];
-
   return (
     <ParallaxSection
       id="contact"
@@ -270,7 +247,6 @@ export default function Contact() {
       contentClassName={styles.contactContent}
       overlay={
         <div className={styles.torchicWrap}>
-          {torchicBubbleVisible && <div className={styles.speechBubble}>have a good day!</div>}
           <button
             type="button"
             className={styles.torchicButton}
@@ -297,137 +273,99 @@ export default function Contact() {
         </div>
       }
     >
-      <div ref={typingRef} className={styles.typingWrap}>
-        <span className={`${styles.typingText}${typingDone ? ' ' + styles.typingBlink : ''}`}>
-          {TYPING_MESSAGE.slice(0, typedLength)}
-        </span>
-      </div>
-
       <div className={styles.contactScene}>
-        <div className={styles.trainerCard}>
-          <div className={styles.cardHeader}>
-            <h2 className={styles.cardHeaderBadge}>TRAINER CARD</h2>
-            <span className={styles.cardId}>ID No. {currentYear}</span>
-          </div>
+        <SectionHeading>Contact</SectionHeading>
 
-          <div className={styles.cardBody}>
-            <div className={styles.cardInfo}>
-              <p className={styles.cardName}>NAME: Hans Vidaure</p>
-
-              <div className={styles.cardStatRow}>
-                <span className={styles.cardStatLabel}>STATUS</span>
-                <span className={styles.cardStatValue}>Open to full-stack roles · NYC / remote</span>
-              </div>
-
-              <div className={styles.cardStatRow}>
-                <span className={styles.cardStatLabel}>EMAIL</span>
-                <a href={`mailto:${CONTACT_EMAIL}`} className={`${styles.cardStatValue} ${styles.cardEmail}`}>
-                  {CONTACT_EMAIL}
-                </a>
-              </div>
-
-              <div className={styles.badgeSection}>
-                <span className={styles.badgesLabel}>SKILLSET</span>
-                <div className={styles.badgeRow}>
-                  {SKILLS.map((skill) => (
-                    <div key={skill.name} className={styles.skillBadge}>
-                      <span className={styles.skillIcon} aria-hidden="true">
-                        <img src={skill.icon} alt="" />
-                      </span>
-                      <span className={styles.skillName}>{skill.name}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className={styles.badgeSection}>
-                <span className={styles.badgesLabel}>LINKS</span>
-                <div className={styles.badgeRow}>
-                  {menuItems.map((item) => {
-                    const active = hovered === item.key;
-                    const iconEl = (
-                      <Image
-                        src={getIconSrc(item.icon, active, item.hasHoverVariant)}
-                        alt=""
-                        width={22}
-                        height={22}
-                        className={styles.linkBadgeIcon}
-                      />
-                    );
-
-                    if (item.key === 'message') {
-                      return (
-                        <button
-                          key={item.key}
-                          type="button"
-                          className={styles.linkBadge}
-                          aria-label={item.description ?? item.label}
-                          title={item.description ?? item.label}
-                          onMouseEnter={() => setHovered(item.key)}
-                          onMouseLeave={() => setHovered((h) => (h === item.key ? null : h))}
-                          onFocus={() => setHovered(item.key)}
-                          onBlur={() => setHovered((h) => (h === item.key ? null : h))}
-                          onClick={() => {
-                            playSound("/sounds/button.mp3");
-                            openDialog();
-                          }}
-                        >
-                          {iconEl}
-                        </button>
-                      );
-                    }
-
-                    return (
-                      <a
-                        key={item.key}
-                        href={item.href}
-                        target={item.external ? '_blank' : undefined}
-                        rel={item.external ? 'noopener noreferrer' : undefined}
-                        className={styles.linkBadge}
-                        aria-label={item.description ?? item.label}
-                        title={item.description ?? item.label}
-                        onMouseEnter={() => setHovered(item.key)}
-                        onMouseLeave={() => setHovered((h) => (h === item.key ? null : h))}
-                        onFocus={() => setHovered(item.key)}
-                        onBlur={() => setHovered((h) => (h === item.key ? null : h))}
-                        onClick={() => playSound("/sounds/button.mp3")}
-                      >
-                        {iconEl}
-                      </a>
-                    );
-                  })}
-                  <a
-                    href={RESUME_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.linkBadge}
-                    aria-label="Download resume (PDF)"
-                    title="Download resume (PDF)"
-                    onClick={() => playSound("/sounds/button.mp3")}
-                  >
-                    <img
-                      src="/icons/icon-resume.svg"
-                      alt=""
-                      className={styles.linkBadgeIcon}
-                      aria-hidden="true"
-                    />
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.cardPortrait}>
-              <Image
-                src="/graphics/hans.png"
-                alt="Hans Chandler Vidaure trading card"
-                width={600}
-                height={840}
-                className={styles.portraitImage}
-                priority
-              />
-            </div>
-          </div>
+        <div ref={typingRef} className={styles.typingWrap} onClick={finishTyping}>
+          {/* The full line reserves its space so the card doesn't jump while it types. */}
+          <span className={styles.typingGhost} aria-hidden="true">{TYPING_MESSAGE}</span>
+          <span className={`${styles.typingText}${typingDone ? ' ' + styles.typingBlink : ''}`}>
+            {TYPING_MESSAGE.slice(0, typedLength)}
+          </span>
         </div>
+
+        <PixelPanel
+          title="TRAINER CARD"
+          titleAside={`ID No. ${currentYear}`}
+          className={styles.trainerCard}
+          bodyClassName={styles.cardBody}
+        >
+          <div className={styles.cardInfo}>
+            <p className={styles.cardName}>NAME: Hans Vidaure</p>
+
+            <div className={styles.cardStatRow}>
+              <span className={styles.cardStatLabel}>STATUS</span>
+              <span className={styles.cardStatValue}>Open to full-stack roles · NYC / remote</span>
+            </div>
+
+            <div className={styles.cardStatRow}>
+              <span className={styles.cardStatLabel}>EMAIL</span>
+              <a href={`mailto:${CONTACT_EMAIL}`} className={`${styles.cardStatValue} ${styles.cardEmail}`}>
+                {CONTACT_EMAIL}
+              </a>
+            </div>
+
+            <div className={styles.badgeSection}>
+              <span className={styles.badgesLabel}>SKILLSET</span>
+              <ul className={styles.badgeRow}>
+                {SKILLS.map((skill) => (
+                  <li key={skill.name} className={styles.skillBadge}>
+                    <span className={styles.skillIcon} aria-hidden="true">
+                      <img src={skill.icon} alt="" />
+                    </span>
+                    {skill.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className={styles.actions}>
+              <button
+                type="button"
+                className={styles.primaryAction}
+                onClick={() => {
+                  playSound("/sounds/button.mp3");
+                  openDialog();
+                }}
+              >
+                Send a message <span aria-hidden="true">▶</span>
+              </button>
+              {Socials.links.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.action}
+                  onClick={() => playSound("/sounds/button.mp3")}
+                >
+                  {link.name} <span aria-hidden="true">↗</span>
+                </a>
+              ))}
+              <a
+                href={RESUME_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.action}
+                onClick={() => playSound("/sounds/button.mp3")}
+              >
+                Resume (PDF) <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+
+          <div className={styles.cardPortrait}>
+            <Image
+              src="/graphics/hans.png"
+              alt="Hans Chandler Vidaure trading card"
+              // Shown at most 12rem (192px) wide, at the bottom of the page: a
+              // right-sized, lazily loaded copy instead of the 9 MB original.
+              width={192}
+              height={269}
+              className={styles.portraitImage}
+            />
+          </div>
+        </PixelPanel>
       </div>
     </ParallaxSection>
   )
