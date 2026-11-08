@@ -65,8 +65,9 @@ export default function Contact() {
   // Use a ref to block rapid clicks before state updates are applied.
   const torchicPlayingRef = useRef(false);
 
-  // Start decoding on mount so the sound is ready when typing begins.
-  useEffect(() => {
+  // Create the audio context and decode the clip once, the first time sound is wanted.
+  function prepareTypeSound() {
+    if (audioCtxRef.current) return;
     const AudioContextCtor =
       window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
     if (!AudioContextCtor) return;
@@ -83,14 +84,23 @@ export default function Contact() {
         typeBufferRef.current = buffer;
       })
       .catch(() => {});
+  }
 
+  // With sound on, decode early so the clip is ready when typing begins. With
+  // sound off (the default) nothing downloads until the visitor turns it on.
+  useEffect(() => {
+    if (isSoundEnabled()) prepareTypeSound();
     return () => {
-      ctx.close().catch(() => {});
+      audioCtxRef.current?.close().catch(() => {});
+      audioCtxRef.current = null;
+      typeBufferRef.current = null;
+      typeBufferPromiseRef.current = null;
     };
   }, []);
 
   // Wait until the audio context and buffer are ready without starting playback.
   async function ensureAudioReady(): Promise<{ ctx: AudioContext; buffer: AudioBuffer } | null> {
+    prepareTypeSound();
     const ctx = audioCtxRef.current;
     if (!ctx) return null;
 
@@ -358,8 +368,8 @@ export default function Contact() {
             <Image
               src="/graphics/hans.png"
               alt="Hans Chandler Vidaure trading card"
-              // Shown at most 12rem (192px) wide, at the bottom of the page: a
-              // right-sized, lazily loaded copy instead of the 9 MB original.
+              // Shown at most 12rem (192px) wide, at the bottom of the page, so it
+              // loads lazily. The source is 768px wide: 4x the display size.
               width={192}
               height={269}
               className={styles.portraitImage}
