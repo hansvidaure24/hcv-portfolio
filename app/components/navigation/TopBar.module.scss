@@ -48,7 +48,8 @@
   white-space: nowrap;
 
   &:hover,
-  &[aria-current="true"] {
+  &[aria-current="true"],
+  &[aria-current="page"] {
     color: var(--gold);
     border-bottom-color: var(--gold);
   }

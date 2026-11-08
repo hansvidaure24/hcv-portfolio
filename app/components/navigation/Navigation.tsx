@@ -1,7 +1,7 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { useScene } from "../scene/SceneProvider";
 import { useMotionSettings } from "../providers/MotionPreferenceProvider";
 import { playSound } from "../../lib/sound";
@@ -21,56 +21,76 @@ const ITEMS: MenuItem[] = [
   { label: "WORK", id: "projects" },
   { label: "ABOUT", id: "about" },
   { label: "CONTACT", id: "contact" },
+  { label: "NOTES", href: "/notes" },
   { label: "RESUME", href: "/resume" },
   { label: "TOP", id: "hero" },
 ];
 
-// The OPTIONS row comes after the section rows in both the rendered list and
-// the arrow-key cycle; it opens the shared Options screen instead of navigating.
+// The OPTIONS row comes after the other rows; it opens the shared Options
+// screen instead of navigating.
 const OPTIONS_ROW = ITEMS.length;
 const TOTAL_ROWS = ITEMS.length + 1;
 
+/**
+ * The phone menu, styled like the battle menu. It's a disclosure: a button
+ * that shows and hides a list of links (not an ARIA `menu`, which is for
+ * application menus). Opening it moves focus to the first row; ↑ ↓ Home End
+ * move between rows, Escape closes it and puts focus back on the Pokéball,
+ * and tabbing out of it closes it too.
+ */
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const rootRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const rowRefs = useRef<(HTMLElement | null)[]>([]);
+  // Set when closing should hand focus back to the Pokéball (Escape).
+  const returnFocusRef = useRef(false);
   const scene = useScene();
-  const motionSettings = useMotionSettings();
   // The site's own setting (which can override the OS), not just prefers-reduced-motion.
-  const reduceMotion = motionSettings.reduced;
+  const { reduced: reduceMotion } = useMotionSettings();
   const { openOptions } = useOptions();
-  const router = useRouter();
 
-  const selectItem = useCallback((index: number) => {
-    playSound("/sounds/button.mp3");
-    const item = ITEMS[index];
-    if (item?.href) router.push(item.href);
-    else if (item?.id) scene?.goTo(item.id);
+  function close(returnFocus = false) {
+    returnFocusRef.current = returnFocus;
     setMenuOpen(false);
-  }, [scene, router]);
-
-  function showOptions() {
-    playSound("/sounds/button.mp3");
-    setMenuOpen(false);
-    openOptions();
   }
 
-  function activateRow(index: number) {
-    if (index === OPTIONS_ROW) {
-      showOptions();
-      return;
+  function open() {
+    setActiveIndex(0);
+    setMenuOpen(true);
+  }
+
+  // Focus follows the menu: into the first row on open, back to the
+  // Pokéball (once it's visible again) when Escape closed it.
+  useEffect(() => {
+    if (menuOpen) {
+      rowRefs.current[0]?.focus();
+    } else if (returnFocusRef.current) {
+      returnFocusRef.current = false;
+      toggleRef.current?.focus();
     }
-    selectItem(index);
-  }
+  }, [menuOpen]);
 
-  function toggleMenu() {
-    setMenuOpen((open) => {
-      if (!open) setActiveIndex(0);
-      return !open;
-    });
-  }
+  useEffect(() => {
+    if (!menuOpen) return;
+    function handleEscape(e: KeyboardEvent) {
+      if (e.key !== "Escape") return;
+      returnFocusRef.current = true;
+      setMenuOpen(false);
+    }
+    function handleOutside(e: MouseEvent) {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setMenuOpen(false);
+    }
+    window.addEventListener("keydown", handleEscape);
+    document.addEventListener("mousedown", handleOutside);
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+      document.removeEventListener("mousedown", handleOutside);
+    };
+  }, [menuOpen]);
 
-  // Only play a sound when the highlighted item changes.
+  // Only play a sound when the highlighted row changes.
   function moveTo(index: number) {
     setActiveIndex((prev) => {
       if (prev !== index) playSound("/sounds/menu-navigation.mp3", 0.5);
@@ -78,55 +98,66 @@ export default function Navigation() {
     });
   }
 
-  useEffect(() => {
-    if (!menuOpen) return;
+  function focusRow(index: number) {
+    const next = (index + TOTAL_ROWS) % TOTAL_ROWS;
+    rowRefs.current[next]?.focus();
+  }
 
-    function handleKey(e: KeyboardEvent) {
-      if (e.key === "Escape") {
-        setMenuOpen(false);
-        return;
-      }
-      if (e.key === "ArrowDown") {
-        e.preventDefault();
-        playSound("/sounds/menu-navigation.mp3", 0.5);
-        setActiveIndex((i) => (i + 1) % TOTAL_ROWS);
-        return;
-      }
-      if (e.key === "ArrowUp") {
-        e.preventDefault();
-        playSound("/sounds/menu-navigation.mp3", 0.5);
-        setActiveIndex((i) => (i - 1 + TOTAL_ROWS) % TOTAL_ROWS);
-        return;
-      }
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        activateRow(activeIndex);
-      }
-    }
+  function onListKey(e: React.KeyboardEvent) {
+    const current = rowRefs.current.findIndex((row) => row === document.activeElement);
+    const target =
+      e.key === "ArrowDown" ? current + 1
+      : e.key === "ArrowUp" ? current - 1
+      : e.key === "Home" ? 0
+      : e.key === "End" ? TOTAL_ROWS - 1
+      : null;
+    if (target === null) return;
+    e.preventDefault();
+    focusRow(target);
+  }
 
-    function handleOutside(e: MouseEvent) {
-      if (rootRef.current && !rootRef.current.contains(e.target as Node)) {
-        setMenuOpen(false);
-      }
-    }
+  // Tabbing to something outside the menu closes it. A click on a gap inside
+  // the menu has no relatedTarget, so it's left to the outside-click handler.
+  function onBlur(e: React.FocusEvent) {
+    const next = e.relatedTarget as Node | null;
+    if (menuOpen && next && !rootRef.current?.contains(next)) close();
+  }
 
-    window.addEventListener("keydown", handleKey);
-    document.addEventListener("mousedown", handleOutside);
-    return () => {
-      window.removeEventListener("keydown", handleKey);
-      document.removeEventListener("mousedown", handleOutside);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [menuOpen, activeIndex, selectItem, motionSettings]);
+  function jumpTo(e: React.MouseEvent, id: string) {
+    if (!scene) return;
+    e.preventDefault();
+    playSound("/sounds/button.mp3");
+    close();
+    scene.goTo(id);
+  }
+
+  function showOptions() {
+    playSound("/sounds/button.mp3");
+    close();
+    openOptions();
+  }
+
+  const rowProps = (i: number) => ({
+    ref: (el: HTMLElement | null) => {
+      rowRefs.current[i] = el;
+    },
+    className: styles.menuButton,
+    onMouseEnter: () => moveTo(i),
+    onFocus: () => moveTo(i),
+  });
+
+  const cursor = (i: number) => (
+    <span className={`${styles.cursor}${i === activeIndex ? " " + styles.cursorActive : ""}`} aria-hidden="true">
+      ▶
+    </span>
+  );
 
   return (
-    <nav ref={rootRef} className={styles.navRoot} aria-label="Site navigation">
+    <nav ref={rootRef} className={styles.navRoot} aria-label="Site navigation" onBlur={onBlur}>
       <AnimatePresence>
         {menuOpen && (
           <motion.div
             id="battle-menu"
-            role="menu"
-            aria-label="Site menu"
             className={styles.battleMenu}
             style={{ transformOrigin: "bottom right" }}
             initial={reduceMotion ? false : { opacity: 0, y: 16 }}
@@ -135,47 +166,34 @@ export default function Navigation() {
             transition={{ duration: DUR.base, ease: steps(4) }}
           >
             <div className={styles.battleMenuInner}>
-              <ul className={styles.menuList}>
+              <ul className={styles.menuList} onKeyDown={onListKey}>
                 {ITEMS.map((item, i) => (
                   <li key={item.label} className={styles.menuRow}>
-                    <motion.button
-                      type="button"
-                      role="menuitem"
-                      className={styles.menuButton}
-                      whileTap={reduceMotion ? undefined : { x: 2 }}
-                      onMouseEnter={() => moveTo(i)}
-                      onFocus={() => moveTo(i)}
-                      onClick={() => selectItem(i)}
-                    >
-                      <span
-                        className={`${styles.cursor}${i === activeIndex ? ' ' + styles.cursorActive : ''}`}
-                        aria-hidden="true"
+                    {item.href ? (
+                      <Link
+                        href={item.href}
+                        {...rowProps(i)}
+                        onClick={() => {
+                          playSound("/sounds/button.mp3");
+                          close();
+                        }}
                       >
-                        ▶
-                      </span>
-                      {item.label}
-                    </motion.button>
+                        {cursor(i)}
+                        {item.label}
+                      </Link>
+                    ) : (
+                      <a href={`#${item.id}`} {...rowProps(i)} onClick={(e) => jumpTo(e, item.id!)}>
+                        {cursor(i)}
+                        {item.label}
+                      </a>
+                    )}
                   </li>
                 ))}
                 <li className={styles.menuRow}>
-                  <motion.button
-                    type="button"
-                    role="menuitem"
-                    aria-haspopup="dialog"
-                    className={styles.menuButton}
-                    whileTap={reduceMotion ? undefined : { x: 2 }}
-                    onMouseEnter={() => moveTo(OPTIONS_ROW)}
-                    onFocus={() => moveTo(OPTIONS_ROW)}
-                    onClick={showOptions}
-                  >
-                    <span
-                      className={`${styles.cursor}${activeIndex === OPTIONS_ROW ? ' ' + styles.cursorActive : ''}`}
-                      aria-hidden="true"
-                    >
-                      ▶
-                    </span>
+                  <button type="button" aria-haspopup="dialog" {...rowProps(OPTIONS_ROW)} onClick={showOptions}>
+                    {cursor(OPTIONS_ROW)}
                     OPTIONS
-                  </motion.button>
+                  </button>
                 </li>
               </ul>
             </div>
@@ -184,26 +202,23 @@ export default function Navigation() {
       </AnimatePresence>
 
       <button
+        ref={toggleRef}
         type="button"
         className={styles.menuToggle}
         onClick={() => {
           playSound("/sounds/button.mp3");
-          toggleMenu();
+          if (menuOpen) close(true);
+          else open();
         }}
-        aria-label={menuOpen ? "Close menu" : "Open menu"}
+        aria-label="Menu"
         aria-expanded={menuOpen}
         aria-controls="battle-menu"
-        style={{
-          opacity: menuOpen ? 0 : 1,
-          pointerEvents: menuOpen ? "none" : undefined,
-        }}
+        // The open menu sits on top of the Pokéball. `visibility` (not just
+        // opacity) also takes it out of the tab order while it's covered.
+        style={{ visibility: menuOpen ? "hidden" : undefined }}
       >
-        <img
-          src="/icons/icon-pokeball.svg"
-          alt=""
-          className={styles.menuToggleSvg}
-          aria-hidden="true"
-        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/icons/icon-pokeball.svg" alt="" className={styles.menuToggleSvg} aria-hidden="true" />
       </button>
     </nav>
   );
