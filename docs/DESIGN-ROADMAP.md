@@ -1,0 +1,517 @@
+# Design roadmap
+
+Goal: make the portfolio look like **one** product (consistent colors, type,
+panels, headings and motion), then add features that make it memorable for
+recruiters without breaking that consistency.
+
+**Rule for every change:** reuse the existing vocabulary — cream panel, 3px
+ink border, hard drop shadow, PokePixel for display/labels, Inter for body,
+stepped motion. No new visual languages.
+
+Pace: back-to-back phases. Dates are targets, not promises; each phase ends
+with a desktop + phone check in the browser before the next one starts.
+
+| Phase | Target | Status |
+| --- | --- | --- |
+| 1–6. Foundation → QA (record at the bottom) | Nov 7–22, 2026 | Done locally, **not deployed** |
+| 7. Ship what's built, fix open issues | Nov 8–10 | Next |
+| 8. Table stakes from top portfolios | Nov 11–15 | Planned |
+| 9. Evidence Dex | Nov 16–19 | Planned |
+| 10. Type Matchup (the new thing) | Nov 20–26 | Planned |
+| 11. Readable by AI tools | Nov 27–29 | Planned |
+| 12. Explore mode | December | Stretch |
+
+---
+
+## Phase 7 — Ship what's built, fix open issues
+
+Carried over from the old "Later / parked" lists, plus what turned up on
+Nov 7. Nothing new starts until the first item is done.
+
+**Fix now**
+
+- [ ] **Phases 1–6 aren't live.** All of that work is uncommitted on `main`
+      (35 modified files, 8 deletions, about 20 new files, and `docs/`
+      itself), and hansvidaure.dev still serves the old site: a separate
+      Why me section (`#party`), no focus picker, no time of day (checked
+      Nov 7). Commit in reviewable pieces, deploy, then re-run Lighthouse
+      on the production URL and compare with the Phase 6 numbers.
+- [ ] **Home performance in the low 70s** (mobile Lighthouse): ~420 ms of
+      startup main-thread work. Load the Options and contact dialogs on
+      demand, and trim Framer Motion on the home page.
+- [ ] **Heavy source files:** `public/graphics/hans.png` is 9.0 MB and
+      `hero-avatar.jpg` 624 KB. next/image serves them resized, but they
+      slow builds and first requests. Also check when `torchic.gif`
+      (1.4 MB) and `pokemon-bgmusic.mp3` (4.0 MB) download: only on hover
+      and once sound is on.
+
+**Waiting on other people**
+
+- [ ] **Fiserv case studies** (`fiserv-pagination`, `fiserv-cve-upgrade`):
+      publish once cleared against Fiserv's disclosure policy. They already
+      score highest for the C# / .NET focus.
+- [ ] **Teammate quotes:** `TESTIMONIALS` in `app/data/party.ts` is empty,
+      so the panel is hidden. Ask 2–3 teammates; a LinkedIn recommendation
+      is the easiest to link.
+
+**Watch, fix if it bites**
+
+- [ ] **Contact rate limit is per server instance** (in memory, resets on
+      every deploy). If spam shows up, add a free fix first (a honeypot
+      field, a minimum time-to-submit) before any hosted store.
+
+**Kept by choice, with a deadline**
+
+- [ ] **Borrowed Pokémon assets** (Torchic, music, card art, Pokédex
+      frame). Kept for now. Everything new in this plan uses original art
+      only, and an original pixel mascot must replace these before
+      Phase 12, which makes the site much more game-like.
+
+**Done in this edit**
+
+- [x] The two "Later / parked" lists are merged here. The Contact typing
+      line marked "not yet watched live" in Phase 3 was watched in
+      Phase 6 (~1.3s).
+
+---
+
+## Research: what top portfolios do (November 2026)
+
+Looked at the [Web Design Awards portfolio category][wda] (top 12 by jury
+score and the 24 recent winners, live sites opened where possible), the
+developer portfolios that keep showing up in "best of" lists, and recruiter
+surveys. Recruiter numbers are mostly from blogs and vendors, so treat them
+as anecdotal.
+
+| What they do | Seen at | This site today | Plan |
+| --- | --- | --- | --- |
+| Few projects, easy to scan, fast. A recruiter's first pass is roughly 90 seconds to 3 minutes. | [Brittany Chiang][bc] (the most-cited pick); lists recommend 3–6 projects | 5 projects with metrics; name, role and summary paint at once | Keep. Add a plain **Quick view** for the 90-second skim (Phase 8) |
+| Proof over claims: live demos, code, numbers | Most developer sites; [Diego Sevilla][ds] (2025 winner) has a "The Days I Code" activity panel | Metrics, stat bars, live demos, code links | Link every skill to its proof (Phase 9); add live data (Phase 8) |
+| Writing | [Josh W. Comeau][jc], [Lee Robinson][lr]: writing-led sites | One write-up, hosted on GitHub | **Field notes**, 2–3 posts on the site (Phase 8) |
+| Explorable worlds | [Bruno Simon][bs] (drive through a 3D world), [Robby Leonardi][rl] (platformer résumé), [Erfan Mirasadi][em] (2025 winner: arrow keys between zones like Gym, Skills, Workshop, Contact, plus a day/night clock) | Themed, not playable | Stretch (Phase 12). It's a known pattern now, so on its own it isn't the new thing |
+| Interface craft and sound | [Rauno Freiberg][rf] (a desktop-OS portfolio with a dock and interface sounds) | Sounds, stepped motion, one transition | Keep |
+| Three.js / WebGL heroes, GSAP, loading screens | The two top scorers ([Casa di Solare][wda] 9.30, Pixel Matters 8.80) and about a quarter of the entries | Pixel-mosaic loading, no 3D | Skip: 3D doesn't fit a GBA world, and a loading screen eats the 90-second skim |
+| Phone as controller, live cursors | [Emma Poliakova][ep] (scan a QR to control the site from your phone); [PartyKit cursor party][cp] | — | Not new anymore. Only inside Explore mode, where Pocket Quest's code already does it |
+| Readable by AI tools (`llms.txt`, MCP servers) | Showing up in 2026 portfolio advice ([1][ai1], [2][ai2]); no study yet shows recruiters' AI tools use them | JSON-LD only | Cheap, so after the visible work (Phase 11) |
+| Accessibility and performance count | The awards judge craft, experience, originality, content and technical quality; older scorecards rated accessibility and performance separately (about 7.4–9.1 among winners) | Lighthouse accessibility 100 | Keep it a release gate for every phase |
+
+**Takeaway:** the top sites win on one strong concept done with craft, plus
+fast access to proof. This site already has the concept (a GBA world) and
+the craft. What it lacks is a *systematic* proof layer (every claim linked
+to evidence) and one feature nobody else has. Not more spectacle.
+
+---
+
+## The new thing: Type Matchup
+
+Approved by Hans on Nov 7, after comparing it with Bug Battles, Party link
+and Save file for how likely each was to irritate a recruiter on a quick
+first pass. **No AI, no server, no monthly cost.**
+
+A recruiter pastes a job post. The site reads it **in their browser**
+(nothing is sent or saved) and answers in battle text, requirement by
+requirement:
+
+```
+Paste a job post ▶ [ ............................ ]
+
+REQUIRED
+C#            It's super effective!  ▶ Fiserv: 10+ features in C# / ASP.NET
+React         It's effective.        ▶ RJN Visuals
+Kubernetes    Closest experience:    ▶ <the nearest skill, with its proof>
+3+ years      <his years>            ▶ Evolution timeline
+NICE TO HAVE
+...
+5 of 6 required skills: super effective!
+```
+
+(Layout sketch: the real wording comes from the skill list.)
+
+- **It's super effective!** Used at work, with the line that proves it.
+- **It's effective.** Shipped in a project, and which one.
+- **Closest experience:** a gap, worded as the nearest thing he has done
+  rather than as a failure.
+
+Then the Work cards reorder for that job (reusing Choose your focus), and
+the recruiter can copy a **matchup link** to forward to the hiring manager.
+
+Why this one:
+
+- **Least likely to irritate a recruiter:** optional, one paste, an instant
+  answer in their own terms ("does he fit my role?"). Nothing to sit
+  through, and it never stands between them and the page.
+- **Nobody does it.** Portfolios have AI chatbots and manual filters like
+  the focus picker. None found matches itself against *your* job post,
+  with proof, privately.
+- **It does the recruiter's actual job** (matching a candidate to a role)
+  instead of decorating it.
+- **It's proof in itself:** careful parsing and privacy by design are the
+  "Secure by default" and "Full-stack range" moves, shown instead of
+  claimed.
+- **It fits the world without copying a game:** type effectiveness is a
+  genre mechanic, drawn with the existing panel, chips, ▶ lists and
+  dialogue box.
+
+How it works (Phases 9–10):
+
+1. **Skill list** (`app/data/dex.ts`, edited by hand like `projects.ts`;
+   Phase 9): about 30 skills. Each has the other names job posts use
+   (`C#` / `C Sharp`; `.NET` / `dotnet` / `ASP.NET Core`), its strength
+   (used at work, shipped in a project, learned) and proof links (project
+   slug, Fiserv quest-log line, repo). Related skills point at each other
+   (Kubernetes → Docker) for "closest experience".
+2. **Matcher** (`app/lib/matchup.ts`, plain TypeScript, a pure function):
+   - splits the post into lines and tags each one required or nice to have
+     from headings like "Requirements", "Must have", "Preferred", "Bonus";
+   - finds skills by exact words, with care for `C#`, `.NET`, `Node.js`,
+     Java vs JavaScript, React vs React Native;
+   - reads "3+ years" and compares it with his years of experience;
+   - returns requirement → effectiveness → proof.
+3. **Panel:** a gold "Paste a job post ▶" button beside the focus picker
+   opens a `PixelPanel` dialog: a labeled textarea, "CHECK MATCHUP ▶", and
+   results as ▶ lists grouped by effectiveness. The dialogue box says the
+   summary, which also reaches screen readers. No single "% fit" number:
+   counts per group, so it doesn't fake precision. Its code loads only
+   when the panel opens, so the home page doesn't get slower.
+4. **Privacy:** the panel says "Your job post stays in this browser." QA
+   checks the network tab: no request carries the text, and analytics
+   records only that a matchup ran.
+5. **Matchup link:** `/?match=` carries only skill ids and their
+   effectiveness, never the post's text. Opening it sets the card order and
+   shows a "Matchup for a shared job post" note.
+6. **Tests:** ~10 real job posts saved as fixtures (company names removed),
+   run with Vitest (free, runs on his machine).
+7. **Respects Options:** TEXT SPEED fast skips the typing; ANIMATIONS
+   reduced skips the flash.
+
+---
+
+## Phase 8 — Table stakes from top portfolios
+
+- [ ] **Quick view** (`/resume`): the resume as one plain page built from
+      the same data (Fiserv quest log, timeline, projects, skills), with
+      print styles so Save as PDF works. "Quick view" in the top bar and
+      the phone menu; the hero stays as it is. Keep `hcv-resume.pdf` in
+      sync until it can be printed from this page.
+- [ ] **Live trainer card:** GitHub data at build time, refreshed daily:
+      public repos, last push ("Last seen: Behavior Tree Editor, 2 days
+      ago"), a year of activity as a pixel strip, "play time" since the
+      first job. The activity calendar needs a `GITHUB_TOKEN` (GraphQL);
+      without one, show what the public API gives.
+- [ ] **Live proof chips:** where a card claims tests ("245 tests on every
+      push", "Bots play a full campaign in CI"), show the latest GitHub
+      Actions result ("CI ✓ passing, checked today").
+- [ ] **Now line** on the trainer card: what he's building and whether
+      he's open to roles, one dated sentence.
+- [ ] **Field notes** (`/notes`): 2–3 posts in the case-study panel style,
+      from material that already exists: the iOS PWA launch bug, PaddleOCR
+      vs Tesseract on 16 receipts, replaying behavior trees. In the
+      sitemap, linked from the matching cards.
+
+## Phase 9 — Evidence Dex
+
+Every skill on the site, described once, with its proof.
+
+- [ ] `app/data/dex.ts`, about 30 entries. Each has a name, aliases (`C#`,
+      `.NET`, `ASP.NET Core`), a status (*caught*: used at work or shipped;
+      *seen*: learned or tried) and evidence links (project slug, Fiserv
+      quest-log line, repo). Card chips and `FOCUS_STACK` read from it.
+- [ ] About's SKILLS panel becomes a dex ("CAUGHT 18 · SEEN 9"); each entry
+      opens its evidence as a ▶ list linking to case studies and repos.
+- [ ] Every skill named anywhere on the site links to its dex entry. A
+      skill with no evidence isn't listed.
+
+## Phase 10 — Type Matchup
+
+- [ ] Matcher, fixtures and tests (add Vitest as a dev dependency).
+- [ ] Panel (loaded on demand), dialogue line, card reorder, matchup link.
+- [ ] QA: 10 real posts read sensibly; keyboard and screen reader pass;
+      nothing leaves the browser; home page speed unchanged; phone layout
+      at 375px.
+
+## Phase 11 — Readable by AI tools
+
+Recruiters increasingly screen with AI assistants. Give them clean data from
+the same source instead of a scraped page.
+
+- [ ] `/llms.txt`: who he is, what he's looking for, projects with links,
+      generated from the data files.
+- [ ] `/resume.json` in the JSON Resume schema; the JSON-LD `Person` gets
+      `knowsAbout` from the dex.
+- [ ] Optional: a small read-only MCP endpoint (`list_projects`,
+      `get_skill_evidence`, `match_job` reusing the matcher), rate-limited
+      like the contact form, on the current hosting's free tier.
+- [ ] A "LINK CABLE" row in Contact: "Screening with an AI assistant? Point
+      it at hansvidaure.dev/llms.txt."
+
+## Phase 12 — Explore mode (stretch)
+
+Only after the original mascot exists (Phase 7, kept by choice).
+
+- [ ] An optional small town map in the hero, with an original tileset and
+      trainer sprite. Buildings are sections (Lab = Work, House = About,
+      Post office = Contact); entering one runs the existing tile wipe to
+      that section. The scrolling page stays the default; Explore is
+      opt-in and remembered.
+- [ ] NPCs each say one proof through the dialogue box ("He closed 20 CVEs
+      in one release!").
+- [ ] Arrow keys / WASD, a touch d-pad, and gamepads (Gamepad API).
+- [ ] **Link cable:** scan a QR and your phone becomes the controller,
+      reusing Pocket Quest's WebRTC (PeerJS) and Cloudflare Worker code, on
+      the same free tiers Pocket Quest uses.
+- [ ] Reduced motion: no walking animation; tap a building to go there.
+
+## Considered and parked
+
+- **Not doing: an AI chat NPC ("Ask Hans").** Hans's call (Nov 7).
+- **Bug Battles** (the hardest bug from a project replayed as a turn-based
+  battle, one real debugging step per turn, wrong guesses included): the
+  most memorable option, but it asks for the most attention, so it suits
+  engineers in later rounds, not a recruiter's first pass. A later extra:
+  short (6 turns at most), skippable, readable as plain text, and written
+  only from real stories. No portfolio found does it; the nearest thing is
+  [Beglitched][bg], a game whose designer found debugging-as-a-puzzle
+  tedious, so visitors would watch, never solve.
+- **Party link** (recruiters "catch" the projects that matter and copy a
+  link to a trimmed page): low friction, but only useful when they forward
+  the site.
+- **Save file** (a "welcome back, here's what's new" note): least
+  intrusive, but most recruiters visit once.
+- **Screening FAQ as a battle menu** (FIGHT: tech questions, BAG:
+  logistics, RUN: resume): maybe after Phase 10, if recruiters keep asking
+  the same questions.
+- **Visitor presence** (other visitors as tiny trainers): costs a realtime
+  server and gives a recruiter nothing.
+- **3D / WebGL and loading screens**: rejected (see Research).
+
+## Design rules for new work
+
+Everything from Phases 1–6 still applies. For the new features:
+
+- **Free only.** No paid services, subscriptions or new accounts with a
+  bill. Features run in the visitor's browser or at build time on the
+  hosting already in use; anything that needs a server uses a free tier
+  that stops rather than charges.
+- **Never in the way.** A recruiter on a 90-second first pass must never
+  have to go through a feature to reach the content; every feature is
+  optional and skippable in one click.
+- Panels are `PixelPanel`, headings are `SectionHeading`, lists use the
+  `arrow-list` and `chip` mixins.
+- Feedback goes through `useDialogue().say()`; section jumps use the tile
+  wipe. No new transitions.
+- Every feature reads Options: TEXT SPEED fast skips typing, ANIMATIONS
+  reduced removes motion, TIME OF DAY recolors scenery.
+- Colors and type come only from the tokens in `globals.scss`; PokePixel
+  never below 14px.
+- New art is original. No new borrowed assets.
+- Each phase ends with a desktop + phone check, Lighthouse accessibility
+  100, and no horizontal overflow at 375, 768 and 1440px.
+
+## Sources
+
+- [Web Design Awards: portfolio category][wda] and
+  [best portfolio websites](https://www.webdesignawards.io/best/portfolio-websites)
+- Developer portfolios: [Brittany Chiang][bc], [Bruno Simon][bs],
+  [Robby Leonardi][rl], [Rauno Freiberg][rf], [Josh W. Comeau][jc],
+  [Lee Robinson][lr], [Erfan Mirasadi][em], [Diego Sevilla][ds],
+  [Aman Yadav](https://yadavaman.com/), [Emma Poliakova][ep]
+- "Best of" lists: [DEV Community 2026](https://dev.to/_d7eb1c1703182e3ce1782/best-developer-portfolio-examples-2026-2d8m),
+  [Colorlib 2026](https://colorlib.com/wp/page/16/?mode=jqm)
+- Recruiters: [profy.dev survey of 60+ hiring managers](https://profy.dev/article/portfolio-websites-survey),
+  [how recruiters review portfolios (~90 seconds)](https://eportfolio-c0z.pages.dev/blog/2025-12-28-how-recruiters-actually-review-portfolios)
+- Realtime building blocks: [PartyKit cursor party][cp],
+  [TouchCoop (phones as controllers over WebRTC)](https://dev.to/remojansen/turning-your-living-room-into-a-couch-co-op-arena-with-touchcoop-249j)
+- Debugging as a battle: [Beglitched design deep dive][bg]; nearest
+  portfolio match, a combat-system write-up:
+  [Eleanor Gregory](https://stareyednya.github.io/pages/timedhits.html)
+
+[wda]: https://www.webdesignawards.io/categories/portfolio
+[bc]: https://brittanychiang.com
+[bs]: https://github.com/brunosimon/folio-2025
+[rl]: http://www.rleonardi.com/interactive-resume/
+[rf]: https://rauno.me
+[jc]: https://www.joshwcomeau.com
+[lr]: https://leerob.com
+[em]: https://iamerfan.me/
+[ds]: https://diegosevilla.dev/
+[ep]: https://emmapoliakova.github.io/PersonalPortfolio
+[cp]: https://github.com/partykit/cursor-party
+[ai1]: https://rockstardeveloperuniversity.com/developer-portfolio-project-ideas/
+[ai2]: https://www.digitalapplied.com/blog/ai-developer-hiring-skills-that-matter-2026
+[bg]: https://gamedeveloper.com/design/game-design-deep-dive-making-debugging-into-a-mechanic-in-i-beglitched-i-
+
+---
+
+# Record: Phases 1–6 (done locally)
+
+Kept as the record of how the design system was built. Built and checked
+locally; see Phase 7 for deploying it.
+
+## Phase 1 — Foundation: tokens and motion rules
+
+Everything later depends on this.
+
+- [x] Design tokens as CSS custom properties in `app/scss/globals.scss`:
+      colors, font families, type scale, border, shadows, motion durations
+      and easing. Framer Motion mirror in `app/lib/motion.ts`.
+- [x] Shared Sass mixins in `app/scss/_mixins.scss`: pixel button
+      (one hover/press rule), pixel panel, display text.
+- [x] Tailwind palette points at the same tokens (one source of truth).
+- [x] Core palette, fonts and simple shadows moved onto tokens in every
+      component stylesheet. Section-specific colors (about purple/mint,
+      party blue, sky/sea) are left for Phases 2–3, which replace them.
+- [x] Square corners everywhere except genuinely round things (Pokéballs,
+      icon circles in the contact card until Phase 2 replaces them).
+- [x] One hover/press rule on every pixel button (hero, top bar, project
+      cards, play demo, case-study CTA, 404, contact dialog); no scale or
+      blur in UI motion (menu glow, Torchic, speech bubble, dialog).
+- [x] PokePixel never below 14px (contact card was 9.6px); Inter for all
+      body text, including form inputs; Quicksand removed.
+- [x] "Reduce motion" covers the menu (it used only the OS setting).
+- [x] Every font size on the type scale (finished in Phase 2).
+
+## Phase 2 — Consistency pass
+
+- [x] One `SectionHeading` (the wooden sign, compact on phones) for Work,
+      About, Why me and Contact, left-aligned on the same 72rem column.
+- [x] One panel surface: `PixelPanel` (cream, gold title bar) for every
+      About, Why me and Contact panel and the contact dialog. Pink/purple,
+      mint, dark-green, teal-header and green-terminal styles removed.
+- [x] Shared chips and ▶ lists (`chip`, `arrow-list` mixins) used by project
+      cards, About and the contact card.
+- [x] Contact: a gold "Send a message ▶" button plus labeled GitHub, LinkedIn
+      and Resume buttons, instead of four unlabeled 35×35 icons.
+- [x] Menu: labels match the top nav ("ABOUT"), stray "→" row removed, the
+      Pokéball only shows below 761px (where the top bar has no links) and
+      is 56px on phones instead of 72px.
+- [x] Top bar: reduce-motion toggle next to sound (phones keep it in the
+      menu); fits at every width from 375px to desktop.
+- [x] Phone hero: a 120px Pokédex above the name; hero 1,167px → 1,014px
+      and "See my work" now inside the first 812px screen.
+- [x] Case-study pages and the 404 use the shared TopBar (links go back to
+      home sections) and the cream panel.
+- [x] "1,150+ findings" now appears twice (hero strip and the Fiserv list),
+      not three times.
+
+## Phase 3 — One world, one motion language
+
+- [x] **Time-of-day palette:** `data-time` on `<html>` (morning 5–10, day
+      10–17, dusk 17–20, night 20–5) set before first paint by
+      `app/lib/timeOfDay.ts`; four scenery palettes in `globals.scss`. Hero
+      sky/hills/water, the Work grass, the About forest, a green plaza for
+      Why me (was blue), a tint over the Contact painting, and the
+      case-study/404 backdrop all read it. Preview any palette with
+      `?time=morning|day|dusk|night`. Stars only at dusk and night.
+- [x] **One transition:** the hero's 10×6 ink tile grid now also does
+      section jumps, on phones too, in a stepped diagonal sweep; the navy
+      slanted band is gone. A section reached by a jump appears in place
+      (no second fade). Reduced motion jumps instantly (also fixed: smooth
+      scrolling on `<html>` ignored the reduce-motion setting).
+- [x] Calm hero: blur filters and glow blobs removed, hills no longer morph,
+      only the front water layer moves (SVG animations 7 → 1), Pokédex bob
+      14px → 4px.
+- [x] Signature motion per section: Work, the card's Pokéball wobbles on
+      hover; About (and project metrics), the ▶ steps forward on the line
+      you point at; Why me, a blinking battle-menu ▶ beside the move.
+- [x] **Pixel-mosaic loading:** each cover shows a 16px copy as big pixels
+      while loading, then sharpens 16 → 32 → 64 → full (instant with reduced
+      motion). Demo clips stay hidden until actually playing.
+- [x] One video rule: desktop plays every demo muted while on screen
+      (downloads only once scrolled to); phones and reduced motion show
+      "▶ Play demo" on every card. The per-clip `autoplay` flag is gone.
+- [x] Contact typing line: 68 → 32ms per letter (about 1.3s), a click
+      finishes it, and the typing sound stops with the text. Watched live
+      in Phase 6.
+
+## Phase 4 — Shared UI systems
+
+- [x] **Options screen** (`OptionsDialog`, `OptionsProvider`): TEXT SPEED
+      (normal/fast), ANIMATIONS (full/reduced), SOUND (off/on) and TIME OF DAY
+      (auto/morning/day/dusk/night) in one cream panel. Click cycles a value,
+      ← → step through it; Escape closes and focus returns. Opened from one
+      sliders button in the top bar (replaces the sound and motion buttons, so
+      it fits on phones too) and an OPTIONS row in the Pokéball menu.
+- [x] Settings are remembered (`app/lib/preferences.ts`) and applied before
+      first paint. **Fast** skips the hero intro wipe and reveals, the
+      section fade-ins, the Contact typing and dialogue typing.
+- [x] **Dialogue box** (`DialogueProvider`, `useDialogue().say()`): one GBA
+      text box along the bottom that types its line, shows a blinking ▼,
+      closes on click or after 3.5s, and announces the full line to screen
+      readers. On phones it sits beside the Pokéball. Used for: email copied
+      (and a "press Ctrl+C" line if the browser blocks the clipboard),
+      message sent (the mailbox now closes immediately), and Torchic (its
+      speech bubble only showed above 1400px).
+- [x] Form errors stay inline next to their fields on purpose: that's where
+      people (and screen readers) look for them.
+
+## Phase 5 — Recruiter features
+
+- [x] **Choose your focus:** All / Full-stack / C# / .NET & security / Game
+      tools, a radio group (← → keys) above the cards. It reorders them by
+      each project's `focus` score (the top one gets the wide layout, in a
+      stepped layout animation), highlights matching stack chips in gold,
+      says what it did in the dialogue box, and is remembered. The C# / .NET
+      pick adds a note that this work is mostly at Fiserv, with the resume's
+      numbers and links to About and the resume. Fiserv case studies already
+      score highest for it, for when they're published.
+- [x] **Evolution timeline:** Player → Student → Trainee → Engineer → ???
+      (the role he wants, with a "Send a message" button), from the resume.
+      Horizontal on desktop, vertical on phones; each stage flashes white in
+      turn when it scrolls in (skipped with reduced motion or Fast text).
+- [x] **Why me merged into About:** the moves and the (hidden until filled)
+      teammate quotes now sit in About; the section, its nav links and its
+      plaza colors are gone. Nav is Work / About / Contact. The "How I got
+      here" story is now the timeline, so nothing is said twice.
+- [x] **Tabbed case studies:** write-up headings are sorted into Overview /
+      Decisions / Results (only tabs with content show); ← → Home End on the
+      tab row. Stat bars only where a number has a real maximum: SliceOfPie
+      (Lighthouse, PaddleOCR 16/16 vs Tesseract 4/16) and Behavior Tree
+      Editor (14/14 trees), with HP-bar colors.
+- [x] **Case-study morph:** "Case study" runs Next's router inside
+      `document.startViewTransition`; the cover and title share
+      `view-transition-name`s with the case-study page. No View Transitions:
+      the tile wipe covers the screen first. Reduced motion or a modified
+      click (new tab): a plain link. If the browser never starts the
+      transition, it navigates anyway after a second.
+- [x] Watched live in Phase 6 (two bugs found and fixed there).
+
+## Phase 6 — QA and launch
+
+- [x] **Production build** passes (14 pages; Fiserv drafts excluded).
+- [x] **Lighthouse** (mobile, before → after):
+
+      | Page | Performance | Accessibility | Best practices | SEO |
+      | --- | --- | --- | --- | --- |
+      | Home | 61 → 72–73 | 100 | 100 | 100 |
+      | SliceOfPie case study | 74 → 96 | 100 | 100 | 100 |
+
+      Home on desktop: 99. Fixes: Inter through `next/font` (455 KB TTF →
+      48 KB latin WOFF2, preloaded, size-matched fallback; CLS 0.079 →
+      0.017); case-study cover loads with priority; the Contact card photo
+      is no longer high-priority and is served at its 192px display size
+      (the source is 9.4 MB); the hero name, role and summary paint at once
+      instead of fading in; Google Analytics loads after the page
+      (`lazyOnload`). Unused Inter/Quicksand TTFs removed.
+- [x] **Accessibility**: one h1, no skipped heading levels, no duplicate
+      ids, every control named, every image has alt. Contrast fixed where it
+      failed: section-sign text (2.4:1 → 3.2:1+, large text), small green
+      labels (`--accent-green` 4.2:1 → 5.2:1), and the Contact typing line
+      (now on a dark strip, ~1.5:1 → ~6:1). Hero text is 4.7:1+ in all four
+      time-of-day palettes.
+- [x] **Keyboard**: logical tab order (top bar → hero → focus picker, one
+      stop → cards → timeline CTA → Contact), focus ring on every stop, no
+      traps; dialogs trap focus and restore it.
+- [x] **Reduced motion**: no looping animation, no intro wipe or parallax,
+      play buttons instead of autoplay, no fades, no evolution flash, instant
+      section jumps.
+- [x] **Layout**: no horizontal overflow on home, case studies or the 404
+      at 375, 768 and 1440px.
+- [x] **Animations watched at real speed**: tile wipe fully covers at the
+      jump (all 60 tiles at ~400ms, clear by ~770ms); Contact typing ~1.3s;
+      evolution flash ~1.8s; picking a focus runs with no frame over 17ms.
+      Fixed: the featured card's reorder ran backwards (the wide slot was
+      reused instead of keyed per project), and the morph sat on the old
+      page for 2s (it waited on requestAnimationFrame, which browsers pause
+      during a view transition). The morph now starts in ~0.3s. Stat bars
+      now all share one length.
+- [ ] **Launch**: not deployed yet (Phase 7).
