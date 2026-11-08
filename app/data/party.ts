@@ -1,6 +1,6 @@
 /**
- * Content for the "Add Hans to your party?" section: why hire me, in three
- * moves, plus what teammates say. Edit the text here; the section reads it as-is.
+ * "Why hire me" content for the About section: three strengths styled as
+ * moves, plus what teammates say. Edit the text here; About reads it as-is.
  */
 
 export type Move = {
@@ -18,7 +18,8 @@ export const MOVES: Move[] = [
     name: "Secure by default",
     type: "SECURITY",
     effect: "I treat security as part of the feature, not a review step at the end.",
-    proof: "Fixed 1,150+ Fortify findings during feature work, and removed cache-isolation defects in banking code.",
+    proof:
+      "Fixed thread-safety and cache-isolation defects in banking code, and cleared Fortify findings as part of feature work instead of a separate pass.",
   },
   {
     name: "Full-stack range",

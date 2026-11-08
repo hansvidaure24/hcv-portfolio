@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { createPortal } from "react-dom";
 import { playSound } from "../../../lib/sound";
 import { useDialogFocus } from "../../../lib/useDialogFocus";
+import { useDialogue } from "../../providers/DialogueProvider";
 import {
   hasContactErrors,
   validateContactForm,
@@ -12,15 +13,11 @@ import {
 } from "../../../lib/validateContact";
 import styles from "./ContactComputer.module.scss";
 
-type Screen = "form" | "success";
 
 const EMPTY_VALUES: ContactFormValues = { firstName: "", lastName: "", email: "", message: "" };
 
-// Keep the success screen visible long enough for its status to be announced.
-const SUCCESS_CLOSE_DELAY_MS = 2200;
 
 export default function ContactComputer({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const [screen, setScreen] = useState<Screen>("form");
   const [values, setValues] = useState<ContactFormValues>(EMPTY_VALUES);
   const [honeypot, setHoneypot] = useState("");
   const [fieldErrors, setFieldErrors] = useState<ContactFieldErrors>({});
@@ -30,18 +27,13 @@ export default function ContactComputer({ open, onClose }: { open: boolean; onCl
   const dialogRef = useRef<HTMLDivElement>(null);
   const firstFieldRef = useRef<HTMLInputElement>(null);
   const submitErrorRef = useRef<HTMLParagraphElement>(null);
-  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const titleId = useId();
   const errorId = useId();
 
+  const { say } = useDialogue();
   useDialogFocus(open, dialogRef, firstFieldRef);
 
   function resetAndClose() {
-    if (closeTimerRef.current) {
-      clearTimeout(closeTimerRef.current);
-      closeTimerRef.current = null;
-    }
-    setScreen("form");
     setValues(EMPTY_VALUES);
     setHoneypot("");
     setFieldErrors({});
@@ -103,9 +95,11 @@ export default function ContactComputer({ open, onClose }: { open: boolean; onCl
       }
 
       playSound("/sounds/menu-navigation.mp3", 0.6);
-      setScreen("success");
-      setSubmitting(false);
-      closeTimerRef.current = setTimeout(resetAndClose, SUCCESS_CLOSE_DELAY_MS);
+      // Close the mailbox and confirm in the site's dialogue box.
+      const name = values.firstName.trim() || "trainer";
+      const email = values.email.trim();
+      resetAndClose();
+      say(`Message sent! Thanks, ${name}. A confirmation email is on its way to ${email}.`);
     } catch {
       setSubmitError("Couldn't reach the server. Check your connection and try again.");
       setSubmitting(false);
@@ -124,9 +118,8 @@ export default function ContactComputer({ open, onClose }: { open: boolean; onCl
         aria-labelledby={titleId}
         className={styles.terminal}
       >
-        <div className={styles.screenGlow} aria-hidden="true" />
         <div className={styles.titleBar}>
-          <span className={styles.titleBarText}>TRAINER MAILBOX v1.0</span>
+          <span className={styles.titleBarText}>TRAINER MAILBOX</span>
           <button type="button" className={styles.closeBtn} onClick={resetAndClose} aria-label="Close contact terminal">
             ×
           </button>
@@ -134,23 +127,13 @@ export default function ContactComputer({ open, onClose }: { open: boolean; onCl
 
         <div className={styles.body}>
           <h2 id={titleId} className={styles.heading}>
-            {screen === "success" ? "TRANSMISSION COMPLETE" : "SEND A MESSAGE"}
+            SEND A MESSAGE
           </h2>
 
           <div role="status" aria-live="polite" className={styles.liveRegion}>
             {submitting && "Sending . . . ."}
-            {screen === "success" && "Done! Your message was sent."}
           </div>
 
-          {screen === "success" ? (
-            <div className={styles.successScreen}>
-              <p className={styles.successBig}>Done!</p>
-              <p className={styles.successBody}>
-                Thanks, {values.firstName || "trainer"} — your message is on its way. A confirmation email is headed to{" "}
-                {values.email}.
-              </p>
-            </div>
-          ) : (
             <form className={styles.form} onSubmit={handleSubmit} noValidate>
                 {/* Hidden honeypot for simple bots that fill every field. */}
               <div className={styles.honeypotWrap} aria-hidden="true">
@@ -266,7 +249,6 @@ export default function ContactComputer({ open, onClose }: { open: boolean; onCl
                 </button>
               </div>
             </form>
-          )}
         </div>
       </div>
     </div>,
