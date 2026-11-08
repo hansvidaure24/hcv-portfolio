@@ -257,8 +257,10 @@
   margin: 0;
 
   font-family: var(--font-display);
-  font-size: clamp(3.25rem, 5.4vw, 5.5rem);
-  line-height: 0.9;
+  // The cap keeps the name on one line in the hero's capped text column
+  // (about 700px wide from roughly 1300px up).
+  font-size: clamp(3.25rem, 5.4vw, 4.6rem);
+  line-height: 1;
   letter-spacing: 0.03em;
 
   // Solid fill, not a clipped gradient: `background-clip: text` with a
@@ -365,8 +367,8 @@
 .proofStrip {
   list-style: none;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 0;
+  flex-direction: column;
+  gap: 0.4rem;
   margin-top: 0.4rem;
 
   font-family: var(--font-display);
@@ -375,10 +377,16 @@
   color: rgb(var(--cream-rgb) / 0.9);
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
 
-  li:not(:last-child)::after {
+  li {
+    display: flex;
+    gap: 0.6rem;
+  }
+
+  li::before {
     content: '◆';
-    margin: 0 0.7rem;
+    flex: none;
     font-size: 0.7em;
+    line-height: 1.6;
     color: var(--green);
   }
 }
@@ -426,7 +434,6 @@
 
 .pokedexImage {
   border-radius: 4px;
-  filter: saturate(0.85) hue-rotate(-8deg) brightness(0.98) contrast(1.12);
 }
 
 .scanLineGroup {

@@ -76,62 +76,6 @@
   }
 }
 
-.torchicWrap {
-  position: absolute;
-  // Just past the trainer card's right edge (the card is 58rem wide, centered).
-  left: calc(50% + 29rem + 1.5rem);
-  bottom: clamp(1rem, 8vh, 4rem);
-  z-index: 3;
-  width: clamp(160px, 14vw, 260px);
-}
-
-@media (max-width: 1400px) {
-  .torchicWrap {
-    left: auto;
-    right: clamp(6.5rem, 22vw, 8rem);
-    bottom: clamp(0.75rem, 4vw, 1.5rem);
-    width: clamp(80px, 20vw, 140px);
-    z-index: 4;
-  }
-}
-
-.torchicButton {
-  display: block;
-  width: 100%;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  transition: transform var(--dur-fast) var(--ease-step);
-
-  &:hover,
-  &:focus-visible {
-    transform: translateY(-4px);
-  }
-}
-
-.torchicWrap::after {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  left: 50%;
-  bottom: -6%;
-  width: 65%;
-  height: 16%;
-  transform: translateX(-50%);
-  pointer-events: none;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 60%, transparent 78%);
-}
-
-.torchicGif {
-  width: 100%;
-  height: auto;
-  display: block;
-  image-rendering: pixelated;
-  filter: drop-shadow(4px 6px 0 rgba(0, 0, 0, 0.35));
-  pointer-events: none;
-}
-
 /* --- Trainer card --- */
 .trainerCard {
   width: 100%;
@@ -241,34 +185,4 @@
 
 .action {
   @include pixel-button(var(--paper), var(--ink), var(--text-md), 3px);
-}
-
-.cardPortrait {
-  flex: 0 1 12rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.portraitImage {
-  width: 100%;
-  height: auto;
-  max-width: 12rem;
-  border: var(--border-thin) solid var(--ink);
-  box-shadow: var(--shadow-sm);
-}
-
-@media (max-width: $bp-phone) {
-  .cardBody {
-    flex-direction: column-reverse;
-    align-items: stretch;
-  }
-
-  .cardPortrait {
-    flex: none;
-  }
-
-  .portraitImage {
-    max-width: 10rem;
-  }
 }

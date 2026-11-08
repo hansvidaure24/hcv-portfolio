@@ -469,7 +469,7 @@ export const DEX: DexEntry[] = [
     aliases: ["behavior trees", "behaviour trees", "state machines", "finite state machines", "FSM"],
     focus: ["games"],
     evidence: [
-      { ...P.bte, text: "A visual editor, replay debugger and runtime for game AI; 14 enemy trees proven to match the game" },
+      { ...P.bte, text: "A visual editor, replay debugger and runtime for game AI; 14 enemy trees run through both runtimes, every command compared" },
       { ...P.wakebound, text: "17 data-driven AI states, built as ScriptableObject assets" },
     ],
     related: ["unity", "canvas"],

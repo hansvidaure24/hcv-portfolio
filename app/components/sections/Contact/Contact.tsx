@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import ParallaxSection from "../../scene/ParallaxSection";
 import { useScene } from "../../scene/SceneProvider";
@@ -9,7 +8,6 @@ import { getFirstGesturePromise, isSoundEnabled, playSound } from "../../../lib/
 import { getEffectiveReducedMotion } from "../../../lib/motionPreference";
 import { getTextSpeed } from "../../../lib/preferences";
 import { useContactDialog } from "../../providers/ContactDialogProvider";
-import { useDialogue } from "../../providers/DialogueProvider";
 import { CONTACT_EMAIL, RESUME_URL } from "../../../lib/site";
 import PixelPanel from "../../ui/PixelPanel";
 import SectionHeading from "../../ui/SectionHeading";
@@ -61,10 +59,6 @@ export default function Contact() {
   const typeBufferPromiseRef = useRef<Promise<AudioBuffer> | null>(null);
   // Store the cleanup function for whichever playback path is active.
   const stopTypeSoundRef = useRef<(() => void) | null>(null);
-  const { say } = useDialogue();
-  const torchicAudioRef = useRef<HTMLAudioElement>(null);
-  // Use a ref to block rapid clicks before state updates are applied.
-  const torchicPlayingRef = useRef(false);
 
   // Create the audio context and decode the clip once, the first time sound is wanted.
   function prepareTypeSound() {
@@ -155,25 +149,6 @@ export default function Contact() {
     stopTypeSoundRef.current = null;
   }
 
-  function handleTorchicClick() {
-    if (torchicPlayingRef.current) return;
-    say("TORCHIC: Tor-chic! Have a good day!");
-
-    // The line shows even when sound is off.
-    if (!isSoundEnabled()) return;
-
-    torchicPlayingRef.current = true;
-    const audio = torchicAudioRef.current;
-    if (!audio) {
-      torchicPlayingRef.current = false;
-      return;
-    }
-    audio.currentTime = 0;
-    audio.play().catch(() => {
-      torchicPlayingRef.current = false;
-    });
-  }
-
   // Start typing when Contact becomes the active scene.
   async function activateTyping() {
     setTypingActive(true);
@@ -256,33 +231,6 @@ export default function Contact() {
       id="contact"
       bgClassName={styles.contactBg}
       contentClassName={styles.contactContent}
-      overlay={
-        <div className={styles.torchicWrap}>
-          <button
-            type="button"
-            className={styles.torchicButton}
-            onClick={handleTorchicClick}
-            aria-label="Torchic"
-          >
-            <Image
-              src="/graphics/torchic.gif"
-              alt=""
-              width={498}
-              height={498}
-              unoptimized
-              className={styles.torchicGif}
-            />
-          </button>
-          <audio
-            ref={torchicAudioRef}
-            src="/sounds/torchic.mp3"
-            preload="none"
-            onEnded={() => {
-              torchicPlayingRef.current = false;
-            }}
-          />
-        </div>
-      }
     >
       <div className={styles.contactScene}>
         <SectionHeading>Contact</SectionHeading>
@@ -398,18 +346,6 @@ export default function Contact() {
                 Resume (PDF) <span aria-hidden="true">↗</span>
               </a>
             </div>
-          </div>
-
-          <div className={styles.cardPortrait}>
-            <Image
-              src="/graphics/hans.png"
-              alt="Hans Chandler Vidaure trading card"
-              // Shown at most 12rem (192px) wide, at the bottom of the page, so it
-              // loads lazily. The source is 768px wide: 4x the display size.
-              width={192}
-              height={269}
-              className={styles.portraitImage}
-            />
           </div>
         </PixelPanel>
       </div>
