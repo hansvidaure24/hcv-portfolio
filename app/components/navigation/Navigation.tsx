@@ -1,6 +1,7 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useScene } from "../scene/SceneProvider";
 import { useMotionSettings } from "../providers/MotionPreferenceProvider";
 import { playSound } from "../../lib/sound";
@@ -11,13 +12,16 @@ import styles from "./Navigation.module.scss";
 type MenuItem = {
   label: string;
   /** The section this row jumps to. */
-  id: string;
+  id?: string;
+  /** Or a page this row opens. */
+  href?: string;
 };
 
 const ITEMS: MenuItem[] = [
   { label: "WORK", id: "projects" },
   { label: "ABOUT", id: "about" },
   { label: "CONTACT", id: "contact" },
+  { label: "RESUME", href: "/resume" },
   { label: "TOP", id: "hero" },
 ];
 
@@ -35,13 +39,15 @@ export default function Navigation() {
   // The site's own setting (which can override the OS), not just prefers-reduced-motion.
   const reduceMotion = motionSettings.reduced;
   const { openOptions } = useOptions();
+  const router = useRouter();
 
   const selectItem = useCallback((index: number) => {
     playSound("/sounds/button.mp3");
     const item = ITEMS[index];
-    if (item?.id) scene?.goTo(item.id);
+    if (item?.href) router.push(item.href);
+    else if (item?.id) scene?.goTo(item.id);
     setMenuOpen(false);
-  }, [scene]);
+  }, [scene, router]);
 
   function showOptions() {
     playSound("/sounds/button.mp3");

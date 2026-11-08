@@ -115,3 +115,10 @@
   }
 }
 
+
+// Printed pages (the resume, case studies) don't need the site's navigation.
+@media print {
+  .bar {
+    display: none;
+  }
+}

@@ -105,6 +105,28 @@
   }
 }
 
+// The sky backdrop behind pages outside the home scene: case studies, the
+// resume and field notes. Leaves room for the fixed top bar.
+@mixin subpage-backdrop {
+  min-height: 100vh;
+  padding: calc(var(--topbar-height) + 1.5rem) clamp(1rem, 4vw, 2rem) 4rem;
+  background-color: var(--sky-1);
+  background-image: radial-gradient(circle at 50% 0%, var(--sky-3) 0%, var(--sky-1) 60%);
+}
+
+// The "← All projects" link above a subpage's panel.
+@mixin subpage-back-link {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  letter-spacing: 0.04em;
+  color: var(--cream);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--gold);
+  }
+}
+
 // Display-font label text.
 @mixin display-text($size: var(--text-sm)) {
   font-family: var(--font-display);

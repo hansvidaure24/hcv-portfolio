@@ -1,8 +1,9 @@
 "use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useScene } from "../scene/SceneProvider";
 import { useOptions } from "../providers/OptionsProvider";
 import { playSound } from "../../lib/sound";
-import { RESUME_URL } from "../../lib/site";
 import styles from "./TopBar.module.scss";
 
 const LINKS = [
@@ -28,6 +29,7 @@ function OptionsIcon() {
 export default function TopBar() {
   const scene = useScene();
   const { openOptions } = useOptions();
+  const pathname = usePathname();
   // On the home page the links jump between sections; elsewhere (case
   // studies, 404) they go back to the home page's sections.
   const base = scene ? "" : "/";
@@ -55,9 +57,10 @@ export default function TopBar() {
             {link.label}
           </a>
         ))}
-        <a href={RESUME_URL} target="_blank" rel="noopener noreferrer" className={styles.resume}>
-          Resume <span aria-hidden="true">↗</span>
-        </a>
+        {/* The Quick view page; the PDF is one click away from there. */}
+        <Link href="/resume" className={styles.resume} aria-current={pathname === "/resume" ? "page" : undefined}>
+          Resume
+        </Link>
         <button
           type="button"
           className={styles.iconButton}

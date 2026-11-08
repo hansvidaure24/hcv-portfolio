@@ -256,3 +256,12 @@ html.reduce-motion {
   0%, 50% { transform: translateY(0); }
   50.01%, 100% { transform: translateY(-3px); }
 }
+// Printing (Ctrl+P on the resume or a case study): black on white.
+@media print {
+  html,
+  body {
+    min-height: 0;
+    background: #fff !important;
+    color: #000;
+  }
+}
