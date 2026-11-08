@@ -5,7 +5,7 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 80;
+  z-index: var(--z-topbar);
   height: var(--topbar-height);
   padding: 0 clamp(1rem, 3vw, 2rem);
 
@@ -79,7 +79,7 @@
 }
 
 // Tablets fit four section links by tightening the bar a little.
-@media (min-width: 761px) and (max-width: 900px) {
+@media (min-width: $bp-nav + 1) and (max-width: $bp-compact) {
   .nav {
     gap: 0.45rem;
   }
@@ -97,7 +97,7 @@
 }
 
 // Phones keep the Pokéball menu for section links.
-@media (max-width: 760px) {
+@media (max-width: $bp-nav) {
   .bar {
     padding: 0 0.75rem;
   }
@@ -133,7 +133,7 @@
   position: fixed;
   top: 0.5rem;
   left: 0.75rem;
-  z-index: 120;
+  z-index: var(--z-skip);
 
   &:not(:focus) {
     width: 1px;

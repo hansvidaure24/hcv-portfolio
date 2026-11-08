@@ -258,7 +258,7 @@
   box-shadow: var(--shadow-sm);
 }
 
-@media (max-width: 640px) {
+@media (max-width: $bp-phone) {
   .cardBody {
     flex-direction: column-reverse;
     align-items: stretch;

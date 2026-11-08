@@ -42,7 +42,7 @@
   height: 100%;
 }
 
-@media (min-width: 768px) {
+@media (min-width: $bp-tablet) {
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -50,7 +50,7 @@
 
 // An odd last card spans both columns (and gets the featured side-by-side
 // layout from ProjectGrid), so the grid never ends on an empty half row.
-@media (min-width: 768px) {
+@media (min-width: $bp-tablet) {
   .cellWide {
     grid-column: 1 / -1;
   }

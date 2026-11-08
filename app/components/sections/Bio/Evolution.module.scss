@@ -9,7 +9,7 @@
   gap: 1.6rem;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: $bp-desktop) {
   .chain {
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 1.4rem;
@@ -39,7 +39,7 @@
   color: var(--accent-green);
 }
 
-@media (min-width: 1024px) {
+@media (min-width: $bp-desktop) {
   .stage:not(:last-child)::after {
     content: '▶';
     left: auto;

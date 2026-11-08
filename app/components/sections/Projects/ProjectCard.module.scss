@@ -12,7 +12,7 @@
 }
 
 // The featured card puts media beside the text on wide screens.
-@media (min-width: 1024px) {
+@media (min-width: $bp-desktop) {
   .featured .layout {
     flex-direction: row;
     align-items: stretch;

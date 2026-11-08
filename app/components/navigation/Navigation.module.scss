@@ -1,8 +1,10 @@
+@use '../../scss/mixins' as *;
+
 .navRoot {
   position: fixed;
   right: clamp(1rem, 3vw, 1.75rem);
   bottom: clamp(1rem, 3vw, 1.75rem);
-  z-index: 100;
+  z-index: var(--z-menu);
 }
 
 .battleMenu {
@@ -116,13 +118,13 @@
 
 // The top bar shows every section link from 761px up, so the Pokéball menu
 // is a phone-only control. On phones it shrinks so it covers less content.
-@media (min-width: 761px) {
+@media (min-width: $bp-nav + 1) {
   .navRoot {
     display: none;
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: $bp-nav) {
   .navRoot {
     right: 0.75rem;
     bottom: 0.75rem;

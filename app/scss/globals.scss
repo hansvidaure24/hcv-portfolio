@@ -56,6 +56,15 @@
   --shadow-md: 4px 4px 0 var(--shadow-color);
   --shadow-lg: 6px 6px 0 var(--shadow-color);
 
+  /* Page-level layers, bottom to top. Stacking inside a component (scenery
+     behind content, a photo over its frame) keeps small local numbers. */
+  --z-topbar: 80;
+  --z-wipe: 90;    /* the section-jump tile wipe covers content, not the bar's menu */
+  --z-menu: 100;   /* the phone menu */
+  --z-skip: 120;   /* "Skip to content" */
+  --z-toast: 150;  /* the dialogue box */
+  --z-dialog: 200; /* contact, Options and Type Matchup dialogs */
+
   /* Motion: UI moves in whole-pixel steps; only scenery and scene changes
      use the smooth curve. Mirrored for Framer Motion in app/lib/motion.ts. */
   --dur-fast: 120ms;

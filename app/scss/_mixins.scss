@@ -2,6 +2,16 @@
 //   @use '../../../scss/mixins' as *;
 // Values come from the tokens in globals.scss.
 
+// Breakpoints shared across components. Sass variables, because CSS custom
+// properties can't be used inside @media. Use `max-width: $bp-x` for "up to"
+// and `min-width: $bp-x + 1` for "above". A tweak that only one component
+// needs (Contact's 1400px, StatBars' 560px, ...) keeps its own value there.
+$bp-phone: 640px;   // phones: compact hero, small section signs
+$bp-nav: 760px;     // up to here the Pokéball menu replaces the top bar's links
+$bp-tablet: 768px;  // two-column grids from here up
+$bp-compact: 900px; // the hero stacks; the top bar tightens above $bp-nav
+$bp-desktop: 1024px; // side-by-side layouts from here up
+
 // The one hover/press rule for every pixel button and clickable chip:
 // lift by --lift on hover (shadow grows to match), press flat on click.
 // $offset is the resting shadow size in px.
