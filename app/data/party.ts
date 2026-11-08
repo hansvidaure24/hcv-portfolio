@@ -24,13 +24,15 @@ export const MOVES: Move[] = [
     name: "Full-stack range",
     type: "RANGE",
     effect: "I can take a feature from the database to the button without handing it off.",
-    proof: "C#/ASP.NET APIs, React UI and SQL at Fiserv; TypeScript, Next.js and Unity on my own projects.",
+    proof:
+      "C#/ASP.NET APIs, React UI and SQL at Fiserv; TypeScript, WebRTC, a Tauri desktop app and Unity on my own projects.",
   },
   {
     name: "Ships solo",
     type: "AUTONOMY",
     effect: "Give me a problem, not a ticket list, and I'll scope it, build it and test it.",
-    proof: "Built SliceOfPie and Wakebound solo, from design to tests: 245 tests on every push, ~58k lines of C#.",
+    proof:
+      "Built SliceOfPie, a behavior tree editor and Pocket Quest solo, from design to CI. Each one runs its tests on every push.",
   },
 ];
 
