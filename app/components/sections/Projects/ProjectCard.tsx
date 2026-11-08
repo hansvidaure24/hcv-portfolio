@@ -5,6 +5,7 @@ import CaseStudyLink from "./CaseStudyLink";
 import { morphNames } from "../../../lib/morphNavigation";
 import type { Project } from "../../../data/projects";
 import type { CiStatus } from "../../../lib/github";
+import { dexEntryFor, dexHash } from "../../../data/dex";
 import styles from "./ProjectCard.module.scss";
 
 export function ProjectLinks({ project, showCaseStudy = true }: { project: Project; showCaseStudy?: boolean }) {
@@ -87,10 +88,23 @@ export default function ProjectCard({ project, featured = Boolean(project.featur
           <ul className={styles.stack} aria-label="Built with">
             {project.stack.map((tech) => {
               const match = highlight.includes(tech);
-              return (
-                <li key={tech} className={match ? styles.chipMatch : undefined}>
+              const entry = dexEntryFor(tech);
+              const label = (
+                <>
                   {tech}
                   {match && <span className={styles.srOnly}> (matches your focus)</span>}
+                </>
+              );
+              return (
+                <li key={tech} className={match ? styles.chipMatch : undefined}>
+                  {/* Opens the skill's proof in About's SKILL DEX. */}
+                  {entry ? (
+                    <a href={dexHash(entry)} className={styles.chipLink}>
+                      {label}
+                    </a>
+                  ) : (
+                    label
+                  )}
                 </li>
               );
             })}

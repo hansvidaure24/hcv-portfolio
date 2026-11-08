@@ -182,6 +182,19 @@
   color: var(--ink-soft);
 }
 
+// A stack chip is a link to that skill in the SKILL DEX; it still looks like a chip.
+.chipLink {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+  }
+}
+
 // A chip that matches the visitor's "Choose your focus" pick.
 .stack li.chipMatch {
   background: var(--gold);

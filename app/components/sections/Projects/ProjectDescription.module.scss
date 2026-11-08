@@ -63,9 +63,15 @@
       white-space: pre;
     }
 
+    // The box scrolls, which would clip the site-wide focus brackets, so a
+    // code block gets a plain gold outline instead.
     &:focus-visible {
       outline: 3px solid var(--gold);
       outline-offset: 2px;
+    }
+
+    &:focus-visible::after {
+      display: none;
     }
   }
 
