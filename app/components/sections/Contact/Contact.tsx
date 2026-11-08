@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import ParallaxSection from "../../scene/ParallaxSection";
 import { useScene } from "../../scene/SceneProvider";
 import { getFirstGesturePromise, isSoundEnabled, playSound } from "../../../lib/sound";
@@ -328,6 +329,25 @@ export default function Contact() {
                   resume.json
                 </a>
                 .
+              </span>
+            </div>
+
+            {/* For hiring managers judging the engineering, not just the projects. */}
+            <div className={styles.cardStatRow}>
+              <span className={styles.cardStatLabel}>THIS SITE</span>
+              <span className={styles.cardStatValue}>
+                <Link href="/notes/how-this-site-is-built" className={styles.cardEmail}>
+                  How it&apos;s built
+                </Link>{" "}
+                (Lighthouse 100, tests, security) ·{" "}
+                <a
+                  href="https://github.com/hansvidaure24/hcv-portfolio"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.cardEmail}
+                >
+                  source on GitHub
+                </a>
               </span>
             </div>
 

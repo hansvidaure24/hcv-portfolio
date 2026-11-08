@@ -24,6 +24,14 @@ export type Note = {
 // Newest first.
 const NOTES: Note[] = [
   {
+    slug: "how-this-site-is-built",
+    title: "How this site is built",
+    summary:
+      "The stack, the design system and what I measured: mobile Lighthouse 100, accessibility and security checks, 81 tests, and the trade-offs behind them.",
+    date: "2026-11-08",
+    published: true,
+  },
+  {
     slug: "ios-pwa-launch-bug",
     title: "The tab bar that floated: debugging an iPhone PWA bug I couldn't reproduce",
     summary:
