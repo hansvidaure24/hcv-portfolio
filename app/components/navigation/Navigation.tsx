@@ -1,43 +1,40 @@
 "use client";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useScene } from "../scene/SceneProvider";
 import { useMotionSettings } from "../providers/MotionPreferenceProvider";
 import { playSound } from "../../lib/sound";
-import { useSoundSetting } from "../../lib/useSoundSetting";
+import { DUR, steps } from "../../lib/motion";
+import { useOptions } from "../providers/OptionsProvider";
 import styles from "./Navigation.module.scss";
 
 type MenuItem = {
   label: string;
-  /** Omit to make the row just close the menu instead of navigating. */
-  id?: string;
+  /** The section this row jumps to. */
+  id: string;
 };
 
 const ITEMS: MenuItem[] = [
   { label: "WORK", id: "projects" },
-  { label: "BIO", id: "about" },
-  { label: "WHY ME", id: "party" },
+  { label: "ABOUT", id: "about" },
   { label: "CONTACT", id: "contact" },
   { label: "TOP", id: "hero" },
-  { label: "→" },
 ];
 
-// The "Reduce motion" and "Sound" rows are appended after ITEMS in both the
-// rendered list and the arrow-key cycle (index ITEMS.length and ITEMS.length + 1),
-// rather than living inside ITEMS itself, since they toggle preferences instead
-// of navigating/closing.
-const MOTION_ROW = ITEMS.length;
-const SOUND_ROW = ITEMS.length + 1;
-const TOTAL_ROWS = ITEMS.length + 2;
+// The OPTIONS row comes after the section rows in both the rendered list and
+// the arrow-key cycle; it opens the shared Options screen instead of navigating.
+const OPTIONS_ROW = ITEMS.length;
+const TOTAL_ROWS = ITEMS.length + 1;
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
-  const reduceMotion = useReducedMotion();
   const scene = useScene();
   const motionSettings = useMotionSettings();
-  const sound = useSoundSetting();
+  // The site's own setting (which can override the OS), not just prefers-reduced-motion.
+  const reduceMotion = motionSettings.reduced;
+  const { openOptions } = useOptions();
 
   const selectItem = useCallback((index: number) => {
     playSound("/sounds/button.mp3");
@@ -46,24 +43,15 @@ export default function Navigation() {
     setMenuOpen(false);
   }, [scene]);
 
-  function toggleReducedMotion() {
+  function showOptions() {
     playSound("/sounds/button.mp3");
-    motionSettings.toggleReduced();
-  }
-
-  function toggleSound() {
-    // Play the click after turning sound on, so the toggle itself is audible.
-    sound.toggle();
-    playSound("/sounds/button.mp3");
+    setMenuOpen(false);
+    openOptions();
   }
 
   function activateRow(index: number) {
-    if (index === MOTION_ROW) {
-      toggleReducedMotion();
-      return;
-    }
-    if (index === SOUND_ROW) {
-      toggleSound();
+    if (index === OPTIONS_ROW) {
+      showOptions();
       return;
     }
     selectItem(index);
@@ -135,10 +123,10 @@ export default function Navigation() {
             aria-label="Site menu"
             className={styles.battleMenu}
             style={{ transformOrigin: "bottom right" }}
-            initial={reduceMotion ? false : { opacity: 0, y: 20, scale: 0.85 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={reduceMotion ? undefined : { opacity: 0, y: 20, scale: 0.85 }}
-            transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduceMotion ? undefined : { opacity: 0, y: 16 }}
+            transition={{ duration: DUR.base, ease: steps(4) }}
           >
             <div className={styles.battleMenuInner}>
               <ul className={styles.menuList}>
@@ -148,8 +136,7 @@ export default function Navigation() {
                       type="button"
                       role="menuitem"
                       className={styles.menuButton}
-                      aria-label={item.id ? undefined : "Close menu"}
-                      whileTap={reduceMotion ? undefined : { scale: 0.94 }}
+                      whileTap={reduceMotion ? undefined : { x: 2 }}
                       onMouseEnter={() => moveTo(i)}
                       onFocus={() => moveTo(i)}
                       onClick={() => selectItem(i)}
@@ -160,48 +147,28 @@ export default function Navigation() {
                       >
                         ▶
                       </span>
-                      {item.id ? item.label : <span className={styles.arrowLabel}>{item.label}</span>}
+                      {item.label}
                     </motion.button>
                   </li>
                 ))}
                 <li className={styles.menuRow}>
                   <motion.button
                     type="button"
-                    role="menuitemcheckbox"
-                    aria-checked={motionSettings.reduced}
+                    role="menuitem"
+                    aria-haspopup="dialog"
                     className={styles.menuButton}
-                    whileTap={reduceMotion ? undefined : { scale: 0.94 }}
-                    onMouseEnter={() => moveTo(MOTION_ROW)}
-                    onFocus={() => moveTo(MOTION_ROW)}
-                    onClick={toggleReducedMotion}
+                    whileTap={reduceMotion ? undefined : { x: 2 }}
+                    onMouseEnter={() => moveTo(OPTIONS_ROW)}
+                    onFocus={() => moveTo(OPTIONS_ROW)}
+                    onClick={showOptions}
                   >
                     <span
-                      className={`${styles.cursor}${activeIndex === MOTION_ROW ? ' ' + styles.cursorActive : ''}`}
+                      className={`${styles.cursor}${activeIndex === OPTIONS_ROW ? ' ' + styles.cursorActive : ''}`}
                       aria-hidden="true"
                     >
                       ▶
                     </span>
-                    REDUCE MOTION: {motionSettings.reduced ? "ON" : "OFF"}
-                  </motion.button>
-                </li>
-                <li className={styles.menuRow}>
-                  <motion.button
-                    type="button"
-                    role="menuitemcheckbox"
-                    aria-checked={sound.enabled}
-                    className={styles.menuButton}
-                    whileTap={reduceMotion ? undefined : { scale: 0.94 }}
-                    onMouseEnter={() => moveTo(SOUND_ROW)}
-                    onFocus={() => moveTo(SOUND_ROW)}
-                    onClick={toggleSound}
-                  >
-                    <span
-                      className={`${styles.cursor}${activeIndex === SOUND_ROW ? ' ' + styles.cursorActive : ''}`}
-                      aria-hidden="true"
-                    >
-                      ▶
-                    </span>
-                    SOUND: {sound.enabled ? "ON" : "OFF"}
+                    OPTIONS
                   </motion.button>
                 </li>
               </ul>
