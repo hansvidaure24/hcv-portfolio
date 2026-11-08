@@ -1,0 +1,83 @@
+.stats {
+  margin-bottom: 1.5rem;
+  padding: 0.9rem 1rem;
+  background: var(--paper);
+  border: var(--border-thin) solid var(--ink);
+  box-shadow: var(--shadow-xs);
+}
+
+.title {
+  margin-bottom: 0.7rem;
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  letter-spacing: 0.05em;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.stat {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) 1fr;
+  align-items: center;
+  gap: 0.3rem 1rem;
+}
+
+@media (max-width: 560px) {
+  .stat {
+    grid-template-columns: 1fr;
+  }
+}
+
+.label {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.valueRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+// An HP-style bar: ink frame, stepped fill.
+.bar {
+  flex: 1;
+  height: 0.75rem;
+  background: rgb(var(--ink-rgb) / 0.12);
+  border: var(--border-thin) solid var(--ink);
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  // Replays each time its tab is shown (display: none → block restarts it).
+  animation: fillIn 0.6s steps(6, end) both;
+}
+
+@keyframes fillIn {
+  from { width: 0; }
+}
+
+.high {
+  background: #22a35a;
+}
+
+.mid {
+  background: var(--gold-deep);
+}
+
+.low {
+  background: var(--red);
+}
+
+.value {
+  // Wide enough for "100/100", so every bar has the same length.
+  min-width: 7ch;
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  text-align: right;
+}

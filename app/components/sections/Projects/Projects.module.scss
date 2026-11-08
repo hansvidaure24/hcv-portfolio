@@ -1,5 +1,7 @@
+@use '../../../scss/mixins' as *;
+
 .projectsBg {
-  background-color: #4FAE87;
+  background-color: var(--grass);
   overflow: hidden;
 }
 
@@ -11,7 +13,7 @@
   background-size: 96px 96px, 28px 28px;
   background-image:
     url("/graphics/grass-speckle.svg"),
-    repeating-linear-gradient(115deg, #46A17C 0px, #46A17C 14px, #4FAE87 14px, #4FAE87 28px);
+    repeating-linear-gradient(115deg, var(--grass-stripe) 0px, var(--grass-stripe) 14px, var(--grass) 14px, var(--grass) 28px);
   image-rendering: pixelated;
   filter: brightness(0.6);
   transform: perspective(100rem) rotateX(20deg) scale(1.35);
@@ -36,6 +38,10 @@
   gap: 1.75rem;
 }
 
+.cell {
+  height: 100%;
+}
+
 @media (min-width: 768px) {
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -45,9 +51,9 @@
 .drafts {
   align-self: flex-start;
   padding: 0.75rem 1rem;
-  color: #2A2A1E;
-  background: #FDE68A;
-  border: 3px dashed #2A2A1E;
+  color: var(--ink);
+  background: var(--gold);
+  border: 3px dashed var(--ink);
 
   ul {
     margin-top: 0.4rem;
@@ -62,7 +68,66 @@
 }
 
 .draftsTitle {
-  font-family: 'PokePixel', monospace;
-  font-size: 1.1rem;
+  font-family: var(--font-display);
+  font-size: var(--text-md);
   letter-spacing: 0.04em;
+}
+
+/* --- Choose your focus --- */
+.focus {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1rem;
+  padding: 0.7rem 0.9rem;
+  @include pixel-panel;
+}
+
+.focusLabel {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+}
+
+.focusOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.focusOption {
+  @include pixel-button(var(--paper), var(--ink), var(--text-sm), 2px);
+  padding: 0.3rem 0.7rem;
+
+  &[aria-checked="true"] {
+    background: var(--gold);
+    transform: translate(var(--lift), var(--lift));
+    box-shadow: none;
+  }
+}
+
+/* The C# / .NET note */
+.noteBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+
+  p {
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--ink-soft);
+    user-select: text;
+    -webkit-user-select: text;
+  }
+}
+
+.noteLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.noteLink {
+  @include pixel-button(var(--paper), var(--ink), var(--text-md), 3px);
 }

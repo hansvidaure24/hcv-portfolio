@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import type { FocusId } from "./focus";
 
 export type ProjectLink = {
   label: "Live demo" | "Live site" | "Code" | "Write-up" | "Release";
@@ -18,10 +19,14 @@ export type Project = {
   /** At most three proof points on the card. */
   metrics: string[];
   cover?: { src: string; alt: string; width: number; height: number };
-  /** Plays in place of the cover. Small clips autoplay in view; large ones wait for a click. */
-  video?: { src: string; autoplay?: boolean };
+  /** Demo clip. Desktop plays it muted while on screen; phones and reduced motion get a Play button. */
+  video?: { src: string };
   links: ProjectLink[];
   featured?: boolean;
+  /** How relevant this project is to each "Choose your focus" option (higher first; missing = not a match). */
+  focus?: Partial<Record<Exclude<FocusId, "all">, number>>;
+  /** Base-stat bars on the case study, only for numbers with a real maximum. */
+  stats?: { label: string; value: number; max: number }[];
   /** Drafts are hidden from the grid and their case-study page returns 404. */
   published: boolean;
 };
@@ -42,7 +47,7 @@ const PROJECTS: Project[] = [
       width: 1200,
       height: 1200,
     },
-    video: { src: "/projects/sliceofpie/demo.mp4", autoplay: true },
+    video: { src: "/projects/sliceofpie/demo.mp4" },
     links: [
       { label: "Live demo", href: "https://slice-of-pie-xi.vercel.app" },
       { label: "Code", href: "https://github.com/hansvidaure24/SliceOfPie" },
@@ -52,6 +57,13 @@ const PROJECTS: Project[] = [
       },
     ],
     featured: true,
+    focus: { fullstack: 3, dotnet: 1 },
+    stats: [
+      { label: "Lighthouse performance", value: 99, max: 100 },
+      { label: "Lighthouse accessibility", value: 100, max: 100 },
+      { label: "Receipts read right: PaddleOCR", value: 16, max: 16 },
+      { label: "Receipts read right: Tesseract.js", value: 4, max: 16 },
+    ],
     published: true,
   },
   {
@@ -63,7 +75,7 @@ const PROJECTS: Project[] = [
     role: "Solo: design, build and test",
     stack: ["JavaScript + JSDoc", "Canvas 2D", "Tauri (Rust)", "Unity / C#", "GitHub Actions"],
     metrics: [
-      "13 enemy trees proven to match the game's runtime",
+      "14 enemy trees proven to match the game's runtime",
       "Saved edits reach a running game within a second",
       "2.5 MB desktop installer, same code in the browser",
     ],
@@ -78,6 +90,8 @@ const PROJECTS: Project[] = [
       { label: "Live demo", href: "https://hansvidaure24.github.io/Behavior-Tree-Editor/editor/" },
       { label: "Code", href: "https://github.com/hansvidaure24/Behavior-Tree-Editor" },
     ],
+    focus: { games: 3, dotnet: 2, fullstack: 1 },
+    stats: [{ label: "Enemy trees matching the game runtime", value: 14, max: 14 }],
     published: true,
   },
   {
@@ -99,11 +113,12 @@ const PROJECTS: Project[] = [
       width: 1280,
       height: 800,
     },
-    video: { src: "/projects/pocket-quest/demo.mp4", autoplay: true },
+    video: { src: "/projects/pocket-quest/demo.mp4" },
     links: [
       { label: "Live demo", href: "https://hansvidaure24.github.io/Pocket-Quest/" },
       { label: "Code", href: "https://github.com/hansvidaure24/Pocket-Quest" },
     ],
+    focus: { fullstack: 2, games: 2 },
     published: true,
   },
   {
@@ -117,6 +132,7 @@ const PROJECTS: Project[] = [
     metrics: ["Multi-minute timeouts → normal load times", "10–40x less data per request", "5 account types, 2 cursor strategies"],
     links: [],
     // Publish once the write-up is cleared against Fiserv's disclosure policy.
+    focus: { dotnet: 4, fullstack: 2 },
     published: false,
   },
   {
@@ -130,6 +146,7 @@ const PROJECTS: Project[] = [
     metrics: ["20 high-severity CVEs closed", "17 projects upgraded together", "Became the team's upgrade playbook"],
     links: [],
     // Publish once the write-up is cleared against Fiserv's disclosure policy.
+    focus: { dotnet: 4 },
     published: false,
   },
   {
@@ -150,6 +167,7 @@ const PROJECTS: Project[] = [
       { label: "Live site", href: "https://rjn-portfolio.vercel.app" },
       { label: "Code", href: "https://github.com/hansvidaure24/rjn-portfolio" },
     ],
+    focus: { fullstack: 2 },
     published: true,
   },
   {
@@ -168,6 +186,7 @@ const PROJECTS: Project[] = [
     },
     video: { src: "/projects/nebula/demo.mp4" },
     links: [{ label: "Code", href: "https://github.com/hansvidaure24/Nebula" }],
+    focus: { games: 3, dotnet: 3 },
     published: true,
   },
 ];
