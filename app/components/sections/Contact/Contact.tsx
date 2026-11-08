@@ -20,7 +20,7 @@ export const Socials = {
     },
     {
       name: 'LinkedIn',
-      url: 'https://www.linkedin.com/in/hans-chandler-vidaure-0a1797190',
+      url: 'https://www.linkedin.com/in/hans-chandler-vidaure/',
       icon: '/icons/icon-linkedin.png',
       description: 'LinkedIn: Connect with me professionally',
     },
