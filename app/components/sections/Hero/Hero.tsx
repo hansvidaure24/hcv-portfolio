@@ -1,11 +1,12 @@
 "use client";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import ParallaxSection from "../../scene/ParallaxSection";
 import { useScene } from "../../scene/SceneProvider";
 import { playSound } from "../../../lib/sound";
 import { CONTACT_EMAIL, RESUME_URL } from "../../../lib/site";
 import { useDialogue } from "../../providers/DialogueProvider";
+import { useMotionSettings } from "../../providers/MotionPreferenceProvider";
 import styles from "./Hero.module.scss";
 
 // Outcomes, not volume counts: the two Fiserv results with a clear before/after.
@@ -47,6 +48,32 @@ export default function Hero() {
   const scene = useScene();
   const { say } = useDialogue();
   const emailRef = useRef<HTMLAnchorElement>(null);
+  const backdropRef = useRef<SVGSVGElement>(null);
+  const { reduced } = useMotionSettings();
+
+  // Every looping animation on the page lives here (clouds, water, sparkles,
+  // the scan line, the blinking cursor). Pause them all while the hero is off
+  // screen, so the rest of the page costs no animation work. The SMIL water
+  // also stays still under reduced motion, which the CSS rule can't reach.
+  useEffect(() => {
+    const section = document.getElementById("hero");
+    const svg = backdropRef.current;
+    if (!section) return;
+    let onScreen = true;
+    const apply = () => {
+      section.toggleAttribute("data-offscreen", !onScreen);
+      if (!svg) return;
+      if (onScreen && !reduced) svg.unpauseAnimations();
+      else svg.pauseAnimations();
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      onScreen = Boolean(entry?.isIntersecting);
+      apply();
+    });
+    observer.observe(section);
+    apply();
+    return () => observer.disconnect();
+  }, [reduced]);
 
   async function copyEmail() {
     let ok = false;
@@ -84,7 +111,7 @@ export default function Hero() {
       overlay={
         <>
         <div className={styles.animatedBackdrop} aria-hidden="true">
-          <svg viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" role="presentation">
+          <svg ref={backdropRef} viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" role="presentation">
             <defs>
               <linearGradient id="emeraldSky" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0" style={{ stopColor: "var(--sky-1)" }} />

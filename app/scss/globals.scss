@@ -284,6 +284,14 @@ html.reduce-motion {
   outline-offset: 2px;
 }
 
+/* Hero scenery off screen (data-offscreen, set by Hero.tsx): every looping
+   animation on the page is in the hero, so pausing them here leaves the rest
+   of the page with no idle animation work. Global because CSS Modules can't
+   target an attribute on another component's element. */
+#hero[data-offscreen] * {
+  animation-play-state: paused !important;
+}
+
 @keyframes focusBracketBob {
   0%, 50% { transform: translateY(0); }
   50.01%, 100% { transform: translateY(-3px); }
