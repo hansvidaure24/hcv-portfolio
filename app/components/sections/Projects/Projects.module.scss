@@ -107,7 +107,14 @@
   }
 }
 
-/* The C# / .NET note */
+// Type Matchup's door: gold, like the site's other "do this" buttons.
+.matchupButton {
+  @include pixel-button(var(--gold), var(--ink), var(--text-sm), 2px);
+  padding: 0.3rem 0.7rem;
+  margin-left: auto;
+}
+
+/* The C# / .NET note, and the matchup note */
 .noteBody {
   display: flex;
   flex-direction: column;
