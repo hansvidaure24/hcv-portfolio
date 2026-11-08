@@ -1,0 +1,136 @@
+<!doctype html>
+<!--
+  Source for public/resume/hcv-resume.pdf. Edit this file, then rebuild the PDF from the repo root with Edge:
+  "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --headless=new --no-pdf-header-footer --print-to-pdf="%CD%\public\resume\hcv-resume.pdf" "%CD%\resume\hcv-resume.html"
+  Check it is still one page before committing.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hans Chandler Vidaure - Resume</title>
+<style>
+  @page { size: Letter; margin: 0.45in 0.55in; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+    font-size: 9.9pt;
+    line-height: 1.19;
+    color: #141414;
+    -webkit-print-color-adjust: exact;
+  }
+  @media screen {
+    body { width: 8.5in; min-height: 11in; padding: 0.45in 0.55in; background: #fff; }
+  }
+  a { color: inherit; text-decoration: none; }
+  header { text-align: center; margin-bottom: 6pt; }
+  h1 { font-size: 20pt; letter-spacing: 0.04em; margin: 0 0 2pt; font-weight: 700; }
+  .contact { font-size: 9.6pt; color: #333; margin: 0; }
+  .contact span + span::before { content: "\00b7"; margin: 0 5pt; color: #888; }
+  h2 {
+    font-size: 10.4pt; text-transform: uppercase; letter-spacing: 0.08em;
+    margin: 7pt 0 2.5pt; padding-bottom: 1.2pt; border-bottom: 0.8pt solid #444;
+  }
+  p { margin: 0; }
+  .entry { margin-top: 4pt; }
+  .entry:first-of-type { margin-top: 0; }
+  .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12pt; }
+  .row .what { font-weight: 700; }
+  .row .what .sub { font-weight: 400; }
+  .row .when { white-space: nowrap; color: #333; }
+  .sep { color: #999; font-weight: 400; margin: 0 1pt; }
+  .stack { font-style: italic; color: #333; font-weight: 400; }
+  ul { margin: 1.5pt 0 0; padding-left: 13pt; }
+  li { margin: 0 0 1.2pt; padding-left: 1pt; }
+  .links a { border-bottom: 0.6pt solid #999; }
+  .skills p { margin-bottom: 1.2pt; }
+  .skills b { font-weight: 700; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Hans Chandler Vidaure</h1>
+  <p class="contact">
+    <span>Flushing, NY</span><span>[phone removed]</span><span><a href="mailto:contact@hansvidaure.dev">contact@hansvidaure.dev</a></span><span><a href="https://hansvidaure.dev">hansvidaure.dev</a></span><span><a href="https://github.com/hansvidaure24">github.com/hansvidaure24</a></span><span><a href="https://www.linkedin.com/in/hans-chandler-vidaure-0a1797190/">LinkedIn</a></span>
+  </p>
+</header>
+
+<h2>Summary</h2>
+<p>Full-stack engineer with 3 years at Fiserv building and securing online banking features for retail and business customers in C#, ASP.NET, React and SQL. Independently ships tested web apps and developer tools in TypeScript, JavaScript and Unity.</p>
+
+<h2>Experience</h2>
+<div class="entry">
+  <div class="row"><span class="what">Fiserv <span class="sub">&mdash; Software Development Engineer, Berkeley Heights, NJ</span></span><span class="when">Jan 2024 &ndash; Present</span></div>
+  <ul>
+    <li>Shipped features and third-party integrations, building REST APIs and React UI in C#, ASP.NET and SQL</li>
+    <li>Automated data maintenance with SQL scripts and a scheduled sync job, replacing manual work</li>
+    <li>Worked production incidents from triage to resolution, and wrote runbooks for the team</li>
+  </ul>
+</div>
+<div class="entry">
+  <div class="row"><span class="what">Fiserv <span class="sub">&mdash; Technical Trainee, Berkeley Heights, NJ</span></span><span class="when">Sep 2023 &ndash; Jan 2024</span></div>
+  <ul>
+    <li>Built a full-stack capstone in five months (React, Spring Boot REST API, MySQL) and presented it for stakeholder sign-off</li>
+  </ul>
+</div>
+<div class="entry">
+  <div class="row"><span class="what">CUNY Building Performance Lab <span class="sub">&mdash; Student Intern, New York, NY</span></span><span class="when">Nov 2022 &ndash; May 2023</span></div>
+  <ul>
+    <li>Charted energy flow through heating and cooling systems in NYC buildings and presented ways to cut energy use</li>
+  </ul>
+</div>
+
+<h2>Projects</h2>
+<div class="entry">
+  <div class="row"><span class="what">SliceOfPie <span class="sub">&mdash; offline receipt-scanning bill splitter</span> <span class="sep">|</span> <span class="stack">TypeScript, ONNX Runtime, Workbox, Playwright</span></span><span class="when links"><a href="https://slice-of-pie-xi.vercel.app">Live</a> &middot; <a href="https://github.com/hansvidaure24/SliceOfPie">Code</a></span></div>
+  <ul>
+    <li>Chose PaddleOCR over Tesseract.js after it read every price on 16/16 test receipts vs 4/16; runs offline in a Web Worker</li>
+    <li>Reached 99 Lighthouse mobile performance with ~25 KB of startup JavaScript; 245 Vitest and Playwright tests run on every push</li>
+  </ul>
+</div>
+<div class="entry">
+  <div class="row"><span class="what">Behavior Tree Editor <span class="sub">&mdash; visual editor and Unity runtime for game AI</span> <span class="sep">|</span> <span class="stack">JavaScript, Canvas, Tauri (Rust), C#</span></span><span class="when links"><a href="https://hansvidaure24.github.io/Behavior-Tree-Editor/editor/">Live</a> &middot; <a href="https://github.com/hansvidaure24/Behavior-Tree-Editor">Code</a></span></div>
+  <ul>
+    <li>Built a canvas node-graph editor with a replay debugger and sub-second hot reload into Unity, shipped as a 2.5 MB desktop app</li>
+    <li>Drives my Unity game&rsquo;s enemy AI; a test runs 13 trees through both runtimes for 9,000 ticks each and diffs every command</li>
+  </ul>
+</div>
+<div class="entry">
+  <div class="row"><span class="what">Pocket Quest <span class="sub">&mdash; phone-controlled co-op tactics RPG</span> <span class="sep">|</span> <span class="stack">JavaScript, WebRTC, Cloudflare Workers, Playwright</span></span><span class="when links"><a href="https://hansvidaure24.github.io/Pocket-Quest/">Live</a> &middot; <a href="https://github.com/hansvidaure24/Pocket-Quest">Code</a></span></div>
+  <ul>
+    <li>Built host-authoritative multiplayer over three fallback transports with auto-reconnect; players join by QR code, no install</li>
+    <li>Wrote a CI self-play test in which bots play a full campaign in headless Chromium on every push</li>
+  </ul>
+</div>
+<div class="entry">
+  <div class="row"><span class="what">RJN Visuals <span class="sub">&mdash; client site for a photo and video studio</span> <span class="sep">|</span> <span class="stack">Next.js, React, TypeScript, SCSS</span></span><span class="when links"><a href="https://rjn-portfolio.vercel.app">Live</a> &middot; <a href="https://github.com/hansvidaure24/rjn-portfolio">Code</a></span></div>
+  <ul>
+    <li>Designed and built a video-heavy portfolio and booking site with case studies, YouTube/Instagram embeds and a contact form</li>
+  </ul>
+</div>
+
+<h2>Education</h2>
+<div class="entry">
+  <div class="row"><span class="what">Queens College (CUNY) <span class="sub">&mdash; B.A. Computer Science, Minor in French &middot; Pi Delta Phi French Honor Society</span></span><span class="when">Aug 2019 &ndash; Sep 2023</span></div>
+</div>
+
+<h2>Leadership</h2>
+<div class="entry">
+  <div class="row"><span class="what">QC TROPA <span class="sub">&mdash; Founder and President</span></span><span class="when">Aug 2022 &ndash; May 2023</span></div>
+  <ul><li>Grew a Filipino cultural organization from zero to 30&ndash;40 active members; ran 8 meetings, 6 workshops and an annual festival</li></ul>
+</div>
+<div class="entry">
+  <div class="row"><span class="what">Couples for Christ Youth <span class="sub">&mdash; Household Leader</span></span><span class="when">Apr 2015 &ndash; Present</span></div>
+  <ul><li>Lead monthly youth programs and leadership training, and run community service initiatives</li></ul>
+</div>
+
+<h2>Skills</h2>
+<div class="skills">
+  <p><b>Languages and frameworks:</b> C#, TypeScript, JavaScript, SQL, Java, Python &middot; ASP.NET, .NET, React, Next.js, Spring Boot, Unity</p>
+  <p><b>Testing and DevOps:</b> Playwright, Vitest, unit testing, Git, GitHub Actions (CI/CD), Vercel, Cloudflare Workers</p>
+  <p><b>Data and tools:</b> SQL Server, MySQL, JIRA, Confluence, ReSharper</p>
+  <p><b>Practices:</b> REST API design, application security, secure code review, Agile/Scrum</p>
+  <p><b>Spoken:</b> English, Tagalog (native) &middot; French (intermediate; minor) &middot; Spanish (basic)</p>
+</div>
+</body>
+</html>
