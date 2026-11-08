@@ -44,6 +44,8 @@
 
 // The cream panel surface (matches PixelPanel).
 @mixin pixel-panel($shadow: var(--shadow-md)) {
+  // Focus brackets and field rings inside a cream panel are ink, not gold.
+  --focus-ring: var(--ink);
   color: var(--ink);
   background: var(--cream);
   border: var(--border) solid var(--ink);

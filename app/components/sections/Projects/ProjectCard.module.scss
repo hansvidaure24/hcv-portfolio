@@ -183,7 +183,18 @@
 }
 
 // A stack chip is a link to that skill in the SKILL DEX; it still looks like a chip.
+// A linked chip moves the chip's padding onto the link, so the whole chip is
+// the tap target (24px tall, WCAG 2.5.8) instead of the 15px line of text.
+// Looks the same as before.
+.stack li:has(> .chipLink) {
+  padding: 0;
+}
+
 .chipLink {
+  display: flex;
+  align-items: center;
+  min-height: 1.5rem;
+  padding: 0.2rem 0.55rem;
   color: inherit;
   text-decoration: none;
 

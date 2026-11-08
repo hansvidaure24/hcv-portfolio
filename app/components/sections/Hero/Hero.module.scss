@@ -261,11 +261,10 @@
   line-height: 0.9;
   letter-spacing: 0.03em;
 
+  // Solid fill, not a clipped gradient: `background-clip: text` with a
+  // transparent fill could get Chromium/Edge stuck mid-selection, which is why
+  // the whole site used to be unselectable. Recruiters copy this name.
   color: var(--title-yellow);
-  background: linear-gradient(180deg, #fff9d6 0%, var(--title-yellow) 35%, #f7b500 72%, #eab308 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
   -webkit-text-stroke: clamp(2px, 0.4vw, 4px) #1d4ed8;
   paint-order: stroke fill;
   text-shadow:
@@ -458,21 +457,30 @@
 }
 
 /* Phones: a small Pokédex above the name, so the photo and the pitch both
-   fit in the first screens instead of the photo trailing far below. */
+   fit in the first screens instead of the photo trailing far below. Sized so
+   the two calls to action also land on a 375×740 first screen. */
 @media (max-width: 640px) {
   .heroGrid {
-    gap: 1.25rem;
+    gap: 1rem;
   }
   .heroPhoto {
     order: -1;
     justify-self: start;
-    width: min(32vw, 120px);
+    width: min(26vw, 96px);
   }
 }
 
 @media (max-width: 640px) {
+  .heroText {
+    gap: 0.85rem;
+  }
+  // Still two lines (the pixel font is about 10em wide for the full name),
+  // just shorter ones, so the calls to action reach a 375×740 first screen.
   .title {
-    font-size: clamp(2.8rem, 15vw, 4rem);
+    font-size: clamp(2.2rem, 11vw, 4rem);
+  }
+  .role {
+    font-size: var(--text-md);
   }
   .statusChip,
   .proofStrip {
