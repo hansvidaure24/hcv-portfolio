@@ -185,7 +185,9 @@ const PROJECTS: Project[] = [
       height: 720,
     },
     video: { src: "/projects/nebula/demo.mp4" },
-    links: [{ label: "Code", href: "https://github.com/hansvidaure24/Nebula" }],
+    // The repo (hansvidaure24/Nebula) is private, so a Code link 404s for visitors.
+    // Add { label: "Code", href: "https://github.com/hansvidaure24/Nebula" } back if it goes public.
+    links: [],
     focus: { games: 3, dotnet: 3 },
     published: true,
   },
