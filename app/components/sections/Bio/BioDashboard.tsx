@@ -2,6 +2,7 @@ import LazyVideo from "../../ui/LazyVideo";
 import PixelPanel from "../../ui/PixelPanel";
 import SectionHeading from "../../ui/SectionHeading";
 import Evolution from "./Evolution";
+import TrainerStats from "./TrainerStats";
 import { MOVES, TESTIMONIALS } from "../../../data/party";
 import styles from "./BioDashboard.module.scss";
 
@@ -42,6 +43,7 @@ export default function BioDashboard() {
           </div>
           <p className={styles.name}>HANS VIDAURE</p>
           <p className={styles.tagline}>{LOOKING_FOR}</p>
+          <TrainerStats />
           <div>
             <p className={styles.label}>INTERESTS</p>
             <ul className={styles.chips}>

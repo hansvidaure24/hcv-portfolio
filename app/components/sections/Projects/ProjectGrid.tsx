@@ -7,6 +7,7 @@ import { useDialogue } from "../../providers/DialogueProvider";
 import { useScene } from "../../scene/SceneProvider";
 import { FOCUSES, FOCUS_STACK, FOCUS_STORAGE_KEY, type FocusId } from "../../../data/focus";
 import type { Project } from "../../../data/projects";
+import type { CiStatus } from "../../../lib/github";
 import { DUR, steps } from "../../../lib/motion";
 import { playSound } from "../../../lib/sound";
 import { RESUME_URL } from "../../../lib/site";
@@ -34,7 +35,7 @@ function orderFor(projects: Project[], focus: FocusId): Project[] {
  * (the top one gets the wide layout), highlights matching stack chips, and is
  * remembered for the next visit.
  */
-export default function ProjectGrid({ projects }: { projects: Project[] }) {
+export default function ProjectGrid({ projects, ci = {} }: { projects: Project[]; ci?: Record<string, CiStatus> }) {
   const [focus, setFocus] = useState<FocusId>("all");
   const [animateLayout, setAnimateLayout] = useState(false);
   const optionRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -132,13 +133,13 @@ export default function ProjectGrid({ projects }: { projects: Project[] }) {
 
       <LayoutGroup>
         <motion.div key={first.slug} layoutId={first.slug} transition={animateLayout ? LAYOUT_TRANSITION : INSTANT_LAYOUT} className={styles.cell}>
-          <ProjectCard project={first} featured highlight={highlight} />
+          <ProjectCard project={first} featured highlight={highlight} ci={ci[first.slug]} />
         </motion.div>
         {rest.length > 0 && (
           <div className={styles.grid}>
             {rest.map((project) => (
               <motion.div key={project.slug} layoutId={project.slug} transition={animateLayout ? LAYOUT_TRANSITION : INSTANT_LAYOUT} className={styles.cell}>
-                <ProjectCard project={project} featured={false} highlight={highlight} />
+                <ProjectCard project={project} featured={false} highlight={highlight} ci={ci[project.slug]} />
               </motion.div>
             ))}
           </div>
