@@ -1,46 +1,28 @@
+@use '../../scss/mixins' as *;
+
 .page {
   min-height: 100vh;
-  padding: 1.25rem clamp(1rem, 4vw, 2rem) 4rem;
-  background-color: #0a2e45;
-  background-image: radial-gradient(circle at 50% 0%, #146b6a 0%, #0a2e45 60%);
+  // Room for the fixed top bar.
+  padding: calc(var(--topbar-height) + 1.5rem) clamp(1rem, 4vw, 2rem) 4rem;
+  background-color: var(--sky-1);
+  background-image: radial-gradient(circle at 50% 0%, var(--sky-3) 0%, var(--sky-1) 60%);
 }
 
 .topNav {
   max-width: 50rem;
-  margin: 0 auto 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.back,
-.brand {
-  font-family: 'PokePixel', monospace;
-  font-size: 1.25rem;
-  letter-spacing: 0.04em;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-@media (max-width: 480px) {
-  .back,
-  .brand {
-    font-size: 1.05rem;
-  }
+  margin: 0 auto 1rem;
 }
 
 .back {
-  color: #F8EFD8;
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  letter-spacing: 0.04em;
+  color: var(--cream);
+  text-decoration: none;
 
   &:hover {
-    color: #FDE68A;
+    color: var(--gold);
   }
-}
-
-.brand {
-  color: #fde047;
-  text-shadow: 2px 2px 0 #1e3a8a;
 }
 
 .article {
@@ -56,24 +38,24 @@
 }
 
 .kind {
-  font-family: 'PokePixel', monospace;
-  font-size: 1rem;
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #6b5a3a;
+  color: var(--ink-muted);
 }
 
 .title {
-  font-family: 'PokePixel', monospace;
-  font-size: clamp(2.4rem, 5vw, 3.4rem);
+  font-family: var(--font-display);
+  font-size: clamp(var(--text-xl), 5vw, var(--text-2xl));
   line-height: 1;
   letter-spacing: 0.02em;
 }
 
 .tagline {
-  font-size: 1.15rem;
+  font-size: var(--text-md);
   line-height: 1.55;
-  color: #3a3a2c;
+  color: var(--ink-soft);
   user-select: text;
   -webkit-user-select: text;
 }
@@ -82,8 +64,8 @@
   display: grid;
   gap: 0.4rem;
   padding: 0.75rem 0;
-  border-top: 2px solid rgba(42, 42, 30, 0.2);
-  border-bottom: 2px solid rgba(42, 42, 30, 0.2);
+  border-top: 2px solid rgb(var(--ink-rgb) / 0.2);
+  border-bottom: 2px solid rgb(var(--ink-rgb) / 0.2);
 
   div {
     display: flex;
@@ -92,14 +74,14 @@
 
   dt {
     flex: 0 0 4rem;
-    font-family: 'PokePixel', monospace;
-    font-size: 1.05rem;
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
     letter-spacing: 0.04em;
-    color: #6b5a3a;
+    color: var(--ink-muted);
   }
 
   dd {
-    font-size: 0.95rem;
+    font-size: var(--text-sm);
     line-height: 1.5;
     user-select: text;
     -webkit-user-select: text;
@@ -113,15 +95,15 @@
 .cta {
   margin-top: 2.5rem;
   padding-top: 1.25rem;
-  border-top: 3px solid #2A2A1E;
+  border-top: 3px solid var(--ink);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
 .ctaTitle {
-  font-family: 'PokePixel', monospace;
-  font-size: 1.6rem;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
   letter-spacing: 0.03em;
 }
 
@@ -132,33 +114,21 @@
 }
 
 .ctaButton {
-  font-family: 'PokePixel', monospace;
-  font-size: 1.15rem;
-  letter-spacing: 0.04em;
-  padding: 0.4rem 0.9rem;
-  color: #F8EFD8;
-  background: #2A2A1E;
-  text-decoration: none;
-  border: 3px solid #2A2A1E;
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.35);
+  @include pixel-button(var(--ink), var(--cream), var(--text-md), 3px);
   overflow-wrap: anywhere;
-
-  &:hover {
-    background: #4A3620;
-  }
 }
 
 .draftBanner {
   margin-bottom: 1.25rem;
   padding: 0.6rem 0.8rem;
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   line-height: 1.45;
-  color: #2A2A1E;
-  background: #FDE68A;
-  border: 2px dashed #2A2A1E;
+  color: var(--ink);
+  background: var(--gold);
+  border: 2px dashed var(--ink);
 
   code {
-    font-family: ui-monospace, monospace;
+    font-family: var(--font-mono);
     font-size: 0.85em;
   }
 }

@@ -1,6 +1,7 @@
-import Link from "next/link";
 import PixelPanel from "../../ui/PixelPanel";
 import ProjectMedia from "./ProjectMedia";
+import CaseStudyLink from "./CaseStudyLink";
+import { morphNames } from "../../../lib/morphNavigation";
 import type { Project } from "../../../data/projects";
 import styles from "./ProjectCard.module.scss";
 
@@ -8,9 +9,9 @@ export function ProjectLinks({ project, showCaseStudy = true }: { project: Proje
   return (
     <div className={styles.links}>
       {showCaseStudy && (
-        <Link href={`/projects/${project.slug}`} className={styles.primaryLink}>
+        <CaseStudyLink href={`/projects/${project.slug}`} className={styles.primaryLink}>
           Case study <span aria-hidden="true">→</span>
-        </Link>
+        </CaseStudyLink>
       )}
       {project.links.map((link) => (
         <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className={styles.link}>
@@ -21,9 +22,15 @@ export function ProjectLinks({ project, showCaseStudy = true }: { project: Proje
   );
 }
 
-export default function ProjectCard({ project }: { project: Project }) {
-  const featured = Boolean(project.featured);
+type ProjectCardProps = {
+  project: Project;
+  /** The wide layout for the first card; defaults to the project's own `featured` flag. */
+  featured?: boolean;
+  /** Stack chips to highlight for the visitor's chosen focus. */
+  highlight?: string[];
+};
 
+export default function ProjectCard({ project, featured = Boolean(project.featured), highlight = [] }: ProjectCardProps) {
   return (
     <PixelPanel as="article" className={`${styles.card} ${featured ? styles.featured : ""}`}>
       <div className={styles.layout}>
@@ -33,6 +40,7 @@ export default function ProjectCard({ project }: { project: Project }) {
             cover={project.cover}
             video={project.video}
             sizes={featured ? "(max-width: 1024px) 90vw, 480px" : "(max-width: 768px) 90vw, 520px"}
+            transitionName={morphNames.media(project.slug)}
           />
         )}
 
@@ -41,7 +49,9 @@ export default function ProjectCard({ project }: { project: Project }) {
             <span className={styles.kindBall} aria-hidden="true" />
             {project.kind}
           </p>
-          <h3 className={styles.title}>{project.title}</h3>
+          <h3 className={styles.title} style={{ viewTransitionName: morphNames.title(project.slug) }}>
+            {project.title}
+          </h3>
           <p className={styles.tagline}>{project.tagline}</p>
 
           {project.metrics.length > 0 && (
@@ -53,9 +63,15 @@ export default function ProjectCard({ project }: { project: Project }) {
           )}
 
           <ul className={styles.stack} aria-label="Built with">
-            {project.stack.map((tech) => (
-              <li key={tech}>{tech}</li>
-            ))}
+            {project.stack.map((tech) => {
+              const match = highlight.includes(tech);
+              return (
+                <li key={tech} className={match ? styles.chipMatch : undefined}>
+                  {tech}
+                  {match && <span className={styles.srOnly}> (matches your focus)</span>}
+                </li>
+              );
+            })}
           </ul>
 
           <ProjectLinks project={project} />
