@@ -48,11 +48,17 @@
   letter-spacing: 0.03em;
   color: var(--ink);
   text-align: left;
+  text-decoration: none; // rows are links now, as well as the OPTIONS button
   cursor: pointer;
 
   &:hover,
   &:focus-visible {
     background: rgb(var(--ink-rgb) / 0.08);
+  }
+
+  // The little press nudge the rows used to get from Framer Motion.
+  &:active {
+    transform: translateX(2px);
   }
 }
 

@@ -63,6 +63,10 @@ export default function TopBar() {
             {link.label}
           </a>
         ))}
+        {/* Field notes: writing is proof too, so it gets a place in the bar. */}
+        <Link href="/notes" className={styles.link} aria-current={pathname.startsWith("/notes") ? "page" : undefined}>
+          Notes
+        </Link>
         {/* The Quick view page; the PDF is one click away from there. */}
         <Link href="/resume" className={styles.resume} aria-current={pathname === "/resume" ? "page" : undefined}>
           Resume
