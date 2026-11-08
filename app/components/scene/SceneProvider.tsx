@@ -1,16 +1,20 @@
 "use client";
-import { useAnimate, motion } from "framer-motion";
-import { ReactNode, createContext, useContext, useEffect, useRef, useState } from "react";
+import { useAnimate } from "framer-motion";
+import { ReactNode, RefObject, createContext, useContext, useEffect, useRef, useState } from "react";
 import { useMotionSettings } from "../providers/MotionPreferenceProvider";
+import { DUR, steps } from "../../lib/motion";
 import styles from "./SceneTransition.module.scss";
 
 type SceneContextValue = {
   activeIndex: number;
   activeId: string;
-  isDesktop: boolean;
   sectionIds: string[];
   /** Calls onStart when navigation begins and resolves with whether it ran. */
   goTo: (id: string, onStart?: () => void) => Promise<boolean>;
+  /** The section a jump is landing on, so it can skip its own fade-in. */
+  jumpTargetRef: RefObject<string | null>;
+  /** Flips the tiles in to cover the screen, e.g. before leaving for a case study. */
+  cover: () => Promise<void>;
 };
 
 const SceneContext = createContext<SceneContextValue | null>(null);
@@ -19,22 +23,22 @@ export function useScene() {
   return useContext(SceneContext);
 }
 
-const EASE = [0.65, 0, 0.35, 1] as const;
+// The same tile grid as the hero's intro wipe, so the site has one transition.
+export const TILE_COLS = 10;
+export const TILE_ROWS = 6;
+const TILES = Array.from({ length: TILE_COLS * TILE_ROWS }, (_, i) => i);
+
+// Tiles flip in a diagonal sweep from the top-left, each in three steps.
+const TILE_STEP = 0.018;
+const diagonalDelay = (i: number) => ((i % TILE_COLS) + Math.floor(i / TILE_COLS)) * TILE_STEP;
+const TILE_TRANSITION = { duration: DUR.fast, ease: steps(3), delay: diagonalDelay };
 
 export default function SceneProvider({ sectionIds, children }: { sectionIds: string[]; children: ReactNode }) {
-  const [isDesktop, setIsDesktop] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const { reduced: reduceMotion } = useMotionSettings();
-  const [scope, animate] = useAnimate();
+  const [scope, animate] = useAnimate<HTMLDivElement>();
   const lockedRef = useRef(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)");
-    setIsDesktop(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
+  const jumpTargetRef = useRef<string | null>(null);
 
   // The page scrolls normally, so the active section is whichever one
   // crosses the middle of the viewport.
@@ -73,27 +77,38 @@ export default function SceneProvider({ sectionIds, children }: { sectionIds: st
 
     onStart?.();
 
-    // Mobile and reduced motion just scroll; desktop hides the jump behind the band wipe.
-    if (!isDesktop || reduceMotion || !scope.current) {
-      target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    // Reduced motion: jump straight there.
+    if (reduceMotion || !scope.current) {
+      jumpTargetRef.current = id;
+      target.scrollIntoView({ behavior: "instant", block: "start" });
       setActiveIndex(nextIndex);
       syncHash(id);
+      window.setTimeout(() => {
+        jumpTargetRef.current = null;
+      }, 200);
       return true;
     }
 
     lockedRef.current = true;
     // Always release the navigation lock, including when animation fails.
     try {
-      await animate(scope.current, { x: "0vw", skewX: -12 }, { duration: 0.35, ease: EASE });
+      await animate("span", { scale: 1 }, TILE_TRANSITION);
+      // The landing section shows up already in place: the wipe is the transition.
+      jumpTargetRef.current = id;
       target.scrollIntoView({ behavior: "instant", block: "start" });
       setActiveIndex(nextIndex);
       syncHash(id);
-      await animate(scope.current, { x: "200vw", skewX: -12 }, { duration: 0.35, ease: EASE });
-      animate(scope.current, { x: "-200vw", skewX: -12 }, { duration: 0 });
+      await animate("span", { scale: 0 }, TILE_TRANSITION);
       return true;
     } finally {
+      jumpTargetRef.current = null;
       lockedRef.current = false;
     }
+  }
+
+  async function cover() {
+    if (reduceMotion || !scope.current) return;
+    await animate("span", { scale: 1 }, TILE_TRANSITION);
   }
 
   // Handle browser back and forward.
@@ -107,21 +122,18 @@ export default function SceneProvider({ sectionIds, children }: { sectionIds: st
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sectionIds, isDesktop, reduceMotion]);
+  }, [sectionIds, reduceMotion]);
 
   return (
     <SceneContext.Provider
-      value={{ activeIndex, activeId: sectionIds[activeIndex] ?? "", isDesktop, sectionIds, goTo }}
+      value={{ activeIndex, activeId: sectionIds[activeIndex] ?? "", sectionIds, goTo, jumpTargetRef, cover }}
     >
       {children}
-      {isDesktop && (
-        <motion.div
-          ref={scope}
-          className={styles.band}
-          style={{ x: "-200vw", skewX: -12 }}
-          aria-hidden="true"
-        />
-      )}
+      <div ref={scope} className={styles.tiles} aria-hidden="true">
+        {TILES.map((i) => (
+          <span key={i} className={styles.tile} />
+        ))}
+      </div>
     </SceneContext.Provider>
   );
 }

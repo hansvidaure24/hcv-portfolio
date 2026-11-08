@@ -1,11 +1,19 @@
-.band {
+/* The section-jump wipe: the same 10×6 tile grid as the hero's intro, in
+   ink. Tiles rest at scale 0 and SceneProvider flips them in and out. */
+.tiles {
   position: fixed;
-  left: -40vw;
-  top: -20vh;
-  width: 180vw;
-  height: 140vh;
+  inset: 0;
   z-index: 90;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(6, 1fr);
   pointer-events: none;
-  background: #0e1439;
-  box-shadow: inset 10px 0 0 0 #F8EFD8;
+}
+
+.tile {
+  display: block;
+  background: var(--ink);
+  transform: scale(0);
+  // Slight overlap so no seams show between neighbouring tiles.
+  margin: -1px;
 }

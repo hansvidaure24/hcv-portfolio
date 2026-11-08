@@ -1,10 +1,11 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import ParallaxSection from "../../scene/ParallaxSection";
 import { useScene } from "../../scene/SceneProvider";
 import { playSound } from "../../../lib/sound";
 import { CONTACT_EMAIL, RESUME_URL } from "../../../lib/site";
+import { useDialogue } from "../../providers/DialogueProvider";
 import styles from "./Hero.module.scss";
 
 const PROOF_POINTS = ["Fiserv · 3 yrs", "C# · .NET · React · SQL", "Online banking, API to UI"];
@@ -37,17 +38,14 @@ function PixelCloud({ x, y, scale = 1, fill, opacity }: { x: number; y: number; 
 const introTiles = Array.from({ length: TILE_COLS * TILE_ROWS }, (_, i) => {
   const col = i % TILE_COLS;
   const row = Math.floor(i / TILE_COLS);
-  const delay = (col + row) * 0.03;
+  const delay = (col + row) * 0.018; // same diagonal timing as the section-jump wipe
   return { key: i, delay };
 });
 
 export default function Hero() {
   const scene = useScene();
-  const [copied, setCopied] = useState(false);
-  const copiedTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const { say } = useDialogue();
   const emailRef = useRef<HTMLAnchorElement>(null);
-
-  useEffect(() => () => clearTimeout(copiedTimer.current), []);
 
   async function copyEmail() {
     let ok = false;
@@ -67,11 +65,13 @@ export default function Hero() {
         ok = document.execCommand("copy");
       }
     }
-    if (!ok) return;
+    if (!ok) {
+      // The fallback still left the address selected, so say how to finish.
+      say("Your browser blocked copying. The email is selected: press Ctrl+C (or ⌘C) to copy it.");
+      return;
+    }
     playSound("/sounds/button.mp3");
-    setCopied(true);
-    clearTimeout(copiedTimer.current);
-    copiedTimer.current = setTimeout(() => setCopied(false), 1500);
+    say("Hans's email was copied to your clipboard!");
   }
 
   return (
@@ -86,38 +86,32 @@ export default function Hero() {
           <svg viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" role="presentation">
             <defs>
               <linearGradient id="emeraldSky" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#0a2e45" />
-                <stop offset="0.45" stopColor="#0f4d5e" />
-                <stop offset="0.75" stopColor="#146b6a" />
-                <stop offset="1" stopColor="#1c8a72" />
+                <stop offset="0" style={{ stopColor: "var(--sky-1)" }} />
+                <stop offset="0.45" style={{ stopColor: "var(--sky-2)" }} />
+                <stop offset="0.75" style={{ stopColor: "var(--sky-3)" }} />
+                <stop offset="1" style={{ stopColor: "var(--sky-4)" }} />
               </linearGradient>
               <radialGradient id="emeraldGlow" cx="0.5" cy="0.28" r="0.55">
-                <stop offset="0" stopColor="#fde68a" stopOpacity="0.55" />
-                <stop offset="0.5" stopColor="#facc15" stopOpacity="0.14" />
-                <stop offset="1" stopColor="#facc15" stopOpacity="0" />
+                <stop offset="0" style={{ stopColor: "var(--sky-glow)" }} stopOpacity="0.55" />
+                <stop offset="0.5" style={{ stopColor: "var(--sky-glow-2)" }} stopOpacity="0.14" />
+                <stop offset="1" style={{ stopColor: "var(--sky-glow-2)" }} stopOpacity="0" />
               </radialGradient>
               <linearGradient id="mountainFar" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#0e5a52" />
-                <stop offset="1" stopColor="#0a3d3f" />
+                <stop offset="0" style={{ stopColor: "var(--hill-far-1)" }} />
+                <stop offset="1" style={{ stopColor: "var(--hill-far-2)" }} />
               </linearGradient>
               <linearGradient id="mountainNear" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#0f3d2a" />
-                <stop offset="1" stopColor="#08251a" />
+                <stop offset="0" style={{ stopColor: "var(--hill-near-1)" }} />
+                <stop offset="1" style={{ stopColor: "var(--hill-near-2)" }} />
               </linearGradient>
               <linearGradient id="waterGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#123f66" />
-                <stop offset="1" stopColor="#04142b" />
+                <stop offset="0" style={{ stopColor: "var(--water-1)" }} />
+                <stop offset="1" style={{ stopColor: "var(--water-2)" }} />
               </linearGradient>
               <linearGradient id="waterGradientDeep" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#0d3355" />
-                <stop offset="1" stopColor="#020a1a" />
+                <stop offset="0" style={{ stopColor: "var(--water-deep-1)" }} />
+                <stop offset="1" style={{ stopColor: "var(--water-deep-2)" }} />
               </linearGradient>
-              <filter id="softBlur" x="-40%" y="-40%" width="180%" height="180%">
-                <feGaussianBlur stdDeviation="10" />
-              </filter>
-              <filter id="cloudBlur" x="-40%" y="-40%" width="180%" height="180%">
-                <feGaussianBlur stdDeviation="3" />
-              </filter>
             </defs>
 
             {/* Sky */}
@@ -127,7 +121,7 @@ export default function Hero() {
             </g>
 
             {/* Distant clouds, GBA pixel-block style, kept off the vertical center */}
-            <g className={styles.layerCloudsFar} filter="url(#cloudBlur)" opacity="0.5">
+            <g className={styles.layerCloudsFar} shapeRendering="crispEdges" opacity="0.5">
               <g className={styles.cloudDriftSlow} transform="translate(60,90)">
                 <rect x="0" y="0" width="120" height="18" fill="#eaf6f2" />
                 <rect x="24" y="-14" width="80" height="18" fill="#eaf6f2" />
@@ -140,7 +134,7 @@ export default function Hero() {
               </g>
             </g>
 
-            <g className={styles.layerCloudsNear} filter="url(#cloudBlur)" opacity="0.65">
+            <g className={styles.layerCloudsNear} shapeRendering="crispEdges" opacity="0.65">
               <g className={styles.cloudDriftMed} transform="translate(-40,180)">
                 <rect x="0" y="0" width="100" height="16" fill="#f8fffb" />
                 <rect x="20" y="-12" width="64" height="16" fill="#f8fffb" />
@@ -153,39 +147,21 @@ export default function Hero() {
 
             {/* Far jungle silhouette hugging the edges, leaving the center clear */}
             <g className={styles.layerMountainsFar} opacity="0.55">
-              <path fill="url(#mountainFar)" d="M0 460 C60 400 150 430 220 470 C300 340 380 380 430 440 L430 1000 L0 1000 Z">
-                <animate attributeName="d" dur="46s" repeatCount="indefinite" values="M0 460 C60 400 150 430 220 470 C300 340 380 380 430 440 L430 1000 L0 1000 Z;M0 470 C60 415 150 445 220 460 C300 355 380 395 430 450 L430 1000 L0 1000 Z;M0 460 C60 400 150 430 220 470 C300 340 380 380 430 440 L430 1000 L0 1000 Z" />
-              </path>
-              <path fill="url(#mountainFar)" d="M1600 470 C1540 400 1460 435 1400 480 C1320 350 1230 390 1175 450 L1175 1000 L1600 1000 Z">
-                <animate attributeName="d" dur="52s" repeatCount="indefinite" values="M1600 470 C1540 400 1460 435 1400 480 C1320 350 1230 390 1175 450 L1175 1000 L1600 1000 Z;M1600 460 C1540 415 1460 450 1400 470 C1320 365 1230 405 1175 460 L1175 1000 L1600 1000 Z;M1600 470 C1540 400 1460 435 1400 480 C1320 350 1230 390 1175 450 L1175 1000 L1600 1000 Z" />
-              </path>
+              <path fill="url(#mountainFar)" d="M0 460 C60 400 150 430 220 470 C300 340 380 380 430 440 L430 1000 L0 1000 Z" />
+              <path fill="url(#mountainFar)" d="M1600 470 C1540 400 1460 435 1400 480 C1320 350 1230 390 1175 450 L1175 1000 L1600 1000 Z" />
             </g>
 
             {/* Nearer forest silhouette framing the sides */}
             <g className={styles.layerMountainsNear} opacity="0.85">
-              <path fill="url(#mountainNear)" d="M0 620 C40 560 120 590 170 640 C230 560 300 580 345 630 L345 1000 L0 1000 Z">
-                <animate attributeName="d" dur="38s" repeatCount="indefinite" values="M0 620 C40 560 120 590 170 640 C230 560 300 580 345 630 L345 1000 L0 1000 Z;M0 610 C40 575 120 605 170 625 C230 575 300 595 345 615 L345 1000 L0 1000 Z;M0 620 C40 560 120 590 170 640 C230 560 300 580 345 630 L345 1000 L0 1000 Z" />
-              </path>
-              <path fill="url(#mountainNear)" d="M1600 630 C1560 565 1480 600 1430 645 C1370 570 1300 590 1255 635 L1255 1000 L1600 1000 Z">
-                <animate attributeName="d" dur="41s" repeatCount="indefinite" values="M1600 630 C1560 565 1480 600 1430 645 C1370 570 1300 590 1255 635 L1255 1000 L1600 1000 Z;M1600 615 C1560 585 1480 610 1430 630 C1370 585 1300 600 1255 620 L1255 1000 L1600 1000 Z;M1600 630 C1560 565 1480 600 1430 645 C1370 570 1300 590 1255 635 L1255 1000 L1600 1000 Z" />
-              </path>
-            </g>
-
-            {/* Soft glow shapes drifting deep in the background, kept subtle behind text */}
-            <g filter="url(#softBlur)" opacity="0.3">
-              <ellipse fill="#2dd4bf" cx="230" cy="860" rx="200" ry="90" className={styles.floatSlow} />
-              <ellipse fill="#facc15" cx="1370" cy="840" rx="170" ry="80" className={styles.floatSlowReverse} />
+              <path fill="url(#mountainNear)" d="M0 620 C40 560 120 590 170 640 C230 560 300 580 345 630 L345 1000 L0 1000 Z" />
+              <path fill="url(#mountainNear)" d="M1600 630 C1560 565 1480 600 1430 645 C1370 570 1300 590 1255 635 L1255 1000 L1600 1000 Z" />
             </g>
 
             {/* Water band along the base, dark and moving */}
             <g className={styles.layerWater}>
-              <path fill="url(#waterGradientDeep)" d="M0 780 C240 740 460 810 700 770 C920 735 1100 800 1340 765 C1450 748 1540 775 1600 762 L1600 1000 L0 1000 Z">
-                <animate attributeName="d" dur="22s" repeatCount="indefinite" values="M0 780 C240 740 460 810 700 770 C920 735 1100 800 1340 765 C1450 748 1540 775 1600 762 L1600 1000 L0 1000 Z;M0 770 C240 800 460 740 700 790 C920 815 1100 750 1340 785 C1450 800 1540 765 1600 780 L1600 1000 L0 1000 Z;M0 780 C240 740 460 810 700 770 C920 735 1100 800 1340 765 C1450 748 1540 775 1600 762 L1600 1000 L0 1000 Z" />
-              </path>
-              <path fill="url(#waterGradient)" d="M0 860 C220 820 420 900 640 850 C860 800 1000 900 1220 855 C1380 825 1500 870 1600 850 L1600 1000 L0 1000 Z">
-                <animate attributeName="d" dur="18s" repeatCount="indefinite" values="M0 860 C220 820 420 900 640 850 C860 800 1000 900 1220 855 C1380 825 1500 870 1600 850 L1600 1000 L0 1000 Z;M0 850 C220 890 420 830 640 870 C860 900 1000 830 1220 870 C1380 890 1500 840 1600 865 L1600 1000 L0 1000 Z;M0 860 C220 820 420 900 640 850 C860 800 1000 900 1220 855 C1380 825 1500 870 1600 850 L1600 1000 L0 1000 Z" />
-              </path>
-              <path fill="#1b5c8c" opacity="0.55" d="M0 900 C260 875 460 930 700 905 C920 882 1120 930 1350 900 C1450 888 1550 905 1600 895 L1600 1000 L0 1000 Z">
+              <path fill="url(#waterGradientDeep)" d="M0 780 C240 740 460 810 700 770 C920 735 1100 800 1340 765 C1450 748 1540 775 1600 762 L1600 1000 L0 1000 Z" />
+              <path fill="url(#waterGradient)" d="M0 860 C220 820 420 900 640 850 C860 800 1000 900 1220 855 C1380 825 1500 870 1600 850 L1600 1000 L0 1000 Z" />
+              <path style={{ fill: "var(--water-3)" }} opacity="0.55" d="M0 900 C260 875 460 930 700 905 C920 882 1120 930 1350 900 C1450 888 1550 905 1600 895 L1600 1000 L0 1000 Z">
                 <animate attributeName="d" dur="14s" repeatCount="indefinite" values="M0 900 C260 875 460 930 700 905 C920 882 1120 930 1350 900 C1450 888 1550 905 1600 895 L1600 1000 L0 1000 Z;M0 895 C260 915 460 880 700 900 C920 918 1120 885 1350 905 C1450 912 1550 895 1600 900 L1600 1000 L0 1000 Z;M0 900 C260 875 460 930 700 905 C920 882 1120 930 1350 900 C1450 888 1550 905 1600 895 L1600 1000 L0 1000 Z" />
               </path>
               {/* Glinting wave crests that drift sideways for a "moving water" read */}
@@ -244,12 +220,12 @@ export default function Hero() {
             <span className={styles.statusDot} aria-hidden="true" />
             Open to full-stack roles · NYC / remote
           </p>
-          <h1 className={`${styles.title} ${styles.reveal1}`}>HANS VIDAURE</h1>
-          <p className={`${styles.role} ${styles.reveal2}`}>
+          <h1 className={styles.title}>HANS VIDAURE</h1>
+          <p className={styles.role}>
             Full-Stack Software Engineer
             <span className={styles.roleStack}>C# / .NET · React · SQL</span>
           </p>
-          <p className={`${styles.summary} ${styles.reveal2}`}>
+          <p className={styles.summary}>
             3 years shipping and securing features on Fiserv&apos;s online banking platform. On the side I build
             well-tested apps and tools end to end: an offline receipt-scanning bill splitter, a behavior tree editor
             for game AI, and a party RPG you play from your phone.
@@ -276,7 +252,7 @@ export default function Hero() {
               {CONTACT_EMAIL}
             </a>
             <button type="button" className={styles.copyBtn} onClick={copyEmail}>
-              <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>
+              Copy
             </button>
           </div>
           <ul className={`${styles.proofStrip} ${styles.reveal3}`}>
