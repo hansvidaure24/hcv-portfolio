@@ -89,9 +89,13 @@ The contact form (mail icon in the Contact section) posts to
    terminal for `console.error` output if something fails (the API route
    never leaks Resend's raw error details to the browser).
 
-The route also has a basic in-memory rate limiter (5 submissions per IP per
-10 minutes) that's process-local — it resets on every deploy and doesn't
-share state across serverless instances. See the comment at the top of
+Spam protection, all free: a hidden honeypot field, a check that rejects
+forms sent less than 3 seconds after opening (`MIN_FILL_MS` in
+[`app/lib/validateContact.ts`](app/lib/validateContact.ts)), and a visitor
+receipt that never repeats what they typed, so the form can't relay
+someone's text to another inbox. The route also has a basic in-memory rate
+limiter (5 submissions per IP per 10 minutes) that's process-local — it
+resets on every deploy and doesn't share state across serverless instances. See the comment at the top of
 [`app/api/contact/route.ts`](app/api/contact/route.ts) if this ever needs to
 hold up under real abuse.
 

@@ -33,6 +33,12 @@ export default function ContactComputer({ open, onClose }: { open: boolean; onCl
   const { say } = useDialogue();
   useDialogFocus(open, dialogRef, firstFieldRef);
 
+  // When the form opened, for the server's "filled in too fast" check (MIN_FILL_MS).
+  const openedAtRef = useRef(0);
+  useEffect(() => {
+    if (open) openedAtRef.current = performance.now();
+  }, [open]);
+
   function resetAndClose() {
     setValues(EMPTY_VALUES);
     setHoneypot("");
@@ -81,7 +87,11 @@ export default function ContactComputer({ open, onClose }: { open: boolean; onCl
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, company: honeypot }),
+        body: JSON.stringify({
+          ...values,
+          company: honeypot,
+          elapsedMs: Math.round(performance.now() - openedAtRef.current),
+        }),
       });
       const data = await res.json().catch(() => null);
 
