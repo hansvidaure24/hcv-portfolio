@@ -123,6 +123,8 @@ export async function POST(req: NextRequest) {
       ip: ip === "unknown" ? undefined : ip,
     });
     if (!check.ok) {
+      // Cloudflare's error code only: nothing the visitor typed.
+      console.error("Turnstile check failed:", check.reason);
       if (check.reason === "missing-or-invalid-token" && !process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
         console.error("TURNSTILE_SECRET_KEY is set but NEXT_PUBLIC_TURNSTILE_SITE_KEY isn't, so the form can't get a token.");
       }
