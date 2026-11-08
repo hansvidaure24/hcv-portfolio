@@ -3,7 +3,7 @@ export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://hans-portf
 
 export const SITE_NAME = "Hans Vidaure — Full-Stack Software Engineer";
 export const SITE_DESCRIPTION =
-  "Full-stack engineer at Fiserv building secure online banking features in C#/.NET, React and SQL. Projects, case studies and resume.";
+  "Full-stack engineer at Fiserv building online banking features in C#/.NET, React and SQL. Projects, case studies and resume.";
 
 export const CONTACT_EMAIL = "contact@hansvidaure.dev";
 export const RESUME_URL = "/resume/hcv-resume.pdf";

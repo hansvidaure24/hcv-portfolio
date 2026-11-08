@@ -55,8 +55,9 @@ function Entry({ entry }: { entry: ResumeEntry }) {
  */
 export default function ResumePage() {
   return (
+    <>
+    <TopBar />
     <main className={styles.page}>
-      <TopBar />
       <nav className={styles.topNav} aria-label="Breadcrumb">
         <Link href="/" className={styles.back}>
           <span aria-hidden="true">←</span> Home
@@ -132,5 +133,6 @@ export default function ResumePage() {
         </section>
       </PixelPanel>
     </main>
+    </>
   );
 }

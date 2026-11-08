@@ -9,11 +9,12 @@ import { useDialogue } from "../../providers/DialogueProvider";
 import { useMotionSettings } from "../../providers/MotionPreferenceProvider";
 import styles from "./Hero.module.scss";
 
-// Outcomes, not volume counts: the two Fiserv results with a clear before/after.
+// What was built, without performance or security figures: those need Fiserv's
+// review before they can be public.
 const PROOF_POINTS = [
   "Online banking features from API to UI",
   "Peer review, regression testing and release",
-  "Production support from triage to resolution",
+  "Shipped REST APIs and React UI",
 ];
 
 const TILE_COLS = 10;
@@ -261,17 +262,17 @@ export default function Hero() {
             <span className={styles.roleStack}>C# / .NET · React · SQL</span>
           </p>
           <p className={styles.summary}>
-            3 years at Fiserv building and securing online banking features.
+            3 years at Fiserv building online banking features in C#/ASP.NET, React and SQL.
           </p>
           <div className={`${styles.ctaRow} ${styles.reveal3}`}>
             <a
-              href="#projects"
+              href="#experience"
               className={styles.primaryCta}
               onClick={(e) => {
                 if (!scene) return;
                 e.preventDefault();
                 // Play the sound only when navigation actually starts.
-                scene.goTo("projects", () => playSound("/sounds/press-start.mp3"));
+                scene.goTo("experience", () => playSound("/sounds/press-start.mp3"));
               }}
             >
               See my work <span className={styles.ctaCursor} aria-hidden="true">▶</span>
@@ -284,7 +285,7 @@ export default function Hero() {
             <a ref={emailRef} href={`mailto:${CONTACT_EMAIL}`} className={styles.email}>
               {CONTACT_EMAIL}
             </a>
-            <button type="button" className={styles.copyBtn} onClick={copyEmail}>
+            <button type="button" className={styles.copyBtn} data-track="email_copy" onClick={copyEmail}>
               Copy
             </button>
           </div>

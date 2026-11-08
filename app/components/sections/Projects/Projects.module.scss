@@ -8,7 +8,7 @@
 .projectsBg::before {
   content: '';
   position: absolute;
-  inset: -35% -15% -15%;
+  inset: 0;
   background-repeat: repeat, repeat;
   background-size: 96px 96px, 28px 28px;
   background-image:
@@ -16,8 +16,6 @@
     repeating-linear-gradient(115deg, var(--grass-stripe) 0px, var(--grass-stripe) 14px, var(--grass) 14px, var(--grass) 28px);
   image-rendering: pixelated;
   filter: brightness(0.6);
-  transform: perspective(100rem) rotateX(20deg) scale(1.35);
-  transform-origin: center bottom;
 }
 
 .projectsContent {

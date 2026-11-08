@@ -30,7 +30,7 @@ export const RESUME = {
     { label: "LinkedIn", href: "https://www.linkedin.com/in/hans-chandler-vidaure/" },
   ] satisfies ResumeLink[],
   summary:
-    "Full-stack engineer with 3 years at Fiserv building and securing online banking features for retail and business customers in C#, ASP.NET, React and SQL. Independently ships tested web apps and developer tools in TypeScript, JavaScript and Unity.",
+    "Full-stack engineer with 3 years at Fiserv building online banking features for retail and business customers in C#, ASP.NET, React and SQL. Independently ships tested web apps and developer tools in TypeScript, JavaScript and Unity.",
   experience: [
     {
       name: "Fiserv",

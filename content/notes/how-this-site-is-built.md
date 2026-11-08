@@ -33,7 +33,7 @@ What it took:
 ## Secure by default
 
 - A Content-Security-Policy that allows only this site, Google Analytics and Cloudflare Turnstile, plus `nosniff`, a frame ban, a referrer policy and a permissions policy.
-- The contact form checks for bots with Cloudflare Turnstile, a hidden honeypot field and a minimum fill time, and rate-limits each IP address. It escapes everything it puts into an email, and the receipt it sends never repeats what the visitor typed, so nobody can use the form to send their own text to someone else's inbox.
+- The contact form checks for bots with Cloudflare Turnstile, a hidden honeypot field and a minimum fill time, and rate-limits each IP address. It escapes everything it puts into an email and only ever emails me, so nobody can use the form to send their own text to someone else's inbox.
 - Secrets live only on the server.
 
 ## Tested

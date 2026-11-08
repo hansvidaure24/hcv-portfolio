@@ -112,7 +112,7 @@
   align-self: flex-end;
 }
 
-@media (max-width: 420px) {
+@media (max-width: 26.25em) {
   .row {
     grid-template-columns: 1fr;
   }

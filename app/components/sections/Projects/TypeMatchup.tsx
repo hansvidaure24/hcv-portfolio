@@ -6,6 +6,7 @@ import PixelPanel from "../../ui/PixelPanel";
 import { useDialogFocus } from "../../../lib/useDialogFocus";
 import { useDialogue } from "../../providers/DialogueProvider";
 import { playSound } from "../../../lib/sound";
+import { track } from "../../../lib/analytics";
 import { dexHash, type DexEvidence } from "../../../data/dex";
 import { matchPost, summaryLine, type MatchRow, type Matchup, type Section } from "../../../lib/matchup";
 import { applyMatchup, type AppliedMatchup } from "./matchupApply";
@@ -27,12 +28,6 @@ Nice to have:
 - Docker
 - Azure
 - Playwright or Cypress`;
-
-declare global {
-  interface Window {
-    gtag?: (...args: unknown[]) => void;
-  }
-}
 
 function Proof({ evidence, onLeave }: { evidence: DexEvidence; onLeave: () => void }) {
   const link = evidence.href.startsWith("/") ? (
@@ -174,7 +169,7 @@ export default function TypeMatchup({ open, onClose, projects, current, onApply 
     setCopyFallback(null);
     say(summaryLine(m));
     // Analytics learns that a matchup ran, never what the post said.
-    window.gtag?.("event", "matchup_run", { skills: m.rows.length });
+    track("matchup_run", { skills: m.rows.length });
     requestAnimationFrame(() => summaryRef.current?.focus());
   }
 

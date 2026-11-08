@@ -218,15 +218,15 @@ export default function ProjectGrid({ projects, ci = {} }: { projects: Project[]
           </p>
           <div className={styles.noteLinks}>
             <a
-              href="#about"
+              href="#experience"
               className={styles.noteLink}
               onClick={(e) => {
                 if (!scene) return;
                 e.preventDefault();
-                scene.goTo("about", () => playSound("/sounds/button.mp3"));
+                scene.goTo("experience", () => playSound("/sounds/button.mp3"));
               }}
             >
-              Fiserv work <span aria-hidden="true">▼</span>
+              Fiserv work <span aria-hidden="true">▲</span>
             </a>
             <a href={RESUME_URL} target="_blank" rel="noopener noreferrer" className={styles.noteLink}>
               Resume (PDF) <span aria-hidden="true">↗</span>

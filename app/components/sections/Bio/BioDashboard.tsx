@@ -12,25 +12,15 @@ import styles from "./BioDashboard.module.scss";
 // The skills panel's title bar counts (app/data/dex.ts).
 const CORE_COUNT = CORE_DEX_IDS.length;
 
-const INTERESTS = ["Full-stack engineering", "Application security", "Game dev (hobby)"];
-
 const LOOKING_FOR = "Looking for a team where I own features end to end, from API to UI, and grow toward a senior role.";
-
-// Strongest first: outcomes with a before/after, then scope, then volume.
-// Same facts as the resume (app/data/resume.ts); keep the two in sync.
-const QUEST_LOG = [
-  "Shipped features and third-party integrations: REST APIs and React UI in C#, ASP.NET and SQL",
-  "Worked production incidents from triage to resolution, and wrote runbooks for the team",
-  "Automated data maintenance with SQL scripts and a scheduled sync job",
-];
 
 // Teammate quotes stay hidden in production until there is at least one.
 const SHOW_QUOTES_PLACEHOLDER = process.env.NODE_ENV === "development";
 
 /**
- * About: what Hans has shipped and why hire him (moves) first, then who he is
- * (trainer card, skills) and how he got here (the evolution timeline). The old
- * separate "Why me" section now lives here, so nothing is said twice.
+ * About: why hire him (moves) first, then who he is (trainer card, skills) and
+ * his education and the role he wants next. What he has shipped is in the
+ * Experience section above, so nothing is said twice.
  */
 export default function BioDashboard({ trainer }: { trainer: TrainerData | null }) {
   const showQuotes = TESTIMONIALS.length > 0 || SHOW_QUOTES_PLACEHOLDER;
@@ -40,16 +30,7 @@ export default function BioDashboard({ trainer }: { trainer: TrainerData | null 
       <SectionHeading>About</SectionHeading>
 
       <div className={styles.grid}>
-        {/* Work first: it's the evidence a recruiter came for. */}
-        <PixelPanel title="What I’ve shipped at Fiserv" bodyClassName={styles.panelBody}>
-          <ul className={styles.questLog}>
-            {QUEST_LOG.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </PixelPanel>
-
-        <PixelPanel title="Why hire me" bodyClassName={styles.panelBody}>
+        <PixelPanel title="Why hire me" className={styles.wide} bodyClassName={styles.panelBody}>
           <ol className={styles.moves}>
             {MOVES.map((move) => (
               <li key={move.name} className={styles.move}>
@@ -73,14 +54,6 @@ export default function BioDashboard({ trainer }: { trainer: TrainerData | null 
           <p className={styles.name}>HANS VIDAURE</p>
           <p className={styles.tagline}>{LOOKING_FOR}</p>
           <TrainerStats stats={trainer} />
-          <div>
-            <p className={styles.label}>INTERESTS</p>
-            <ul className={styles.chips}>
-              {INTERESTS.map((interest) => (
-                <li key={interest}>{interest}</li>
-              ))}
-            </ul>
-          </div>
         </PixelPanel>
 
         <PixelPanel title="Skills, with proof" titleAside={`${CORE_COUNT} CORE · ${DEX.length} IN ALL`} bodyClassName={styles.panelBody}>

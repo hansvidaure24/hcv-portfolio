@@ -4,9 +4,11 @@ import { usePathname } from "next/navigation";
 import { useScene } from "../scene/SceneProvider";
 import { useOptions } from "../providers/OptionsProvider";
 import { playSound } from "../../lib/sound";
+import Navigation from "./Navigation";
 import styles from "./TopBar.module.scss";
 
 const LINKS = [
+  { label: "Experience", id: "experience" },
   { label: "Work", id: "projects" },
   { label: "About", id: "about" },
   { label: "Contact", id: "contact" },
@@ -85,6 +87,7 @@ export default function TopBar() {
           <OptionsIcon />
         </button>
       </nav>
+      <Navigation />
     </header>
     {/* Where "Skip to content" lands: focusable, so the next Tab goes to the
         page's first link. Not a section id, so the home page's hash handling

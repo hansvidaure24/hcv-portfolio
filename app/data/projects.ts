@@ -130,34 +130,6 @@ const PROJECTS: Project[] = [
     published: true,
   },
   {
-    slug: "fiserv-draft-a",
-    title: "Fiserv draft A",
-    kind: "Work",
-    tagline:
-      "Unpublished draft.",
-    role: "Software Development Engineer, Fiserv",
-    stack: ["C#", "ASP.NET", "SQL"],
-    metrics: [],
-    links: [],
-    // Publish once the write-up is cleared against Fiserv's disclosure policy.
-    focus: { dotnet: 4, fullstack: 2 },
-    published: false,
-  },
-  {
-    slug: "fiserv-draft-b",
-    title: "Fiserv draft B",
-    kind: "Work",
-    tagline:
-      "Unpublished draft.",
-    role: "Software Development Engineer, Fiserv",
-    stack: ["C#", ".NET", "NuGet"],
-    metrics: [],
-    links: [],
-    // Publish once the write-up is cleared against Fiserv's disclosure policy.
-    focus: { dotnet: 4 },
-    published: false,
-  },
-  {
     slug: "rjn-visuals",
     title: "RJN Visuals",
     kind: "Client",

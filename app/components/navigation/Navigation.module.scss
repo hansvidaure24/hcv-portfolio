@@ -1,16 +1,28 @@
 @use '../../scss/mixins' as *;
 
+// Sits in the top bar on phones. Wider screens show every link there instead.
 .navRoot {
-  position: fixed;
-  right: clamp(1rem, 3vw, 1.75rem);
-  bottom: clamp(1rem, 3vw, 1.75rem);
-  z-index: var(--z-menu);
+  position: relative;
+}
+
+@media (min-width: $bp-nav + $bp-step) {
+  .navRoot {
+    display: none;
+  }
+}
+
+.menuToggle {
+  @include pixel-button(var(--gold), var(--ink), var(--text-sm), 3px);
+  min-height: 2.5rem;
+  padding: 0.2rem 0.45rem;
+  white-space: nowrap;
 }
 
 .battleMenu {
   position: absolute;
+  top: calc(100% + 0.6rem);
   right: 0;
-  bottom: 0;
+  z-index: var(--z-menu);
   min-width: 11rem;
   padding: 0.4rem;
   background: var(--ink);
@@ -73,64 +85,4 @@
 
 .cursorActive {
   opacity: 1;
-}
-
-/* Navigation owns this menu toggle's markup, styles, and positioning. */
-.menuToggle {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: clamp(4.5rem, 10vw, 7rem);
-  height: clamp(4.5rem, 10vw, 7rem);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  filter: drop-shadow(2px 4px 0 rgba(0, 0, 0, 0.35));
-  transition: transform var(--dur-fast) var(--ease-step);
-
-  &:hover,
-  &:focus-visible {
-    animation: menu-toggle-bob 1s steps(1, end) infinite;
-  }
-}
-
-.menuToggleSvg {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-@keyframes menu-toggle-bob {
-  0%, 50% { transform: translateY(0); }
-  50.01%, 100% { transform: translateY(-4px); }
-}
-
-:global(.reduce-motion) {
-  .menuToggle:hover,
-  .menuToggle:focus-visible {
-    animation: none;
-  }
-}
-
-// The top bar shows every section link from 761px up, so the Pokéball menu
-// is a phone-only control. On phones it shrinks so it covers less content.
-@media (min-width: $bp-nav + 1) {
-  .navRoot {
-    display: none;
-  }
-}
-
-@media (max-width: $bp-nav) {
-  .navRoot {
-    right: 0.75rem;
-    bottom: 0.75rem;
-  }
-  .menuToggle {
-    width: 3.5rem;
-    height: 3.5rem;
-  }
 }

@@ -105,11 +105,7 @@ export const DEX: DexEntry[] = [
     aliases: ["dotnet", ".NET Core", ".NET Framework", "NuGet"],
     focus: ["dotnet"],
     evidence: [
-      {
-        source: FISERV,
-        text: "Online banking features in C# and .NET",
-        href: WORK,
-      },
+      { source: FISERV, text: "Online banking features in C# and .NET", href: WORK },
     ],
     related: ["csharp", "aspnet"],
   },
@@ -172,9 +168,10 @@ export const DEX: DexEntry[] = [
     status: "caught",
     aliases: ["AppSec", "secure coding", "secure code review", "SAST", "vulnerability remediation", "CVE"],
     focus: ["dotnet"],
+    // Public projects only: statements about an employer's security work need its approval.
     evidence: [
-      { source: FISERV, text: "Secure coding as part of feature work", href: WORK },
-      { ...P.sliceofpie, text: "Ships with a strict Content-Security-Policy" },
+      { ...P.sliceofpie, text: "Ships with a strict Content-Security-Policy and keeps every receipt on the device" },
+      { ...SITE, text: "A contact form that verifies bots on the server and only ever emails its owner" },
     ],
     related: ["dotnet", "concurrency"],
   },
@@ -186,11 +183,8 @@ export const DEX: DexEntry[] = [
     aliases: ["thread safety", "multithreading", "race conditions", "parallel processing"],
     focus: ["dotnet"],
     evidence: [
-      {
-        source: FISERV,
-        text: "Concurrency fixes in production C# code",
-        href: WORK,
-      },
+      { ...P.pocketQuest, text: "Host-authoritative multiplayer: simultaneous inputs resolve together, and dropped phones keep their slot" },
+      { ...P.bte, text: "Hot reload that writes to a temp file and renames it, so a running game never reads half a file" },
     ],
     related: ["csharp", "appsec"],
   },
@@ -203,7 +197,7 @@ export const DEX: DexEntry[] = [
     focus: ["dotnet"],
     evidence: [
       { source: FISERV, text: "Production support from triage to resolution", href: WORK },
-      { source: FISERV, text: "Runbooks for the team", href: WORK },
+      { source: FISERV, text: "Wrote Confluence runbooks for the team", href: WORK },
     ],
     related: ["concurrency"],
   },

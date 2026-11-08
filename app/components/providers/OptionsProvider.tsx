@@ -18,7 +18,7 @@ export function useOptions() {
   return ctx;
 }
 
-/** One shared OPTIONS screen, opened from the top bar or the Pokéball menu. */
+/** One shared OPTIONS screen, opened from the top bar or the phone menu. */
 export default function OptionsProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [used, setUsed] = useState(false);

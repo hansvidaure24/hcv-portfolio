@@ -94,8 +94,9 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
     }));
 
   return (
+    <>
+    <TopBar />
     <main className={styles.page}>
-      <TopBar />
       <nav className={styles.topNav} aria-label="Breadcrumb">
         <Link href="/#projects" className={styles.back}>
           <span aria-hidden="true">←</span> All projects
@@ -176,5 +177,6 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
         </footer>
       </PixelPanel>
     </main>
+    </>
   );
 }

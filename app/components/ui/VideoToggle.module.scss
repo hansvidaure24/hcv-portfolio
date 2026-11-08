@@ -1,0 +1,10 @@
+@use '../../scss/mixins' as *;
+
+.toggle {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  z-index: 2;
+  @include pixel-button(var(--cream), var(--ink), var(--text-xs), 2px);
+  padding: 0.2rem 0.5rem;
+}

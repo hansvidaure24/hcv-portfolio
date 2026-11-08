@@ -454,8 +454,8 @@ rounds:
 
 **Round 1 (live Nov 8)**
 
-- [x] Hero and About lead with the Fiserv summary. About opens with the
-      Fiserv list and Why hire me.
+- [x] Hero and About lead with Fiserv work instead of volume counts. About
+      opens with the Fiserv list and Why hire me.
 - [x] Wakebound leaves the grid (`onGrid: false`; case study, sitemap and
       dex links stay) and no longer leads the C# / .NET focus.
 - [x] Text is selectable again (the hero title's clipped gradient, the
@@ -535,6 +535,37 @@ home page or the new field note; no CSP violations or console errors.
       every hero text element to AA in all four palettes at 375, 768, 1440
       and 1920px.
 
+**Round 6 (Nov 8)**
+
+- [x] Experience is its own section directly under the hero, with its own
+      nav link, and "See my work" lands on it. It moved up from a panel
+      inside About, about 4,000px higher on phones.
+- [x] This repo now has CI (audit for critical advisories, lint, tests,
+      build, with actions pinned by commit) and Dependabot for npm and
+      GitHub Actions.
+
+**Round 7 (Nov 8)**
+
+- [x] About is shorter: Why hire me rewritten around proof, Interests and
+      most of the career timeline gone; the AI row left the Contact card.
+- [x] A labeled Menu button in the top bar replaces the floating Pokéball,
+      on every page, so nothing covers the content.
+- [x] Clicks on the resume, email and message form are counted in analytics,
+      with the part of the page they came from and nothing a visitor typed.
+- [x] Clips that play on their own have a pause button, the top bar and menu
+      sit outside `<main>`, the Work background is flat, and breakpoints are
+      in em.
+- [x] The contact form only ever emails the site's owner (no visitor
+      receipt), its rate limiter forgets old visitors, and a site key with
+      no secret fails closed.
+
+**Round 8 (Nov 8)**
+
+- [x] Fiserv descriptions are conservative everywhere (site, resume, PDF and
+      the AI-readable files): what was built, with no performance or security
+      figures until they have been reviewed. Security proof comes from public
+      projects.
+
 **Considered and not done**
 
 - One spacing scale for all 33 padding and gap values: every value would
@@ -559,8 +590,7 @@ Only after the original mascot exists (Phase 7, kept by choice).
       Post office = Contact); entering one runs the existing tile wipe to
       that section. The scrolling page stays the default; Explore is
       opt-in and remembered.
-- [ ] NPCs each say one proof through the dialogue box ("He builds online banking
-      features!").
+- [ ] NPCs each say one proof through the dialogue box.
 - [ ] Arrow keys / WASD, a touch d-pad, and gamepads (Gamepad API).
 - [ ] **Link cable:** scan a QR and your phone becomes the controller,
       reusing Pocket Quest's WebRTC (PeerJS) and Cloudflare Worker code, on

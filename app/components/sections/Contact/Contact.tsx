@@ -264,22 +264,6 @@ export default function Contact() {
               </a>
             </div>
 
-            {/* For recruiters who screen with an AI assistant: clean data instead of a scraped page. */}
-            <div className={styles.cardStatRow}>
-              <span className={styles.cardStatLabel}>AI TOOLS</span>
-              <span className={styles.cardStatValue}>
-                Screening with an AI assistant? Point it at{" "}
-                <a href="/llms.txt" className={styles.cardEmail}>
-                  hansvidaure.dev/llms.txt
-                </a>{" "}
-                or{" "}
-                <a href="/resume.json" className={styles.cardEmail}>
-                  resume.json
-                </a>
-                .
-              </span>
-            </div>
-
             {/* For hiring managers judging the engineering, not just the projects. */}
             <div className={styles.cardStatRow}>
               <span className={styles.cardStatLabel}>THIS SITE</span>
@@ -317,6 +301,7 @@ export default function Contact() {
               <button
                 type="button"
                 className={styles.primaryAction}
+                data-track="message_open"
                 onClick={() => {
                   playSound("/sounds/button.mp3");
                   openDialog();
