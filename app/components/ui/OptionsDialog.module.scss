@@ -1,0 +1,122 @@
+@use '../../scss/mixins' as *;
+
+/* Same modal frame as the contact dialog. */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(4, 6, 4, 0.72);
+  animation: fadeIn var(--dur-fast) var(--ease-out) both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.dialog {
+  width: 100%;
+  max-width: 30rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: panelIn var(--dur-base) steps(3, end) both;
+}
+
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.close {
+  @include pixel-button(var(--paper), var(--ink), var(--text-sm), 2px);
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  line-height: 1;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.rows {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+/* Label on the left, value control on the right, help text underneath. */
+.row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.25rem 1rem;
+  padding-bottom: 0.9rem;
+  border-bottom: var(--border-thin) solid rgb(var(--ink-rgb) / 0.15);
+
+  &:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+}
+
+.label {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  letter-spacing: 0.05em;
+}
+
+.value {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  background: var(--paper);
+  border: var(--border-thin) solid var(--ink);
+  cursor: pointer;
+  @include pixel-press(2px);
+
+  > span[aria-hidden] {
+    font-size: 0.7em;
+    color: var(--accent-green);
+  }
+}
+
+// Wide enough for MORNING, so the control doesn't change width as you cycle.
+.valueText {
+  min-width: 5.2em;
+  text-align: center;
+}
+
+.help {
+  grid-column: 1 / -1;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: var(--ink-muted);
+}
+
+.done {
+  @include pixel-button(var(--gold), var(--ink), var(--text-md), 3px);
+  align-self: flex-end;
+}
+
+@media (max-width: 420px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+  .value {
+    justify-self: start;
+  }
+}

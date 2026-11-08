@@ -1,0 +1,69 @@
+@use '../../scss/mixins' as *;
+
+/* GBA-style text box along the bottom of the screen. It sits above the page
+   and the Pokéball (z 100), below modal dialogs (z 200). */
+.box {
+  position: fixed;
+  z-index: 150;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  width: min(40rem, calc(100% - 2rem));
+  min-height: 4.5rem;
+  padding: 0.9rem 2.6rem 1rem 1.2rem;
+  text-align: left;
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  @include pixel-panel(var(--shadow-lg));
+  animation: boxIn var(--dur-base) steps(3, end) both;
+}
+
+@keyframes boxIn {
+  from { opacity: 0; transform: translate(-50%, 12px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+// "Press to continue" arrow.
+.arrow {
+  position: absolute;
+  right: 1rem;
+  bottom: 0.6rem;
+  font-size: var(--text-xs);
+  color: var(--red);
+  animation: arrowBob 0.8s steps(1, end) infinite;
+}
+
+@keyframes arrowBob {
+  0%, 50% { transform: translateY(0); }
+  50.01%, 100% { transform: translateY(3px); }
+}
+
+.liveRegion {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Phones: full width minus the Pokéball in the corner. */
+@media (max-width: 760px) {
+  .box {
+    left: 0.75rem;
+    right: calc(3.5rem + 1.5rem);
+    bottom: 0.75rem;
+    width: auto;
+    transform: none;
+    font-size: var(--text-sm);
+    animation-name: boxInPhone;
+  }
+}
+
+@keyframes boxInPhone {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}

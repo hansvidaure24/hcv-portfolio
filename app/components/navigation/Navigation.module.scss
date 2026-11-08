@@ -11,15 +11,15 @@
   bottom: 0;
   min-width: 11rem;
   padding: 0.4rem;
-  background: #4A4E7A;
-  border-radius: 1rem;
-  box-shadow: 4px 6px 0 0 rgba(0, 0, 0, 0.35);
+  background: var(--ink);
+  border-radius: 0;
+  box-shadow: var(--shadow-md);
 }
 
 .battleMenuInner {
-  background: #F5F3EC;
-  border: 3px solid #1A1A1A;
-  border-radius: 0.6rem;
+  background: var(--cream);
+  border: 3px solid var(--ink);
+  border-radius: 0;
   padding: 0.3rem 0;
   overflow: hidden;
 }
@@ -42,16 +42,16 @@
   padding: 0.55rem 1rem;
   background: none;
   border: none;
-  font-family: 'PokePixel', monospace;
-  font-size: 0.95rem;
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
   letter-spacing: 0.03em;
-  color: #1A1A1A;
+  color: var(--ink);
   text-align: left;
   cursor: pointer;
 
   &:hover,
   &:focus-visible {
-    background: rgba(26, 26, 26, 0.08);
+    background: rgb(var(--ink-rgb) / 0.08);
   }
 }
 
@@ -59,16 +59,11 @@
   width: 1em;
   flex-shrink: 0;
   opacity: 0;
-  transition: opacity 0.1s;
+  transition: opacity var(--dur-fast) var(--ease-step);
 }
 
 .cursorActive {
   opacity: 1;
-}
-
-.arrowLabel {
-  font-weight: 700;
-  -webkit-text-stroke: 0.6px currentColor;
 }
 
 /* Navigation owns this menu toggle's markup, styles, and positioning. */
@@ -86,11 +81,11 @@
   padding: 0;
   cursor: pointer;
   filter: drop-shadow(2px 4px 0 rgba(0, 0, 0, 0.35));
-  transition: transform 0.15s ease-out;
+  transition: transform var(--dur-fast) var(--ease-step);
 
   &:hover,
   &:focus-visible {
-    animation: menu-toggle-glow 1s ease-in-out infinite;
+    animation: menu-toggle-bob 1s steps(1, end) infinite;
   }
 }
 
@@ -100,14 +95,33 @@
   object-fit: contain;
 }
 
-@keyframes menu-toggle-glow {
-  0%, 100% { filter: drop-shadow(0 0 0 rgba(214, 69, 65, 0)); }
-  50% { filter: drop-shadow(0 0 28px rgba(214, 69, 65, 0.95)); }
+@keyframes menu-toggle-bob {
+  0%, 50% { transform: translateY(0); }
+  50.01%, 100% { transform: translateY(-4px); }
 }
 
 :global(.reduce-motion) {
   .menuToggle:hover,
   .menuToggle:focus-visible {
     animation: none;
+  }
+}
+
+// The top bar shows every section link from 761px up, so the Pokéball menu
+// is a phone-only control. On phones it shrinks so it covers less content.
+@media (min-width: 761px) {
+  .navRoot {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .navRoot {
+    right: 0.75rem;
+    bottom: 0.75rem;
+  }
+  .menuToggle {
+    width: 3.5rem;
+    height: 3.5rem;
   }
 }
