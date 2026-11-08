@@ -37,11 +37,9 @@ export const RESUME = {
       detail: "Software Development Engineer, Berkeley Heights, NJ",
       when: "Jan 2024 – Present",
       points: [
-        "Shipped features and third-party integrations across 100+ pull requests, building REST APIs and React UI in C#, ASP.NET and SQL",
-        "Replaced a load-everything transaction history with server-side cursor pagination, adding a separate cached path for unusually large histories",
-        "Extended multi-account transaction download to another core banking system, building core-specific transaction mapping and CSV export, and took it through cross-core regression testing to production",
-        "Automated ACH and wire routing data maintenance with SQL scripts and a scheduled sync job, replacing manual work",
-        "Drove ACH production incidents from JIRA triage to resolution using AI-assisted root-cause analysis, and wrote Confluence runbooks for the team",
+        "Build full-stack online banking features for retail and business customers, with REST APIs and React UI in C#, ASP.NET and SQL",
+        "Take features through peer review, regression testing and release",
+        "Support production issues from triage to resolution, and document runbooks for the team",
       ],
     },
     {

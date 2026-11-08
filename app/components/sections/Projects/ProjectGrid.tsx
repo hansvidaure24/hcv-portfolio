@@ -214,8 +214,7 @@ export default function ProjectGrid({ projects, ci = {} }: { projects: Project[]
       {focus === "dotnet" && !matchup && (
         <PixelPanel title="MOST OF THIS WORK IS AT FISERV" bodyClassName={styles.noteBody}>
           <p>
-            My day-to-day C#, ASP.NET and SQL work is on Fiserv&apos;s online banking platform, which isn&apos;t public,
-            including server-side cursor pagination for transaction history.
+            My day-to-day C#, ASP.NET and SQL work is on Fiserv&apos;s online banking platform, which isn&apos;t public.
           </p>
           <div className={styles.noteLinks}>
             <a

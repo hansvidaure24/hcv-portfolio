@@ -91,7 +91,7 @@ export const DEX: DexEntry[] = [
     aliases: ["C Sharp", "CSharp", "Unity / C#"],
     focus: ["dotnet", "games"],
     evidence: [
-      { source: FISERV, text: "Features, integrations and REST APIs in C# across 100+ pull requests", href: WORK },
+      { source: FISERV, text: "Online banking features and REST APIs in C#", href: WORK },
       { ...P.bte, text: "The Unity runtime in C#, with 54 EditMode tests" },
       { ...P.wakebound, text: "About 58,000 lines of C# across 329 scripts" },
     ],
@@ -105,7 +105,7 @@ export const DEX: DexEntry[] = [
     aliases: ["dotnet", ".NET Core", ".NET Framework", "NuGet"],
     focus: ["dotnet"],
     evidence: [
-      { source: FISERV, text: "Online banking features in C# and .NET across 100+ pull requests", href: WORK },
+      { source: FISERV, text: "Online banking features in C# and .NET", href: WORK },
     ],
     related: ["csharp", "aspnet"],
   },
@@ -118,7 +118,6 @@ export const DEX: DexEntry[] = [
     focus: ["dotnet", "fullstack"],
     evidence: [
       { source: FISERV, text: "Online banking features for retail and business customers in ASP.NET", href: WORK },
-      { source: FISERV, text: "Server-side cursor pagination for transaction history", href: WORK },
     ],
     related: ["csharp", "rest", "sql"],
   },
@@ -130,7 +129,7 @@ export const DEX: DexEntry[] = [
     aliases: ["T-SQL", "SQL Server", "MySQL", "relational databases"],
     focus: ["dotnet", "fullstack"],
     evidence: [
-      { source: FISERV, text: "Automated ACH and wire routing data maintenance with SQL scripts and a scheduled sync job", href: WORK },
+      { source: FISERV, text: "SQL for online banking features", href: WORK },
       { source: TRAINEE, text: "MySQL behind a Spring Boot REST API in the capstone", href: WORK },
     ],
     related: ["aspnet", "rest"],
@@ -157,7 +156,7 @@ export const DEX: DexEntry[] = [
     aliases: ["REST", "REST API", "RESTful APIs", "REST API design", "Web APIs"],
     focus: ["dotnet", "fullstack"],
     evidence: [
-      { source: FISERV, text: "REST APIs in C# and ASP.NET, plus third-party integrations", href: WORK },
+      { source: FISERV, text: "REST APIs in C# and ASP.NET", href: WORK },
       { source: TRAINEE, text: "A Spring Boot REST API for the five-month capstone", href: WORK },
     ],
     related: ["aspnet", "java"],
@@ -197,8 +196,8 @@ export const DEX: DexEntry[] = [
     aliases: ["production support", "root-cause analysis", "runbooks", "JIRA", "Confluence"],
     focus: ["dotnet"],
     evidence: [
-      { source: FISERV, text: "Drove ACH production incidents from JIRA triage to resolution", href: WORK },
-      { source: FISERV, text: "Wrote Confluence runbooks for the team", href: WORK },
+      { source: FISERV, text: "Production support from triage to resolution", href: WORK },
+      { source: FISERV, text: "Runbooks for the team", href: WORK },
     ],
     related: ["concurrency"],
   },
@@ -210,7 +209,7 @@ export const DEX: DexEntry[] = [
     aliases: ["GitHub", "version control", "pull requests", "code review"],
     focus: [],
     evidence: [
-      { source: FISERV, text: "100+ pull requests", href: WORK },
+      { source: FISERV, text: "Peer-reviewed feature work on a shared codebase", href: WORK },
       { source: "GitHub", text: "Public repos with CI on every push", href: "https://github.com/hansvidaure24" },
     ],
     related: ["ci"],
@@ -276,7 +275,6 @@ export const DEX: DexEntry[] = [
     aliases: ["performance optimization", "Lighthouse", "Core Web Vitals", "pagination", "Web Workers"],
     focus: ["fullstack"],
     evidence: [
-      { source: FISERV, text: "Server-side cursor pagination for transaction history", href: WORK },
       { ...P.sliceofpie, text: "99 Lighthouse mobile performance with ~25 KB of startup JavaScript" },
       { ...SITE, text: "Cut startup blocking time from ~420 ms to ~30 ms" },
     ],

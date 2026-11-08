@@ -561,10 +561,9 @@ home page or the new field note; no CSP violations or console errors.
 
 **Round 8 (Nov 8)**
 
-- [x] Fiserv descriptions are conservative everywhere (site, resume, PDF and
-      the AI-readable files): what was built, with no performance or security
-      figures until they have been reviewed. Security proof comes from public
-      projects.
+- [x] Fiserv descriptions are general everywhere (site, resume, PDF and the
+      AI-readable files): employer, role, stack and responsibilities only.
+      Security and performance proof comes from public projects.
 
 **Considered and not done**
 
