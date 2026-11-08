@@ -46,7 +46,11 @@ const PROJECTS: Project[] = [
     tagline: "Split a restaurant bill from a photo of the receipt, fully offline in the browser.",
     role: "Solo: design, build and test",
     stack: ["TypeScript", "PWA / Workbox", "ONNX Runtime OCR", "Playwright", "GitHub Actions"],
-    metrics: ["99 Lighthouse mobile performance", "245 tests on every push", "16/16 test receipts read correctly"],
+    metrics: [
+      "PaddleOCR read every price on 16/16 test receipts; Tesseract.js managed 4/16",
+      "25 KB of startup JavaScript; the 36 MB scanner downloads only on request",
+      "Works offline with no server; 245 tests on every push",
+    ],
     cover: {
       src: "/projects/sliceofpie/cover.jpg",
       alt: "Two SliceOfPie screens: assigning receipt items to people, and the bill total with a pie chart of each share",
@@ -79,7 +83,7 @@ const PROJECTS: Project[] = [
     role: "Solo: design, build and test",
     stack: ["JavaScript + JSDoc", "Canvas 2D", "Tauri (Rust)", "Unity / C#", "GitHub Actions"],
     metrics: [
-      "14 enemy trees proven to match the game's runtime",
+      "14 enemy trees run through both runtimes, every command compared over 9,000 ticks",
       "Saved edits reach a running game within a second",
       "2.5 MB desktop installer, same code in the browser",
     ],

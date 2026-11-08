@@ -18,7 +18,7 @@ Mobile Lighthouse on the live site, three runs on Nov 8, 2026: **100 for perform
 What it took:
 
 - The contact form, the Options screen, Type Matchup and the sound effects load when the page is idle or when you first open them.
-- Images are sized for how they're shown: the hero photo went from 623 KB to 219 KB, and the trading card photo from 9 MB to 387 KB.
+- Images are sized for how they're shown, and covers below the first screen load lazily.
 - The hero's looping animations pause once it scrolls off screen, so the rest of the page does no animation work.
 - Trade-offs get measured, not kept on faith. Splitting hydration into separate tasks once cut startup blocking from about 420 ms to 30 ms, but it hid everything below the hero from browsers without JavaScript. After the idle loading above, I measured both versions again: without the split it still scored 100. So the split is gone, and the whole page is in the HTML.
 
@@ -38,7 +38,7 @@ What it took:
 
 ## Tested
 
-81 Vitest tests cover the parts with logic: Type Matchup against 10 synthetic job posts (every skill it should find, and nothing it shouldn't), the data rules (every project's stack chip maps to a skill with proof), the files for AI tools (they never include my phone number), and the contact form's checks, including Turnstile verification against a stand-in for Cloudflare.
+85 Vitest tests cover the parts with logic: Type Matchup against 10 synthetic job posts (every skill it should find, and nothing it shouldn't), the data rules (every project's stack chip maps to a skill with proof), the files for AI tools (they never include my phone number), and the contact form's checks, including Turnstile verification against a stand-in for Cloudflare.
 
 ## Built for how candidates get screened
 

@@ -42,3 +42,6 @@ yarn-error.log*
 # OS
 .DS_Store
 Thumbs.db
+
+# Write-ups about employer work: local only until cleared for publication
+content/projects/fiserv-*.md

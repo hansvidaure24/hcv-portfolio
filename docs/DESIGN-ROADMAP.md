@@ -99,11 +99,11 @@ first, or build from a separate copy.
 
 **Kept by choice, with a deadline**
 
-- [ ] **Borrowed Pokémon assets** (Torchic, music, the trading-card frame
-      around `hans.png`, the Piplup drawn into `hero-avatar.jpg`, the
-      Pokédex frame). Kept for now. Everything new in this plan uses original art
-      only, and an original pixel mascot must replace these before
-      Phase 12, which makes the site much more game-like.
+- [ ] **Borrowed Pokémon assets still in use** (the Pokédex frame, the
+      Pokéball menu, the Contact background, the pixel font and possibly the
+      UI sounds; see `ASSET-SPECS.md`). Torchic, the music, the trading card
+      and the Piplup photo came out in audit round 5. Everything new in this
+      plan uses original art only.
 
 **Housekeeping**
 
@@ -518,6 +518,25 @@ production after round 4: with JavaScript off the home page has all its
 sections (6,620 characters of text, up from 533); axe finds nothing on the
 home page or the new field note; no CSP violations or console errors.
 
+**Round 5 (Nov 8)**
+
+- [x] Next.js 15.5.9 → 15.5.29, with `npm audit fix`. What's left is the
+      PostCSS copy bundled inside Next: build-time only, and clearing it
+      needs Next 16.
+- [x] The Fiserv write-ups are git-ignored and stay local until cleared.
+- [x] Torchic, the background music and the trading card are gone; the hero
+      photo no longer has Piplup in it.
+- [x] Hero and project metrics lead with outcomes instead of test counts and
+      Lighthouse scores. Type Matchup names what matched instead of printing
+      a score; the gaps stay listed underneath.
+- [x] The hero name stays on one line on wide screens, and focus is visible
+      in forced-colors mode (a transparent outline the mode repaints).
+- [x] Hero text contrast measured against the rendered pixels, because axe
+      can't read text over gradients. The day palette was about 3.4:1 behind
+      the summary. A softer sun glow plus a per-palette `--sky-scrim` brings
+      every hero text element to AA in all four palettes at 375, 768, 1440
+      and 1920px.
+
 **Considered and not done**
 
 - One spacing scale for all 33 padding and gap values: every value would
@@ -529,8 +548,8 @@ home page or the new field note; no CSP violations or console errors.
 
 **Waiting on Hans**
 
-- [ ] Original art for the Piplup in the hero photo, Torchic and the card
-      frame (Phase 7's deadline stands).
+- [ ] An original mascot for Phase 12.
+- [ ] Real before/after numbers for the pagination work.
 - [ ] RJN Visuals outcomes (inquiries since launch, a client quote).
 
 ## Phase 12 — Explore mode (stretch)

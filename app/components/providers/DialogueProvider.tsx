@@ -23,8 +23,8 @@ const STAY_MS = 3500;
 type Line = { id: number; text: string };
 
 /**
- * The site's one place for feedback ("Email copied!", "Message sent!",
- * Torchic): a GBA-style text box along the bottom that types its line, shows
+ * The site's one place for feedback ("Email copied!", "Message sent!"):
+ * a GBA-style text box along the bottom that types its line, shows
  * a ▼ when done, and closes on click or after a few seconds. Text speed
  * "Fast" and reduced motion show the whole line at once. Screen readers get
  * the full line through a polite live region.

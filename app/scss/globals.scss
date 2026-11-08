@@ -78,7 +78,8 @@
 /* Scenery palette, one per time of day (set by TIME_BOOT_SCRIPT in
    app/lib/timeOfDay.ts). Every section background reads these, so the whole
    page is one place at one time. Night is also the no-JavaScript fallback.
-   Sky colors behind hero text keep cream text at 4.5:1 or better. */
+   --sky-scrim darkens the hero's scenery until its text measures 4.5:1 or
+   better against the actual pixels, including the sun's glow. */
 :root,
 :root[data-time="night"] {
   --sky-1: #0a2e45;
@@ -101,6 +102,7 @@
   --forest-1: #12302a;
   --forest-2: #060f0c;
   --scene-tint: rgba(16, 32, 80, 0.55);
+  --sky-scrim: rgb(4 20 43 / 0.15);
   --stars: 1;
 }
 
@@ -125,6 +127,7 @@
   --forest-1: #20402f;
   --forest-2: #0c1812;
   --scene-tint: rgba(255, 190, 150, 0.22);
+  --sky-scrim: rgb(4 20 43 / 0.25);
   --stars: 0;
 }
 
@@ -149,6 +152,7 @@
   --forest-1: #1B3B2C;
   --forest-2: #0A140F;
   --scene-tint: transparent;
+  --sky-scrim: rgb(4 20 43 / 0.35);
   --stars: 0;
 }
 
@@ -173,6 +177,7 @@
   --forest-1: #1c2a2a;
   --forest-2: #0b1012;
   --scene-tint: rgba(220, 110, 80, 0.35);
+  --sky-scrim: rgb(4 20 43 / 0.1);
   --stars: 1;
 }
 
@@ -249,7 +254,11 @@ html.reduce-motion {
    scenery, ink inside panels), with a 1px ink edge so gold brackets still
    read on the light day-time grass. */
 :focus-visible {
-  outline: none;
+  /* Invisible normally, but forced-colors mode (Windows High Contrast) paints
+     it in a system color. That mode strips the brackets' gradients below, so
+     this is the only indicator there. */
+  outline: 3px solid transparent;
+  outline-offset: 2px;
 }
 
 /* The brackets need a positioning box. :where() has zero specificity, so an

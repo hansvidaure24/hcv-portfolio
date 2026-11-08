@@ -5,7 +5,6 @@ import {
   encodeMatchup,
   matchPost,
   projectScore,
-  summarize,
   summaryLine,
   yearsOfExperience,
 } from "../app/lib/matchup";
@@ -63,8 +62,30 @@ describe("effectiveness", () => {
 describe("summary", () => {
   it("counts required and nice-to-have skills", () => {
     const m = matchPost(JOB_POSTS[0]!.text, NOW);
-    expect(summarize(m)).toEqual({ required: 5, requiredSuper: 5, requiredMatched: 5, nice: 2, niceMatched: 0 });
-    expect(summaryLine(m)).toBe("5 of 5 required skills: super effective!");
+    expect(m.rows.filter((r) => r.section === "required")).toHaveLength(5);
+    expect(m.rows.filter((r) => r.section === "nice")).toHaveLength(2);
+  });
+
+  it("names what matched and leaves gaps out of the line", () => {
+    expect(summaryLine(matchPost("Requirements:\n- C# and SQL\n- Kubernetes", NOW))).toBe("Used at Fiserv: C#, SQL.");
+  });
+
+  it("names project skills separately from work skills", () => {
+    expect(summaryLine(matchPost("Requirements:\n- C#\n- Playwright", NOW))).toBe(
+      "Used at Fiserv: C#. Shipped in projects: Playwright."
+    );
+  });
+
+  it("shortens a long list", () => {
+    expect(summaryLine(matchPost("Requirements:\n- C#\n- .NET\n- SQL\n- React\n- REST APIs", NOW))).toBe(
+      "Used at Fiserv: C#, .NET, SQL, React and 1 more."
+    );
+  });
+
+  it("doesn't claim a match when only closest experience exists", () => {
+    expect(summaryLine(matchPost("Requirements:\n- Kubernetes", NOW))).toBe(
+      "No direct match yet; the closest experience is listed."
+    );
   });
 
   it("says so when it recognizes nothing", () => {

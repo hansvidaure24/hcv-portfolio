@@ -165,35 +165,30 @@ export function matchPost(text: string, now = new Date()): Matchup {
   return { rows: sortRows([...found.values()]), years };
 }
 
-export type MatchSummary = {
-  required: number;
-  requiredSuper: number;
-  requiredMatched: number;
-  nice: number;
-  niceMatched: number;
-};
+const MAX_SUMMARY_NAMES = 4;
 
-export function summarize(m: Matchup): MatchSummary {
-  const req = m.rows.filter((r) => r.section === "required");
-  const nice = m.rows.filter((r) => r.section === "nice");
-  return {
-    required: req.length,
-    requiredSuper: req.filter((r) => r.effect === "super").length,
-    requiredMatched: req.filter((r) => r.effect !== "closest").length,
-    nice: nice.length,
-    niceMatched: nice.filter((r) => r.effect !== "closest").length,
-  };
+function nameList(rows: MatchRow[]): string {
+  const shown = rows.slice(0, MAX_SUMMARY_NAMES).map((r) => r.term).join(", ");
+  const extra = rows.length - MAX_SUMMARY_NAMES;
+  return extra > 0 ? `${shown} and ${extra} more` : shown;
 }
 
-/** One line for the dialogue box and screen readers. */
+/**
+ * One line for the dialogue box and screen readers. It names what matched
+ * instead of scoring the candidate: the gaps stay in the rows below it, each
+ * with its closest experience, where they can be read in context.
+ */
 export function summaryLine(m: Matchup): string {
-  const s = summarize(m);
-  if (s.required + s.nice === 0) return "No skills I know turned up in that post.";
-  if (s.required === 0) return `${s.niceMatched} of ${s.nice} nice-to-have skills matched.`;
-  if (s.requiredSuper > 0 && s.requiredSuper === s.requiredMatched) {
-    return `${s.requiredSuper} of ${s.required} required skills: super effective!`;
-  }
-  return `${s.requiredMatched} of ${s.required} required skills matched, ${s.requiredSuper} used at Fiserv.`;
+  if (m.rows.length === 0) return "No skills I know turned up in that post.";
+  const matched = m.rows.filter((r) => r.effect !== "closest");
+  const required = matched.filter((r) => r.section === "required");
+  const rows = required.length > 0 ? required : matched;
+  const atWork = rows.filter((r) => r.effect === "super");
+  const shipped = rows.filter((r) => r.kind === "dex" && r.effect === "effective" && r.entry.status !== "seen");
+  const parts: string[] = [];
+  if (atWork.length > 0) parts.push(`Used at Fiserv: ${nameList(atWork)}.`);
+  if (shipped.length > 0) parts.push(`Shipped in projects: ${nameList(shipped)}.`);
+  return parts.join(" ") || "No direct match yet; the closest experience is listed.";
 }
 
 /**

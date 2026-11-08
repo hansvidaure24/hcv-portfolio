@@ -10,7 +10,11 @@ import { useMotionSettings } from "../../providers/MotionPreferenceProvider";
 import styles from "./Hero.module.scss";
 
 // Outcomes, not volume counts: the two Fiserv results with a clear before/after.
-const PROOF_POINTS = ["Fiserv · 3 yrs", "Multi-minute timeouts → normal load times", "20 high-severity CVEs closed in one release"];
+const PROOF_POINTS = [
+  "Eliminated multi-minute timeouts on high-volume accounts",
+  "Cut data per request 10–40x",
+  "Closed 20 high-severity CVEs in one release",
+];
 
 const TILE_COLS = 10;
 const TILE_ROWS = 6;
@@ -120,7 +124,7 @@ export default function Hero() {
                 <stop offset="1" style={{ stopColor: "var(--sky-4)" }} />
               </linearGradient>
               <radialGradient id="emeraldGlow" cx="0.5" cy="0.28" r="0.55">
-                <stop offset="0" style={{ stopColor: "var(--sky-glow)" }} stopOpacity="0.55" />
+                <stop offset="0" style={{ stopColor: "var(--sky-glow)" }} stopOpacity="0.25" />
                 <stop offset="0.5" style={{ stopColor: "var(--sky-glow-2)" }} stopOpacity="0.14" />
                 <stop offset="1" style={{ stopColor: "var(--sky-glow-2)" }} stopOpacity="0" />
               </radialGradient>
@@ -212,6 +216,9 @@ export default function Hero() {
               </g>
             </g>
 
+            {/* Darkens the scenery behind the hero text, by time of day (--sky-scrim) */}
+            <rect width="1600" height="1000" style={{ fill: "var(--sky-scrim)" }} />
+
             {/* Sparse pixel particles */}
             <g className={styles.layerParticles} fill="#fef3c7">
               <rect x="180" y="300" width="4" height="4" className={styles.pixelPulseA} />
@@ -254,9 +261,8 @@ export default function Hero() {
             <span className={styles.roleStack}>C# / .NET · React · SQL</span>
           </p>
           <p className={styles.summary}>
-            3 years building and securing features on Fiserv&apos;s online banking platform, including cursor-based
-            pagination that ended multi-minute timeouts for high-volume business accounts. On the side I ship
-            well-tested apps end to end, like an offline receipt scanner with 245 tests on every push.
+            3 years at Fiserv building and securing online banking features. I replaced a load-everything transaction
+            history with cursor-based pagination across 5 account types.
           </p>
           <div className={`${styles.ctaRow} ${styles.reveal3}`}>
             <a
@@ -336,7 +342,7 @@ export default function Hero() {
             </svg>
             <div className={styles.pokedexImageFrame}>
               <Image
-                src="/graphics/hero-avatar.jpg"
+                src="/graphics/hero-photo.jpg"
                 alt="Photo of Hans Vidaure"
                 fill
                 sizes="(max-width: 900px) 55vw, 340px"
