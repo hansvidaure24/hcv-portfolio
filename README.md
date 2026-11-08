@@ -69,6 +69,8 @@ cp .env.local.example .env.local
 | `NEXT_PUBLIC_SITE_URL` | Yes | Production URL (no trailing slash) — used for canonical URLs, the sitemap, `robots.txt`, JSON-LD, and the OG/social share image. |
 | `NEXT_PUBLIC_GA_ID` | No | GA4 Measurement ID. Leave blank to disable analytics entirely. |
 | `GITHUB_TOKEN` | No | Raises GitHub's rate limit for the trainer card and CI chips (public data, refreshed daily). A free fine-grained token with read-only public access is enough; without it they usually still load, and hide if GitHub refuses. |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | No | Cloudflare Turnstile site key for the contact form's bot check (public). Set it together with the secret below, for Production only: real keys don't work on preview URLs. It's built into the page, so redeploy after changing it. |
+| `TURNSTILE_SECRET_KEY` | No | Turnstile secret key, server-only. When set, the contact API rejects messages without a valid token; when unset (local dev, previews), the check is skipped. |
 
 `.env.local` is already git-ignored — never commit real API keys.
 
@@ -89,11 +91,13 @@ The contact form (mail icon in the Contact section) posts to
    terminal for `console.error` output if something fails (the API route
    never leaks Resend's raw error details to the browser).
 
-Spam protection, all free: a hidden honeypot field, a check that rejects
-forms sent less than 3 seconds after opening (`MIN_FILL_MS` in
-[`app/lib/validateContact.ts`](app/lib/validateContact.ts)), and a visitor
-receipt that never repeats what they typed, so the form can't relay
-someone's text to another inbox. The route also has a basic in-memory rate
+Spam protection, all free: Cloudflare Turnstile when its keys are set (it
+loads only when the form opens, and most visitors never see it; see
+[`app/lib/turnstile.ts`](app/lib/turnstile.ts)), a hidden honeypot field, a
+check that rejects forms sent less than 3 seconds after opening
+(`MIN_FILL_MS` in [`app/lib/validateContact.ts`](app/lib/validateContact.ts)),
+and a visitor receipt that never repeats what they typed, so the form can't
+relay someone's text to another inbox. The route also has a basic in-memory rate
 limiter (5 submissions per IP per 10 minutes) that's process-local — it
 resets on every deploy and doesn't share state across serverless instances. See the comment at the top of
 [`app/api/contact/route.ts`](app/api/contact/route.ts) if this ever needs to

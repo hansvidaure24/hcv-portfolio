@@ -196,6 +196,17 @@
   }
 }
 
+// Cloudflare's box, when it shows at all (interaction-only). Empty otherwise,
+// so it takes no space.
+.turnstile:empty {
+  display: none;
+}
+
+.turnstile {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
 .actions {
   display: flex;
   gap: 0.6rem;
