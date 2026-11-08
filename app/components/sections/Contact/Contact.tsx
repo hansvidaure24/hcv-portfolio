@@ -315,6 +315,22 @@ export default function Contact() {
               </a>
             </div>
 
+            {/* For recruiters who screen with an AI assistant: clean data instead of a scraped page. */}
+            <div className={styles.cardStatRow}>
+              <span className={styles.cardStatLabel}>LINK CABLE</span>
+              <span className={styles.cardStatValue}>
+                Screening with an AI assistant? Point it at{" "}
+                <a href="/llms.txt" className={styles.cardEmail}>
+                  hansvidaure.dev/llms.txt
+                </a>{" "}
+                or{" "}
+                <a href="/resume.json" className={styles.cardEmail}>
+                  resume.json
+                </a>
+                .
+              </span>
+            </div>
+
             <div className={styles.badgeSection}>
               <span className={styles.badgesLabel}>SKILLSET</span>
               <ul className={styles.badgeRow}>
