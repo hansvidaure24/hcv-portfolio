@@ -19,7 +19,7 @@ with a desktop + phone check in the browser before the next one starts.
 | 9. Evidence Dex | Nov 16–19 | Live Nov 8 |
 | 10. Type Matchup (the new thing) | Nov 20–26 | Live Nov 8 |
 | 11. Readable by AI tools | Nov 27–29 | Live Nov 8 |
-| Audit fixes (a full outside-in review) | Nov 8 | Rounds 1–3 live Nov 8; round 4 ready |
+| Audit fixes (a full outside-in review) | Nov 8 | Live Nov 8 (art, RJN numbers wait on Hans) |
 | 12. Explore mode | December | Stretch |
 
 ---
@@ -485,7 +485,7 @@ rounds:
       form opens; production keys only). The resume PDF uses a Google Voice
       number.
 
-**Round 4 (ready)**
+**Round 4 (live Nov 8)**
 
 - [x] Skills panel shows 12 core skills for the target roles
       (`CORE_DEX_IDS`), the rest behind "Show all"; the data is unchanged,
@@ -506,9 +506,17 @@ rounds:
 - [x] Field note: [How this site is built](../content/notes/how-this-site-is-built.md),
       linked from the Contact card.
 
-Mobile Lighthouse on production after rounds 1–3, three runs: performance
-100 / 100 / 100, blocking time 26–52 ms, LCP about 1.05 s, CLS 0;
-accessibility, best practices and SEO 100.
+Mobile Lighthouse on production, three runs each:
+
+| After | Performance | Blocking time | LCP | CLS |
+| --- | --- | --- | --- | --- |
+| Rounds 1–3 | 100 / 100 / 100 | 26–52 ms | about 1.05 s | 0 |
+| Round 4 (no Suspense boundaries) | 100 / 100 / 100 | 17–36 ms | about 1.0 s | 0 |
+
+Accessibility, best practices and SEO 100 after rounds 1–3. Checked on
+production after round 4: with JavaScript off the home page has all its
+sections (6,620 characters of text, up from 533); axe finds nothing on the
+home page or the new field note; no CSP violations or console errors.
 
 **Considered and not done**
 
