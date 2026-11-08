@@ -15,7 +15,7 @@ with a desktop + phone check in the browser before the next one starts.
 | --- | --- | --- |
 | 1–6. Foundation → QA (record at the bottom) | Nov 7–22, 2026 | Done, live Nov 7 |
 | 7. Ship what's built, fix open issues | Nov 8–10 | Done Nov 7 (2 items wait on others) |
-| 8. Table stakes from top portfolios | Nov 11–15 | Built Nov 8, not deployed (2 posts left for Hans) |
+| 8. Table stakes from top portfolios | Nov 11–15 | Live Nov 8 (2 posts left for Hans) |
 | 9. Evidence Dex | Nov 16–19 | Planned |
 | 10. Type Matchup (the new thing) | Nov 20–26 | Planned |
 | 11. Readable by AI tools | Nov 27–29 | Planned |
@@ -265,11 +265,22 @@ Found on the way:
       HTML, the PDF (regenerated, still one page) and the Quick view now
       say 14.
 
-Lighthouse (mobile, local production build, Nov 8): home 100 performance,
-47 ms blocking time; `/resume` and the field note 100. Accessibility, best
-practices and SEO 100 on home, `/resume`, `/notes` and the note. Phone
-width (375px): no sideways scroll; code blocks scroll on their own. Print
-output wasn't checked by eye (no PDF renderer on this machine).
+Deployed Nov 8 (Vercel preview first, then `main`). Checked on
+hansvidaure.dev: Resume opens `/resume`, three CI chips, the trainer card
+and Now line, Wakebound without the dead link, the note, the sitemap, and
+no console errors on a fresh load.
+
+Lighthouse (mobile, median of 3 on home):
+
+| Page | Performance | Blocking time | A11y / BP / SEO |
+| --- | --- | --- | --- |
+| Home, local build | 100 | 47 ms | 100 / 100 / 100 |
+| Home, **production** | 100 | 74 ms | 100 / 100 / 100 |
+| `/resume`, production | 100 | 36 ms | 100 (local) |
+| Field note, production | 100 | 82 ms | 100 (local) |
+
+Phone width (375px): no sideways scroll; code blocks scroll on their own.
+Print output wasn't checked by eye (no PDF renderer on this machine).
 
 ## Phase 9 — Evidence Dex
 
