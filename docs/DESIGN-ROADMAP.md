@@ -19,6 +19,7 @@ with a desktop + phone check in the browser before the next one starts.
 | 9. Evidence Dex | Nov 16–19 | Live Nov 8 |
 | 10. Type Matchup (the new thing) | Nov 20–26 | Live Nov 8 |
 | 11. Readable by AI tools | Nov 27–29 | Live Nov 8 |
+| Audit fixes (a full outside-in review) | Nov 8 | Rounds 1–3 live Nov 8; round 4 ready |
 | 12. Explore mode | December | Stretch |
 
 ---
@@ -80,14 +81,16 @@ first, or build from a separate copy.
 
 **Watch, fix if it bites**
 
-- [ ] **Work, About and Contact need JavaScript to appear.** The Suspense
-      boundaries from this phase (the startup-speed fix) make Next stream
-      those sections as hidden HTML that an inline script moves into place.
-      Browsers with JavaScript, and Google, which runs it, see everything
-      (checked in headless Edge: nothing left hidden). With JavaScript off,
-      and for crawlers that don't run it, only the hero shows. Removing the
-      boundaries brings back the ~400 ms startup block; the other fix leans
-      on React's internal markup. Found Nov 8, during Phase 9.
+- [x] **Work, About and Contact need JavaScript to appear.** The Suspense
+      boundaries from this phase (the startup-speed fix) made Next stream
+      those sections as hidden HTML that an inline script moved into place,
+      so with JavaScript off, and for crawlers that don't run it, only the
+      hero showed. Found Nov 8, during Phase 9. **Fixed Nov 8 (audit round
+      4):** measured again after the idle loading of Phases 7–10, and the
+      boundaries no longer pay for themselves (mobile Lighthouse 100 with
+      and without; blocking time 6 ms with, 11 ms without). Removed, plus a
+      `<noscript>` style so the scroll fade-ins don't keep sections
+      invisible.
 
 - [ ] **Contact rate limit is per server instance** (in memory, resets on
       every deploy). The form already has a honeypot field; if spam still
@@ -439,6 +442,87 @@ Type Matchup run (sample post, apply, shared link, clear) behaves as it did
 locally with zero requests carrying the post; `llms.txt`, `resume.json` and
 the MCP tools answer with hansvidaure.dev links.
 
+## Audit fixes (Nov 8)
+
+An outside-in review of the live site (recruiter, hiring manager, UX,
+accessibility, performance and security passes; Playwright at 320–1440px,
+axe, Lighthouse, a keyboard walk, JavaScript off, response headers) found
+that the engineering was strong but the site sold a C# / .NET fintech
+engineer while its proof pointed at TypeScript and games, buried the best
+Fiserv results, and taxed recruiters with game vocabulary. Fixed in four
+rounds:
+
+**Round 1 (live Nov 8)**
+
+- [x] Hero and About lead with the Fiserv summary. About opens with the
+      Fiserv list and Why hire me.
+- [x] Wakebound leaves the grid (`onGrid: false`; case study, sitemap and
+      dex links stay) and no longer leads the C# / .NET focus.
+- [x] Text is selectable again (the hero title's clipped gradient, the
+      reason it wasn't, became a solid fill).
+- [x] Focus rings: a `--focus-ring` token, gold on scenery and ink in
+      panels (the green was about 2:1 on cream); form fields get a ring.
+- [x] Phone hero: both calls to action on a 375×740 first screen; Options
+      leaves the bar below 360px instead of being clipped.
+- [x] Security headers (CSP, nosniff, frame ban, referrer and permissions
+      policies, COOP). The contact receipt no longer repeats what the
+      visitor typed, so the form can't relay spam.
+
+**Round 2 (live Nov 8)**
+
+- [x] Case-study tabs hide with `hidden="until-found"`, so find in page
+      reaches them; "Ships solo" became "Owns it end to end"; stack chips
+      are 24px tap targets; Notes in both navs; the phone menu is a
+      disclosure with focus management; hero loops pause off screen;
+      cover mosaic tiles load lazily; NOW label contrast; a skip link; a
+      3-second minimum fill time on the contact form.
+
+**Round 3 (live Nov 8)**
+
+- [x] Cloudflare Turnstile on the contact form (free; loads only when the
+      form opens; production keys only). The resume PDF uses a Google Voice
+      number.
+
+**Round 4 (ready)**
+
+- [x] Skills panel shows 12 core skills for the target roles
+      (`CORE_DEX_IDS`), the rest behind "Show all"; the data is unchanged,
+      so Type Matchup and chip links still see every skill.
+- [x] Plain words first: About, Profile, Skills with proof, Career path,
+      Why hire me, Contact card, Mailbox, Key numbers, USED / LEARNED
+      instead of CAUGHT / SEEN. Game flavor stays in the art, the asides
+      ("What? HANS is evolving!") and Type Matchup. The share image says
+      hansvidaure.dev and "Open to full-stack roles" instead of TRAINER
+      CARD.
+- [x] Headings: panel titles are written in sentence case and shown in
+      capitals by CSS; career stages are h4s under their panel; "???" has
+      a spoken name.
+- [x] Everything below the hero renders without JavaScript (see Phase 7).
+- [x] Named breakpoints (`$bp-phone`, `$bp-nav`, `$bp-tablet`,
+      `$bp-compact`, `$bp-desktop`) and page layers (`--z-topbar` …
+      `--z-dialog`), same values as before.
+- [x] Field note: [How this site is built](../content/notes/how-this-site-is-built.md),
+      linked from the Contact card.
+
+Mobile Lighthouse on production after rounds 1–3, three runs: performance
+100 / 100 / 100, blocking time 26–52 ms, LCP about 1.05 s, CLS 0;
+accessibility, best practices and SEO 100.
+
+**Considered and not done**
+
+- One spacing scale for all 33 padding and gap values: every value would
+  shift slightly across the site for no visible gain.
+- Gold for every primary button: the ink "Case study" button is the
+  primary action inside a card, and a grid of gold buttons would compete
+  with the page's one gold call to action.
+- WOFF2 for the pixel font: 23 KB, already compressed in transit.
+
+**Waiting on Hans**
+
+- [ ] Original art for the Piplup in the hero photo, Torchic and the card
+      frame (Phase 7's deadline stands).
+- [ ] RJN Visuals outcomes (inquiries since launch, a client quote).
+
 ## Phase 12 — Explore mode (stretch)
 
 Only after the original mascot exists (Phase 7, kept by choice).
@@ -491,7 +575,12 @@ Everything from Phases 1–6 still applies. For the new features:
   have to go through a feature to reach the content; every feature is
   optional and skippable in one click.
 - Panels are `PixelPanel`, headings are `SectionHeading`, lists use the
-  `arrow-list` and `chip` mixins.
+  `arrow-list` and `chip` mixins. Panel titles are written in sentence case
+  (CSS shows them in capitals).
+- Plain words first: a recruiter should never need to know the game to
+  read a label. Game flavor goes in art, asides and optional features.
+- Breakpoints come from the `$bp-*` variables in `_mixins.scss` and page
+  layers from the `--z-*` tokens; focus color comes from `--focus-ring`.
 - Feedback goes through `useDialogue().say()`; section jumps use the tile
   wipe. No new transitions.
 - Every feature reads Options: TEXT SPEED fast skips typing, ANIMATIONS
