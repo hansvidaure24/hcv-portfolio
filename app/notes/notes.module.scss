@@ -1,0 +1,187 @@
+@use '../scss/mixins' as *;
+
+// Shared by the Field notes list (/notes) and each note (/notes/<slug>).
+
+.page {
+  @include subpage-backdrop;
+}
+
+.topNav {
+  max-width: 50rem;
+  margin: 0 auto 1rem;
+}
+
+.back {
+  @include subpage-back-link;
+}
+
+/* --- One note --- */
+.article {
+  max-width: 50rem;
+  margin: 0 auto;
+}
+
+.draftBanner {
+  margin-bottom: 1rem;
+  padding: 0.5rem 0.75rem;
+  font-size: var(--text-sm);
+  background: var(--gold-light);
+  border: var(--border-thin) solid var(--ink);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 2px solid rgb(var(--ink-rgb) / 0.2);
+}
+
+.kind {
+  @include display-text(var(--text-sm));
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(var(--text-lg), 4.5vw, var(--text-xl));
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+}
+
+.summary {
+  font-size: var(--text-md);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.related {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  font-size: var(--text-sm);
+
+  a {
+    font-weight: 700;
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+
+    &:hover,
+    &:focus-visible {
+      background: rgb(var(--ink-rgb) / 0.12);
+    }
+  }
+}
+
+.cta {
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 3px solid var(--ink);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ctaTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  letter-spacing: 0.03em;
+}
+
+.ctaLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.ctaButton {
+  @include pixel-button(var(--ink), var(--cream), var(--text-md), 3px);
+  overflow-wrap: anywhere;
+}
+
+/* --- The list --- */
+.list {
+  max-width: 50rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.listHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+// On the sky, like the section signs' text: cream, display font.
+.listTitle {
+  font-family: var(--font-display);
+  font-size: clamp(var(--text-xl), 5vw, var(--text-2xl));
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--cream);
+}
+
+.listIntro {
+  font-size: var(--text-md);
+  line-height: 1.55;
+  color: var(--cream);
+}
+
+.entries {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.entryTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+
+  a {
+    color: var(--ink);
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 4px;
+    }
+  }
+}
+
+.readButton {
+  @include pixel-button(var(--ink), var(--cream), var(--text-md), 3px);
+  align-self: flex-start;
+  padding: 0.35rem 0.8rem;
+}
+
+@media print {
+  .page {
+    min-height: 0;
+    padding: 0;
+    background: none;
+  }
+
+  .topNav,
+  .cta {
+    display: none;
+  }
+}

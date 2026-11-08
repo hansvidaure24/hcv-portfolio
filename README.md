@@ -32,6 +32,9 @@ npm run dev
 | Case-study write-ups | `content/projects/<slug>.md` (`## ` headings, `- ` lists, `**bold**`, `[links](https://…)`). Headings are sorted into the Overview / Decisions / Results tabs by `TAB_FOR_HEADING` in [`app/projects/[slug]/page.tsx`](app/projects/[slug]/page.tsx). |
 | Career timeline (About → Evolution) | [`app/components/sections/Bio/Evolution.tsx`](app/components/sections/Bio/Evolution.tsx); keep it in sync with the resume |
 | "Why hire me" moves and testimonials (About) | [`app/data/party.ts`](app/data/party.ts) |
+| Quick view resume (`/resume`) | [`app/data/resume.ts`](app/data/resume.ts); the PDF is still printed from `resume/hcv-resume.html`, so change both together |
+| Trainer card "Now" line and play-time start date | [`app/data/now.ts`](app/data/now.ts) |
+| Field notes (`/notes`) | [`app/data/notes.ts`](app/data/notes.ts) for title, date and summary; the text in `content/notes/<slug>.md` (case-study Markdown plus ``` code blocks and `inline code`) |
 
 A project with `published: false` is a draft: it's left out of the grid,
 sitemap and production build, but `npm run dev` gives it a page with a DRAFT
@@ -53,6 +56,7 @@ cp .env.local.example .env.local
 | `EMAIL_FROM` | Yes | The "from" address for both the notification and the visitor's receipt, e.g. `Name <contact@yourdomain.dev>`. Must be on a domain verified in Resend (see below). |
 | `NEXT_PUBLIC_SITE_URL` | Yes | Production URL (no trailing slash) — used for canonical URLs, the sitemap, `robots.txt`, JSON-LD, and the OG/social share image. |
 | `NEXT_PUBLIC_GA_ID` | No | GA4 Measurement ID. Leave blank to disable analytics entirely. |
+| `GITHUB_TOKEN` | No | Raises GitHub's rate limit for the trainer card and CI chips (public data, refreshed daily). A free fine-grained token with read-only public access is enough; without it they usually still load, and hide if GitHub refuses. |
 
 `.env.local` is already git-ignored — never commit real API keys.
 
