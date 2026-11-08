@@ -1,0 +1,113 @@
+// Shared building blocks for component stylesheets. Use with:
+//   @use '../../../scss/mixins' as *;
+// Values come from the tokens in globals.scss.
+
+// The one hover/press rule for every pixel button and clickable chip:
+// lift by --lift on hover (shadow grows to match), press flat on click.
+// $offset is the resting shadow size in px.
+@mixin pixel-press($offset: 3px) {
+  box-shadow: $offset $offset 0 var(--shadow-color);
+  transition:
+    transform var(--dur-fast) var(--ease-step),
+    box-shadow var(--dur-fast) var(--ease-step),
+    background-color var(--dur-fast) var(--ease-step);
+
+  &:hover {
+    transform: translate(calc(var(--lift) * -1), calc(var(--lift) * -1));
+    box-shadow: calc(#{$offset} + var(--lift)) calc(#{$offset} + var(--lift)) 0 var(--shadow-color);
+  }
+
+  &:active {
+    transform: translate(var(--lift), var(--lift));
+    box-shadow: calc(#{$offset} - var(--lift)) calc(#{$offset} - var(--lift)) 0 var(--shadow-color);
+  }
+}
+
+// A pixel button: display font, ink border, hard shadow, shared hover/press.
+@mixin pixel-button($bg: var(--cream), $fg: var(--ink), $size: var(--text-md), $offset: 3px) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  font-family: var(--font-display);
+  font-size: $size;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-decoration: none;
+  color: $fg;
+  background-color: $bg;
+  border: var(--border) solid var(--ink);
+  border-radius: 0;
+  cursor: pointer;
+  @include pixel-press($offset);
+}
+
+// The cream panel surface (matches PixelPanel).
+@mixin pixel-panel($shadow: var(--shadow-md)) {
+  color: var(--ink);
+  background: var(--cream);
+  border: var(--border) solid var(--ink);
+  outline: var(--border-thin) solid var(--cream);
+  outline-offset: -6px;
+  box-shadow: $shadow;
+}
+
+// The gold title bar on top of a cream panel.
+@mixin panel-title {
+  margin: 0;
+  padding: 0.5rem 0.9rem;
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: normal;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  background: var(--gold);
+  border-bottom: var(--border) solid var(--ink);
+}
+
+// A small square tag: tech stacks, skills, interests.
+@mixin chip {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  font-family: var(--font-body);
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ink);
+  background: rgb(var(--ink-rgb) / 0.08);
+  border: var(--border-thin) solid rgb(var(--ink-rgb) / 0.35);
+}
+
+// "▶" bullets, used for project metrics and the Fiserv list.
+@mixin arrow-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  li {
+    display: flex;
+    gap: 0.55rem;
+  }
+
+  li::before {
+    content: '▶';
+    flex: none;
+    font-size: 0.7em;
+    line-height: 2;
+    color: var(--accent-green);
+    transition: transform var(--dur-fast) var(--ease-step);
+  }
+
+  // Menu-cursor nudge on the line you're reading.
+  li:hover::before {
+    transform: translateX(3px);
+  }
+}
+
+// Display-font label text.
+@mixin display-text($size: var(--text-sm)) {
+  font-family: var(--font-display);
+  font-size: $size;
+  letter-spacing: 0.04em;
+}
