@@ -1,7 +1,10 @@
 "use client";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ReactNode, useRef } from "react";
+import { ReactNode, useRef, useState } from "react";
+import { useScene } from "./SceneProvider";
+import { useTextSpeed } from "../../lib/preferences";
 import { useMotionSettings } from "../providers/MotionPreferenceProvider";
+import { DUR, EASE_OUT } from "../../lib/motion";
 import styles from "./ParallaxSection.module.scss";
 
 type ParallaxSectionProps = {
@@ -17,7 +20,7 @@ type ParallaxSectionProps = {
   children: ReactNode;
 };
 
-const CONTENT_TRANSITION = { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const };
+const CONTENT_TRANSITION = { duration: DUR.scene, ease: EASE_OUT };
 
 export default function ParallaxSection({
   id,
@@ -35,6 +38,11 @@ export default function ParallaxSection({
     offset: ["start end", "end start"],
   });
   const bgY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+  const scene = useScene();
+  // Text speed "Fast" skips the fade-ins too: the content is simply there.
+  const textFast = useTextSpeed() === "fast";
+  const [shown, setShown] = useState(false);
+  const [landedByJump, setLandedByJump] = useState(false);
 
   return (
     <section id={id} ref={sectionRef} className={styles.section}>
@@ -44,15 +52,25 @@ export default function ParallaxSection({
         <motion.div aria-hidden="true" className={`${styles.bgLayer} ${bgClassName}`} style={{ y: bgY }} />
       )}
 
-      {reduceMotion || !reveal ? (
+      {reduceMotion || textFast || !reveal ? (
         <div className={`${styles.content} ${contentClassName}`}>{children}</div>
       ) : (
         <motion.div
           className={`${styles.content} ${contentClassName}`}
-          initial={{ opacity: 0, y: 32, scale: 0.97 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          variants={{
+            hidden: { opacity: 0, y: 32 },
+            shown: { opacity: 1, y: 0, transition: landedByJump ? { duration: 0 } : CONTENT_TRANSITION },
+          }}
+          initial="hidden"
+          animate={shown ? "shown" : "hidden"}
           viewport={{ once: true, amount: 0.15 }}
-          transition={CONTENT_TRANSITION}
+          onViewportEnter={() => {
+            if (shown) return;
+            // A section reached through the tile wipe is already "revealed" by
+            // the wipe, so it appears in place instead of fading in a second time.
+            setLandedByJump(scene?.jumpTargetRef.current === id);
+            setShown(true);
+          }}
         >
           {children}
         </motion.div>

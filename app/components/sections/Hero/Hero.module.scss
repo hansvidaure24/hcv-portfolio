@@ -1,6 +1,13 @@
+@use '../../../scss/mixins' as *;
+
 .heroBg {
-  background-color: #0a2e45;
-  background-image: radial-gradient(circle at 50% 30%, #146b6a 0%, #0a2e45 70%);
+  background-color: var(--sky-1);
+  background-image: radial-gradient(circle at 50% 30%, var(--sky-3) 0%, var(--sky-1) 70%);
+}
+
+/* Twinkling pixels only come out at dusk and night. */
+.layerParticles {
+  opacity: var(--stars);
 }
 
 .animatedBackdrop {
@@ -39,14 +46,6 @@
 }
 .cloudDriftMedReverse {
   animation: driftLeft 44s ease-in-out infinite;
-}
-.floatSlow {
-  animation: floatY 24s ease-in-out infinite;
-  transform-origin: center;
-}
-.floatSlowReverse {
-  animation: floatYReverse 29s ease-in-out infinite;
-  transform-origin: center;
 }
 .pixelPulseA {
   animation: pixelPulse 6s ease-in-out infinite;
@@ -124,16 +123,6 @@
   50% { transform: translate(-70px, -6px); }
   100% { transform: translate(0, 0); }
 }
-@keyframes floatY {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(14px, -10px) scale(1.06); }
-  100% { transform: translate(0, 0) scale(1); }
-}
-@keyframes floatYReverse {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-16px, 8px) scale(0.95); }
-  100% { transform: translate(0, 0) scale(1); }
-}
 @keyframes pixelPulse {
   0%, 100% { opacity: 0.2; }
   50% { opacity: 0.9; }
@@ -147,8 +136,6 @@
   .cloudDriftSlowReverse,
   .cloudDriftMed,
   .cloudDriftMedReverse,
-  .floatSlow,
-  .floatSlowReverse,
   .pixelPulseA,
   .pixelPulseB,
   .pixelPulseC,
@@ -199,14 +186,16 @@
 .tile {
   width: 100%;
   height: 100%;
-  background-color: #000;
-  animation: tileOut 0.35s ease-in forwards;
-  will-change: transform, opacity;
+  // Same tiles as the section-jump wipe (SceneTransition.module.scss).
+  background-color: var(--ink);
+  margin: -1px;
+  animation: tileOut var(--dur-fast) steps(3, end) forwards;
+  will-change: transform;
 }
 
 @keyframes tileOut {
-  0% { opacity: 1; transform: scale(1) rotate(0deg); }
-  100% { opacity: 0; transform: scale(0.2) rotate(6deg); }
+  0% { transform: scale(1); }
+  100% { transform: scale(0); }
 }
 
 @keyframes revealFadeUp {
@@ -214,18 +203,22 @@
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Short, staggered reveals: everything is in place within about 0.8s. */
+/* Short, staggered reveals for the chip, buttons, email and photo; everything
+   is in place within about 0.8s. The name, role and summary are deliberately
+   not animated: they're what a recruiter reads first, and text hidden by a
+   fade-in delays the page's Largest Contentful Paint. */
 .reveal1 {
-  animation: revealFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+  animation: revealFadeUp var(--dur-scene) var(--ease-out) 0.1s both;
 }
 .reveal2 {
-  animation: revealFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+  animation: revealFadeUp var(--dur-scene) var(--ease-out) 0.2s both;
 }
 .reveal3 {
-  animation: revealFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+  animation: revealFadeUp var(--dur-scene) var(--ease-out) 0.3s both;
 }
 
-:global(.reduce-motion) {
+:global(.reduce-motion),
+:global(.text-fast) {
   .introTiles {
     display: none;
   }
@@ -245,56 +238,56 @@
   gap: 0.6rem;
   padding: 0.35rem 0.8rem;
 
-  font-family: 'PokePixel', monospace;
-  font-size: 1.1rem;
+  font-family: var(--font-display);
+  font-size: var(--text-md);
   letter-spacing: 0.03em;
-  color: #F8EFD8;
+  color: var(--cream);
   background: rgba(4, 20, 43, 0.55);
-  border: 2px solid rgba(248, 239, 216, 0.7);
+  border: 2px solid rgb(var(--cream-rgb) / 0.7);
 }
 
 .statusDot {
   width: 10px;
   height: 10px;
-  background: #4ade80;
+  background: var(--green);
   box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.3);
 }
 
 .title {
   margin: 0;
 
-  font-family: 'PokePixel', monospace;
+  font-family: var(--font-display);
   font-size: clamp(3.25rem, 5.4vw, 5.5rem);
   line-height: 0.9;
   letter-spacing: 0.03em;
 
-  color: #fde047;
-  background: linear-gradient(180deg, #fff9d6 0%, #fde047 35%, #f7b500 72%, #eab308 100%);
+  color: var(--title-yellow);
+  background: linear-gradient(180deg, #fff9d6 0%, var(--title-yellow) 35%, #f7b500 72%, #eab308 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   -webkit-text-stroke: clamp(2px, 0.4vw, 4px) #1d4ed8;
   paint-order: stroke fill;
   text-shadow:
-    2px 2px 0 #fde047,
-    4px 4px 0 #1e3a8a,
+    2px 2px 0 var(--title-yellow),
+    4px 4px 0 var(--title-outline),
     6px 6px 0 #16215e,
     8px 10px 16px rgba(0, 0, 0, 0.45);
 }
 
 .role {
-  font-family: 'PokePixel', monospace;
+  font-family: var(--font-display);
   font-size: clamp(1.4rem, 2vw, 1.9rem);
   line-height: 1.15;
   letter-spacing: 0.02em;
-  color: #F8EFD8;
+  color: var(--cream);
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.55);
 }
 
 .roleStack {
   display: block;
   margin-top: 0.3rem;
-  color: #FDE68A;
+  color: var(--gold);
 }
 
 .summary {
@@ -315,42 +308,14 @@
   margin-top: 0.3rem;
 }
 
-%pixelButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.6rem 1.15rem;
-
-  font-family: 'PokePixel', monospace;
-  font-size: 1.35rem;
-  letter-spacing: 0.04em;
-  text-decoration: none;
-  border: 3px solid #2A2A1E;
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.45);
-  cursor: pointer;
-  transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
-
-  &:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.45);
-  }
-
-  &:active {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.45);
-  }
-}
-
 .primaryCta {
-  @extend %pixelButton;
-  color: #2A2A1E;
-  background: #FDE68A;
+  @include pixel-button(var(--gold), var(--ink), var(--text-lg), 4px);
+  padding: 0.6rem 1.15rem;
 }
 
 .secondaryCta {
-  @extend %pixelButton;
-  color: #2A2A1E;
-  background: #F8EFD8;
+  @include pixel-button(var(--cream), var(--ink), var(--text-lg), 4px);
+  padding: 0.6rem 1.15rem;
 }
 
 .ctaCursor {
@@ -371,30 +336,30 @@
 }
 
 .email {
-  font-size: 1rem;
-  color: #FDE68A;
+  font-size: var(--text-sm);
+  color: var(--gold);
   text-underline-offset: 3px;
   user-select: text;
   -webkit-user-select: text;
 
   &:hover {
-    color: #fff3c4;
+    color: var(--gold-light);
   }
 }
 
 .copyBtn {
-  font-family: 'PokePixel', monospace;
-  font-size: 1rem;
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
   letter-spacing: 0.04em;
   padding: 0.1rem 0.55rem;
-  color: #F8EFD8;
+  color: var(--cream);
   background: rgba(4, 20, 43, 0.55);
-  border: 2px solid rgba(248, 239, 216, 0.7);
+  border: 2px solid rgb(var(--cream-rgb) / 0.7);
   cursor: pointer;
 
   &:hover {
-    color: #FDE68A;
-    border-color: #FDE68A;
+    color: var(--gold);
+    border-color: var(--gold);
   }
 }
 
@@ -405,17 +370,17 @@
   gap: 0.4rem 0;
   margin-top: 0.4rem;
 
-  font-family: 'PokePixel', monospace;
-  font-size: 1.1rem;
+  font-family: var(--font-display);
+  font-size: var(--text-md);
   letter-spacing: 0.02em;
-  color: rgba(248, 239, 216, 0.9);
+  color: rgb(var(--cream-rgb) / 0.9);
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
 
   li:not(:last-child)::after {
     content: '◆';
     margin: 0 0.7rem;
     font-size: 0.7em;
-    color: #4ade80;
+    color: var(--green);
   }
 }
 
@@ -430,7 +395,7 @@
 
 @keyframes pokedexBob {
   0%, 50% { transform: translateY(0); }
-  50.01%, 100% { transform: translateY(-14px); }
+  50.01%, 100% { transform: translateY(-4px); }
 }
 
 :global(.reduce-motion) {
@@ -492,16 +457,29 @@
   }
 }
 
+/* Phones: a small Pokédex above the name, so the photo and the pitch both
+   fit in the first screens instead of the photo trailing far below. */
+@media (max-width: 640px) {
+  .heroGrid {
+    gap: 1.25rem;
+  }
+  .heroPhoto {
+    order: -1;
+    justify-self: start;
+    width: min(32vw, 120px);
+  }
+}
+
 @media (max-width: 640px) {
   .title {
     font-size: clamp(2.8rem, 15vw, 4rem);
   }
   .statusChip,
   .proofStrip {
-    font-size: 0.95rem;
+    font-size: var(--text-sm);
   }
   .primaryCta,
   .secondaryCta {
-    font-size: 1.15rem;
+    font-size: var(--text-md);
   }
 }
