@@ -54,6 +54,33 @@ const P = {
   wakebound: { source: "Wakebound", href: "/projects/nebula" },
 };
 
+/**
+ * What a full-stack C# / .NET hiring manager looks for first: shown by default
+ * in About's skills panel, with the rest one click away ("Show all"). Every
+ * entry stays in DEX, so Type Matchup, chip links and llms.txt keep them all.
+ */
+export const CORE_DEX_IDS = [
+  "csharp",
+  "dotnet",
+  "aspnet",
+  "sql",
+  "react",
+  "rest",
+  "appsec",
+  "concurrency",
+  "typescript",
+  "playwright",
+  "unittest",
+  "ci",
+];
+
+/** How the site says each status (the data keeps "caught" / "seen"). */
+export const STATUS_LABEL: Record<DexStatus, string> = { caught: "USED", seen: "LEARNED" };
+export const STATUS_MEANING: Record<DexStatus, string> = {
+  caught: "used at Fiserv or in a live or public project",
+  seen: "only in training, or in a game still in development",
+};
+
 // Ordered like a dex: what he does at work first, then the rest.
 export const DEX: DexEntry[] = [
   {

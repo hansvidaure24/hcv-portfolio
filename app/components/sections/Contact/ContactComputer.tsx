@@ -149,7 +149,7 @@ export default function ContactComputer({ open, onClose }: { open: boolean; onCl
         className={styles.terminal}
       >
         <div className={styles.titleBar}>
-          <span className={styles.titleBarText}>TRAINER MAILBOX</span>
+          <span className={styles.titleBarText}>MAILBOX</span>
           <button type="button" className={styles.closeBtn} onClick={resetAndClose} aria-label="Close contact terminal">
             ×
           </button>

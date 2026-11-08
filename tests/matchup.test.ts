@@ -9,7 +9,7 @@ import {
   summaryLine,
   yearsOfExperience,
 } from "../app/lib/matchup";
-import { DEX, dexEntryFor } from "../app/data/dex";
+import { CORE_DEX_IDS, DEX, dexEntryFor } from "../app/data/dex";
 import { NEARBY } from "../app/data/nearby";
 import { getDraftProjects, getPublishedProjects } from "../app/data/projects";
 
@@ -128,6 +128,12 @@ describe("data the matcher depends on", () => {
   it("points nearby skills at real dex entries", () => {
     const ids = new Set(DEX.map((e) => e.id));
     expect(NEARBY.flatMap((s) => s.closest.filter((id) => !ids.has(id)))).toEqual([]);
+  });
+
+  it("features only real, used skills in the core list", () => {
+    const byId = new Map(DEX.map((e) => [e.id, e]));
+    expect(CORE_DEX_IDS.filter((id) => byId.get(id)?.status !== "caught")).toEqual([]);
+    expect(new Set(CORE_DEX_IDS).size).toBe(CORE_DEX_IDS.length);
   });
 
   it("gives every dex entry evidence", () => {

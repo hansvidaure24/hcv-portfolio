@@ -1,7 +1,16 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import Link from "next/link";
-import { DEX, dexNumber, type DexEntry, type DexEvidence } from "../../../data/dex";
+import {
+  CORE_DEX_IDS,
+  DEX,
+  STATUS_LABEL,
+  STATUS_MEANING,
+  dexNumber,
+  type DexEntry,
+  type DexEvidence,
+} from "../../../data/dex";
 import { useMotionSettings } from "../../providers/MotionPreferenceProvider";
 import { useScene } from "../../scene/SceneProvider";
 import { playSound } from "../../../lib/sound";
@@ -9,6 +18,10 @@ import styles from "./SkillDex.module.scss";
 
 // Chip-style spellings ("Unity / C#", "WebRTC (PeerJS)") match chips but aren't worth listing.
 const shownAliases = (entry: DexEntry) => entry.aliases.filter((alias) => !/[/(+]/.test(alias));
+
+// The core skills' positions in DEX, in dex order (so the numbers only go up).
+const CORE = DEX.map((entry, i) => (CORE_DEX_IDS.includes(entry.id) ? i : -1)).filter((i) => i >= 0);
+const ALL = DEX.map((_, i) => i);
 
 function EvidenceLink({ evidence }: { evidence: DexEvidence }) {
   return evidence.href.startsWith("/") ? (
@@ -21,14 +34,18 @@ function EvidenceLink({ evidence }: { evidence: DexEvidence }) {
 }
 
 /**
- * The SKILL DEX: every skill on the site with its proof. A vertical tab list
- * (↑ ↓ Home End) on the left, the selected entry on the right; on narrow
- * panels the list sits above. Links like "#dex-csharp" (stack chips, case
- * studies) open an entry and scroll here. Every entry stays in the page for
- * search engines; only the selected one is shown.
+ * The skills panel (the Skill Dex): every skill on the site with its proof. A
+ * vertical tab list (↑ ↓ Home End) on the left, the selected entry on the
+ * right; on narrow panels the list sits above. The list starts with the core
+ * skills for the roles Hans wants (CORE_DEX_IDS); "Show all" lists the rest.
+ * Links like "#dex-csharp" (stack chips, case studies) open an entry, showing
+ * the full list first if needed, and scroll here. Every entry stays in the
+ * page for search engines; only the selected one is shown.
  */
 export default function SkillDex() {
   const [selected, setSelected] = useState(0);
+  const [showAll, setShowAll] = useState(false);
+  const visible = showAll ? ALL : CORE;
   const rootRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const { reduced } = useMotionSettings();
@@ -76,7 +93,12 @@ export default function SkillDex() {
     function open(hash: string | null): boolean {
       const index = hash?.startsWith("#dex-") ? DEX.findIndex((e) => e.id === hash.slice(5)) : -1;
       if (index < 0) return false;
-      setSelected(index);
+      // A skill outside the core list: show the full list first, synchronously,
+      // so its row exists (and can take focus) below.
+      flushSync(() => {
+        if (!CORE.includes(index)) setShowAll(true);
+        setSelected(index);
+      });
       scrollToDex();
       // Keyboard users land on the entry they asked for, not back at the link.
       const tab = tabRefs.current[index];
@@ -116,45 +138,67 @@ export default function SkillDex() {
     };
   }, []);
 
+  // Arrow keys move through the rows that are showing (core or all).
   function onKey(e: React.KeyboardEvent, index: number) {
-    const last = DEX.length - 1;
-    const next =
-      e.key === "ArrowDown" || e.key === "ArrowRight" ? Math.min(index + 1, last)
-      : e.key === "ArrowUp" || e.key === "ArrowLeft" ? Math.max(index - 1, 0)
+    const pos = visible.indexOf(index);
+    const last = visible.length - 1;
+    const nextPos =
+      e.key === "ArrowDown" || e.key === "ArrowRight" ? Math.min(pos + 1, last)
+      : e.key === "ArrowUp" || e.key === "ArrowLeft" ? Math.max(pos - 1, 0)
       : e.key === "Home" ? 0
       : e.key === "End" ? last
       : -1;
-    if (next < 0) return;
+    if (nextPos < 0) return;
     e.preventDefault();
-    select(next, true);
+    select(visible[nextPos]!, true);
+  }
+
+  function toggleAll() {
+    playSound("/sounds/button.mp3");
+    // Collapsing while a non-core skill is open: open the first core one.
+    if (showAll && !CORE.includes(selected)) setSelected(CORE[0]!);
+    setShowAll(!showAll);
   }
 
   return (
     <div ref={rootRef} className={styles.dex} id="skill-dex">
       <div className={styles.layout}>
-        <div role="tablist" aria-orientation="vertical" aria-label="Skills" className={styles.list}>
-          {DEX.map((entry, i) => (
-            <button
-              key={entry.id}
-              ref={(el) => {
-                tabRefs.current[i] = el;
-              }}
-              type="button"
-              role="tab"
-              id={`dex-tab-${entry.id}`}
-              aria-selected={i === selected}
-              aria-controls={`dex-entry-${entry.id}`}
-              tabIndex={i === selected ? 0 : -1}
-              className={styles.row}
-              onClick={() => select(i)}
-              onKeyDown={(e) => onKey(e, i)}
-            >
-              <span className={styles.no}>{dexNumber(entry)}</span>
-              <span className={styles.rowName}>{entry.name}</span>
-              <span className={styles.ball} data-status={entry.status} aria-hidden="true" />
-              <span className={styles.srOnly}>, {entry.status}</span>
-            </button>
-          ))}
+        <div className={styles.listColumn}>
+          <div id="skill-list" role="tablist" aria-orientation="vertical" aria-label="Skills" className={styles.list}>
+            {DEX.map((entry, i) => (
+              <button
+                key={entry.id}
+                ref={(el) => {
+                  tabRefs.current[i] = el;
+                }}
+                type="button"
+                role="tab"
+                id={`dex-tab-${entry.id}`}
+                aria-selected={i === selected}
+                aria-controls={`dex-entry-${entry.id}`}
+                tabIndex={i === selected ? 0 : -1}
+                // Rendered either way, so a "#dex-..." link can always find its row.
+                hidden={!visible.includes(i)}
+                className={styles.row}
+                onClick={() => select(i)}
+                onKeyDown={(e) => onKey(e, i)}
+              >
+                <span className={styles.no}>{dexNumber(entry)}</span>
+                <span className={styles.rowName}>{entry.name}</span>
+                <span className={styles.ball} data-status={entry.status} aria-hidden="true" />
+                <span className={styles.srOnly}>, {STATUS_LABEL[entry.status].toLowerCase()}</span>
+              </button>
+            ))}
+          </div>
+          <button
+            type="button"
+            className={styles.more}
+            aria-expanded={showAll}
+            aria-controls="skill-list"
+            onClick={toggleAll}
+          >
+            {showAll ? `Show the ${CORE.length} core skills` : `Show all ${DEX.length} skills`}
+          </button>
         </div>
 
         {DEX.map((entry, i) => {
@@ -174,7 +218,7 @@ export default function SkillDex() {
                 <span className={styles.entryNo}>{dexNumber(entry)}</span>
                 <h4 className={styles.entryName}>{entry.name}</h4>
                 <span className={styles.status} data-status={entry.status}>
-                  {entry.status === "caught" ? "CAUGHT" : "SEEN"}
+                  {STATUS_LABEL[entry.status]}
                 </span>
               </header>
               <p className={styles.type}>
@@ -214,9 +258,9 @@ export default function SkillDex() {
         })}
 
         <p className={styles.legend}>
-          <span className={styles.ball} data-status="caught" aria-hidden="true" /> CAUGHT: used at Fiserv or in a live or
-          public project. <span className={styles.ball} data-status="seen" aria-hidden="true" /> SEEN: only in training, or
-          in a game still in development.
+          <span className={styles.ball} data-status="caught" aria-hidden="true" /> {STATUS_LABEL.caught}:{" "}
+          {STATUS_MEANING.caught}. <span className={styles.ball} data-status="seen" aria-hidden="true" />{" "}
+          {STATUS_LABEL.seen}: {STATUS_MEANING.seen}.
         </p>
       </div>
     </div>

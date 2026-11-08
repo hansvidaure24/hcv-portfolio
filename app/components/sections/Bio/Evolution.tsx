@@ -65,7 +65,7 @@ export default function Evolution({ className = "" }: { className?: string }) {
   }, [reduced, textFast]);
 
   return (
-    <PixelPanel title="EVOLUTION" titleAside="What? HANS is evolving!" className={className}>
+    <PixelPanel title="Career path" titleAside="What? HANS is evolving!" className={className}>
       <ol
         ref={listRef}
         className={`${styles.chain} ${armed ? styles.armed : ""} ${visible ? styles.visible : ""}`}
@@ -73,14 +73,18 @@ export default function Evolution({ className = "" }: { className?: string }) {
         {STAGES.map((stage, i) => (
           <li key={stage.name} className={styles.stage} style={{ "--i": i } as React.CSSProperties}>
             <span className={styles.stageNo}>STAGE {i + 1}</span>
-            <h3 className={styles.stageName}>{stage.name}</h3>
+            <h4 className={styles.stageName}>{stage.name}</h4>
             <p className={styles.when}>{stage.when}</p>
             <p className={styles.text}>{stage.text}</p>
           </li>
         ))}
         <li className={`${styles.stage} ${styles.next}`} style={{ "--i": STAGES.length } as React.CSSProperties}>
           <span className={styles.stageNo}>NEXT</span>
-          <h3 className={styles.stageName}>???</h3>
+          {/* "???" is the reveal; screen readers hear what it means. */}
+          <h4 className={styles.stageName}>
+            <span aria-hidden="true">???</span>
+            <span className={styles.srOnly}>Next role</span>
+          </h4>
           <p className={styles.when}>Your team</p>
           {/* Same target as the trainer card's line in BioDashboard: one level, said once. */}
           <p className={styles.text}>A team where I own features end to end and grow toward a senior role.</p>

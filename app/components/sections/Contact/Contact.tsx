@@ -295,7 +295,7 @@ export default function Contact() {
         </div>
 
         <PixelPanel
-          title="TRAINER CARD"
+          title="Contact card"
           titleAside={`ID No. ${currentYear}`}
           className={styles.trainerCard}
           bodyClassName={styles.cardBody}
@@ -317,7 +317,7 @@ export default function Contact() {
 
             {/* For recruiters who screen with an AI assistant: clean data instead of a scraped page. */}
             <div className={styles.cardStatRow}>
-              <span className={styles.cardStatLabel}>LINK CABLE</span>
+              <span className={styles.cardStatLabel}>AI TOOLS</span>
               <span className={styles.cardStatValue}>
                 Screening with an AI assistant? Point it at{" "}
                 <a href="/llms.txt" className={styles.cardEmail}>

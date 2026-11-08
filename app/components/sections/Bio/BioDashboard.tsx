@@ -5,13 +5,12 @@ import Evolution from "./Evolution";
 import TrainerStats from "./TrainerStats";
 import type { TrainerStats as TrainerData } from "../../../lib/github";
 import SkillDex from "./SkillDex";
-import { DEX } from "../../../data/dex";
+import { CORE_DEX_IDS, DEX } from "../../../data/dex";
 import { MOVES, TESTIMONIALS } from "../../../data/party";
 import styles from "./BioDashboard.module.scss";
 
-// The SKILL DEX title bar counts (app/data/dex.ts).
-const CAUGHT = DEX.filter((entry) => entry.status === "caught").length;
-const SEEN = DEX.length - CAUGHT;
+// The skills panel's title bar counts (app/data/dex.ts).
+const CORE_COUNT = CORE_DEX_IDS.length;
 
 const INTERESTS = ["Full-stack engineering", "Application security", "Game dev (hobby)"];
 
@@ -38,11 +37,11 @@ export default function BioDashboard({ trainer }: { trainer: TrainerData | null 
 
   return (
     <div className={styles.dashboard}>
-      <SectionHeading>Trainer profile</SectionHeading>
+      <SectionHeading>About</SectionHeading>
 
       <div className={styles.grid}>
         {/* Work first: it's the evidence a recruiter came for. */}
-        <PixelPanel title="WHAT I'VE SHIPPED AT FISERV" bodyClassName={styles.panelBody}>
+        <PixelPanel title="What I’ve shipped at Fiserv" bodyClassName={styles.panelBody}>
           <ul className={styles.questLog}>
             {QUEST_LOG.map((item) => (
               <li key={item}>{item}</li>
@@ -50,7 +49,7 @@ export default function BioDashboard({ trainer }: { trainer: TrainerData | null 
           </ul>
         </PixelPanel>
 
-        <PixelPanel title="WHY HIRE ME: MOVES" bodyClassName={styles.panelBody}>
+        <PixelPanel title="Why hire me" bodyClassName={styles.panelBody}>
           <ol className={styles.moves}>
             {MOVES.map((move) => (
               <li key={move.name} className={styles.move}>
@@ -67,7 +66,7 @@ export default function BioDashboard({ trainer }: { trainer: TrainerData | null 
           </ol>
         </PixelPanel>
 
-        <PixelPanel title="TRAINER" titleAside="NO. 001" bodyClassName={styles.panelBody}>
+        <PixelPanel title="Profile" titleAside="NO. 001" bodyClassName={styles.panelBody}>
           <div className={styles.portrait}>
             <LazyVideo src="/videos/bio-photos.mp4" poster="/videos/bio-photos.jpg" />
           </div>
@@ -84,7 +83,7 @@ export default function BioDashboard({ trainer }: { trainer: TrainerData | null 
           </div>
         </PixelPanel>
 
-        <PixelPanel title="SKILL DEX" titleAside={`CAUGHT ${CAUGHT} · SEEN ${SEEN}`} bodyClassName={styles.panelBody}>
+        <PixelPanel title="Skills, with proof" titleAside={`${CORE_COUNT} CORE · ${DEX.length} IN ALL`} bodyClassName={styles.panelBody}>
           <div className={styles.clip}>
             <LazyVideo src="/videos/bio-thoughts.mp4" poster="/videos/bio-thoughts.jpg" />
           </div>
@@ -94,7 +93,7 @@ export default function BioDashboard({ trainer }: { trainer: TrainerData | null 
         <Evolution className={styles.wide} />
 
         {showQuotes && (
-          <PixelPanel title="WHAT TEAMMATES SAY" className={styles.wide} bodyClassName={styles.panelBody}>
+          <PixelPanel title="What teammates say" className={styles.wide} bodyClassName={styles.panelBody}>
             {TESTIMONIALS.length > 0 ? (
               <ul className={styles.quotes}>
                 {TESTIMONIALS.map((t) => (
