@@ -4,6 +4,7 @@ import {
   MAX_MESSAGE_LENGTH,
   escapeHtml,
   hasContactErrors,
+  isFilledTooFast,
   validateContactForm,
   type ContactFormValues,
 } from "@/app/lib/validateContact";
@@ -30,7 +31,7 @@ function getClientIp(req: NextRequest): string {
   return req.headers.get("x-real-ip") ?? "unknown";
 }
 
-type ContactPayload = ContactFormValues & { company?: string };
+type ContactPayload = ContactFormValues & { company?: string; elapsedMs?: unknown };
 
 function isContactPayload(value: unknown): value is ContactPayload {
   if (!value || typeof value !== "object") return false;
@@ -72,6 +73,16 @@ export async function POST(req: NextRequest) {
   // Silently accept submissions that fill the hidden honeypot field.
   if (parsed.company && parsed.company.trim().length > 0) {
     return NextResponse.json({ ok: true });
+  }
+
+  // Filled in under 3 seconds (or sent without the timer): a script, almost
+  // certainly. Unlike the honeypot this says so, because a very fast person
+  // (autofill plus a pasted message) can simply press Send again.
+  if (isFilledTooFast(parsed.elapsedMs)) {
+    return NextResponse.json(
+      { error: "That was quick! Wait a few seconds and send it again. If this keeps happening, reload the page." },
+      { status: 400 }
+    );
   }
 
   const values: ContactFormValues = {
@@ -131,22 +142,24 @@ export async function POST(req: NextRequest) {
     }
 
     // The notification succeeded, so a receipt failure is non-blocking.
+    //
+    // The receipt goes to an address nobody has verified, so it carries no
+    // text the submitter wrote: not the message, not the name, not a subject
+    // built from the name. Otherwise anyone could use this form to send their
+    // own words (a phishing link, say) from this domain to any inbox, signed
+    // with its DKIM key.
     const receiptResult = await resend.emails.send({
       from: emailFrom,
       to: email,
       replyTo: contactEmail,
-      subject,
+      subject: "Your message to Hans Vidaure",
       headers: { "Message-ID": messageId },
       html: `
-        <p>Hi ${escapeHtml(firstName)},</p>
+        <p>Hi,</p>
         <p>Thanks for your message — I've received it and will get back to you soon. Just reply to this email if you want to add anything.</p>
-        <p><strong>Here's a copy of what you sent:</strong></p>
-        <blockquote style="margin:0;padding:0.75rem 1rem;border-left:3px solid #ccc;color:#333">
-          ${escapeHtml(message).replace(/\n/g, "<br />")}
-        </blockquote>
         <p style="color:#666">— Hans</p>
       `,
-      text: `Hi ${firstName},\n\nThanks for your message — I've received it and will get back to you soon. Just reply to this email if you want to add anything.\n\nHere's a copy of what you sent:\n${message}\n\n— Hans`,
+      text: `Hi,\n\nThanks for your message — I've received it and will get back to you soon. Just reply to this email if you want to add anything.\n\n— Hans`,
     });
 
     if (receiptResult.error) {

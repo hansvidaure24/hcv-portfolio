@@ -50,6 +50,19 @@ export function validateContactForm(values: ContactFormValues): ContactFieldErro
   return errors;
 }
 
+/**
+ * Nobody types two names, an email and a message in under 3 seconds; scripts
+ * that fill the form do. The form sends how long it was open (`elapsedMs`).
+ * A missing or non-number value counts as too fast: only a script, or a tab
+ * still running a version of the form from before this check, leaves it out
+ * (a reload fixes the second).
+ */
+export const MIN_FILL_MS = 3000;
+
+export function isFilledTooFast(elapsedMs: unknown): boolean {
+  return typeof elapsedMs !== "number" || !Number.isFinite(elapsedMs) || elapsedMs < MIN_FILL_MS;
+}
+
 export function hasContactErrors(errors: ContactFieldErrors): boolean {
   return Object.keys(errors).length > 0;
 }
