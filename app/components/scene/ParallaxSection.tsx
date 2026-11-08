@@ -56,6 +56,9 @@ export default function ParallaxSection({
         <div className={`${styles.content} ${contentClassName}`}>{children}</div>
       ) : (
         <motion.div
+          // Starts invisible for the fade-in; layout.tsx's <noscript> style
+          // shows it at once when JavaScript is off.
+          data-reveal=""
           className={`${styles.content} ${contentClassName}`}
           variants={{
             hidden: { opacity: 0, y: 32 },

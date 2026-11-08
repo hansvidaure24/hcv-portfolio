@@ -107,6 +107,13 @@ export default function RootLayout({
         {/* Pick the time-of-day palette before the first paint, too. */}
         <script dangerouslySetInnerHTML={{ __html: TIME_BOOT_SCRIPT }} />
         <script dangerouslySetInnerHTML={{ __html: TEXT_SPEED_BOOT_SCRIPT }} />
+        {/* Without JavaScript the scroll fade-ins never run: show those
+            sections as they are (ParallaxSection marks them data-reveal). */}
+        <noscript
+          dangerouslySetInnerHTML={{
+            __html: "<style>[data-reveal]{opacity:1!important;transform:none!important}</style>",
+          }}
+        />
         {/* These are static schema objects, so stringifying them is fine. */}
         <script
           type="application/ld+json"
