@@ -432,6 +432,13 @@ Lighthouse (mobile, local production build, Nov 8): home 100 performance,
 25 ms blocking time; accessibility, best practices and SEO 100 on home, a
 shared-matchup link and `/resume`.
 
+Phases 9–11 deployed Nov 8 (Vercel preview, then `main`). On
+hansvidaure.dev: home 100 performance, 34 ms blocking time, CLS 0,
+accessibility / best practices / SEO 100; no console errors; the scripted
+Type Matchup run (sample post, apply, shared link, clear) behaves as it did
+locally with zero requests carrying the post; `llms.txt`, `resume.json` and
+the MCP tools answer with hansvidaure.dev links.
+
 ## Phase 12 — Explore mode (stretch)
 
 Only after the original mascot exists (Phase 7, kept by choice).
