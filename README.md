@@ -1,8 +1,10 @@
 # Hans Chandler Vidaure — Portfolio
 
 A Pokémon Emerald–themed personal portfolio site: a scrollable "scene" flow
-(Hero → Projects → Bio → "Add Hans to your party?" → Contact) styled after the
-GBA Pokédex/menu UI, with a working contact form that emails through Resend.
+(Hero → Work → About → Contact) styled after the GBA Pokédex/menu UI, with a
+working contact form that emails through Resend. The design system (tokens,
+mixins, motion rules) and the plan behind it are in
+[`docs/DESIGN-ROADMAP.md`](docs/DESIGN-ROADMAP.md).
 
 **Live:** [hansvidaure.dev](https://hansvidaure.dev)
 
@@ -25,9 +27,11 @@ npm run dev
 
 | What | Where |
 | --- | --- |
-| Project cards and case-study metadata | [`app/data/projects.ts`](app/data/projects.ts) |
-| Case-study write-ups | `content/projects/<slug>.md` (`## ` headings, `- ` lists, `**bold**`, `[links](https://…)`) |
-| "Why me" moves and testimonials | [`app/data/party.ts`](app/data/party.ts) |
+| Project cards, case-study metadata, "Choose your focus" scores (`focus`) and stat bars (`stats`) | [`app/data/projects.ts`](app/data/projects.ts) |
+| Focus options and which stack chips each one highlights | [`app/data/focus.ts`](app/data/focus.ts) |
+| Case-study write-ups | `content/projects/<slug>.md` (`## ` headings, `- ` lists, `**bold**`, `[links](https://…)`). Headings are sorted into the Overview / Decisions / Results tabs by `TAB_FOR_HEADING` in [`app/projects/[slug]/page.tsx`](app/projects/[slug]/page.tsx). |
+| Career timeline (About → Evolution) | [`app/components/sections/Bio/Evolution.tsx`](app/components/sections/Bio/Evolution.tsx); keep it in sync with the resume |
+| "Why hire me" moves and testimonials (About) | [`app/data/party.ts`](app/data/party.ts) |
 
 A project with `published: false` is a draft: it's left out of the grid,
 sitemap and production build, but `npm run dev` gives it a page with a DRAFT
@@ -81,9 +85,13 @@ provider's dashboard (never in committed files), and confirm the
 
 ## Accessibility
 
-- Reduced motion: the "Reduce motion" toggle in the site menu (bottom-right)
-  overrides the OS `prefers-reduced-motion` setting in either direction and
-  persists the choice in `localStorage`. See
-  [`app/lib/motionPreference.ts`](app/lib/motionPreference.ts).
-- The contact terminal dialog is keyboard-accessible: it traps focus while
-  open, restores focus to the mail icon on close, and closes on <kbd>Escape</kbd>.
+- Options (sliders button in the top bar, or OPTIONS in the phone menu):
+  ANIMATIONS: REDUCED overrides the OS `prefers-reduced-motion` setting in
+  either direction, and TEXT SPEED: FAST skips typing effects and intros.
+  Both persist in `localStorage` and apply before first paint. See
+  [`app/lib/motionPreference.ts`](app/lib/motionPreference.ts) and
+  [`app/lib/preferences.ts`](app/lib/preferences.ts).
+- The contact and Options dialogs are keyboard-accessible: they trap focus
+  while open, restore focus on close, and close on <kbd>Escape</kbd>.
+- Feedback (email copied, message sent) goes through one dialogue box that
+  announces its full text to screen readers.
