@@ -4,7 +4,7 @@
    and the Pokéball (z 100), below modal dialogs (z 200). */
 .box {
   position: fixed;
-  z-index: 150;
+  z-index: var(--z-toast);
   left: 50%;
   bottom: 1rem;
   transform: translateX(-50%);
@@ -51,7 +51,7 @@
 }
 
 /* Phones: full width minus the Pokéball in the corner. */
-@media (max-width: 760px) {
+@media (max-width: $bp-nav) {
   .box {
     left: 0.75rem;
     right: calc(3.5rem + 1.5rem);

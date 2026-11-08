@@ -447,7 +447,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: $bp-compact) {
   .heroGrid {
     grid-template-columns: 1fr;
   }
@@ -459,7 +459,7 @@
 /* Phones: a small Pokédex above the name, so the photo and the pitch both
    fit in the first screens instead of the photo trailing far below. Sized so
    the two calls to action also land on a 375×740 first screen. */
-@media (max-width: 640px) {
+@media (max-width: $bp-phone) {
   .heroGrid {
     gap: 1rem;
   }
@@ -470,7 +470,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: $bp-phone) {
   .heroText {
     gap: 0.85rem;
   }
