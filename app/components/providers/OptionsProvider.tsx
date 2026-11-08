@@ -1,6 +1,12 @@
 "use client";
-import { createContext, useCallback, useContext, useState, type ReactNode } from "react";
-import OptionsDialog from "../ui/OptionsDialog";
+import dynamic from "next/dynamic";
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import { whenIdle } from "../../lib/whenIdle";
+
+// Not part of the startup JavaScript: fetched once the page is idle, and
+// mounted the first time someone opens Options.
+const loadOptionsDialog = () => import("../ui/OptionsDialog");
+const OptionsDialog = dynamic(loadOptionsDialog, { ssr: false });
 
 type OptionsValue = { openOptions: () => void };
 
@@ -15,12 +21,20 @@ export function useOptions() {
 /** One shared OPTIONS screen, opened from the top bar or the Pokéball menu. */
 export default function OptionsProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
+  const [used, setUsed] = useState(false);
   const close = useCallback(() => setOpen(false), []);
 
+  useEffect(() => whenIdle(() => void loadOptionsDialog()), []);
+
+  function openOptions() {
+    setUsed(true);
+    setOpen(true);
+  }
+
   return (
-    <OptionsContext.Provider value={{ openOptions: () => setOpen(true) }}>
+    <OptionsContext.Provider value={{ openOptions }}>
       {children}
-      <OptionsDialog open={open} onClose={close} />
+      {used && <OptionsDialog open={open} onClose={close} />}
     </OptionsContext.Provider>
   );
 }
