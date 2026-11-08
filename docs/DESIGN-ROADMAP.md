@@ -13,8 +13,8 @@ with a desktop + phone check in the browser before the next one starts.
 
 | Phase | Target | Status |
 | --- | --- | --- |
-| 1–6. Foundation → QA (record at the bottom) | Nov 7–22, 2026 | Done locally, **not deployed** |
-| 7. Ship what's built, fix open issues | Nov 8–10 | Next |
+| 1–6. Foundation → QA (record at the bottom) | Nov 7–22, 2026 | Done, live Nov 7 |
+| 7. Ship what's built, fix open issues | Nov 8–10 | Done Nov 7 (2 items wait on others) |
 | 8. Table stakes from top portfolios | Nov 11–15 | Planned |
 | 9. Evidence Dex | Nov 16–19 | Planned |
 | 10. Type Matchup (the new thing) | Nov 20–26 | Planned |
@@ -26,24 +26,48 @@ with a desktop + phone check in the browser before the next one starts.
 ## Phase 7 — Ship what's built, fix open issues
 
 Carried over from the old "Later / parked" lists, plus what turned up on
-Nov 7. Nothing new starts until the first item is done.
+Nov 7.
 
-**Fix now**
+**Fixed (Nov 7)**
 
-- [ ] **Phases 1–6 aren't live.** All of that work is uncommitted on `main`
-      (35 modified files, 8 deletions, about 20 new files, and `docs/`
-      itself), and hansvidaure.dev still serves the old site: a separate
-      Why me section (`#party`), no focus picker, no time of day (checked
-      Nov 7). Commit in reviewable pieces, deploy, then re-run Lighthouse
-      on the production URL and compare with the Phase 6 numbers.
-- [ ] **Home performance in the low 70s** (mobile Lighthouse): ~420 ms of
-      startup main-thread work. Load the Options and contact dialogs on
-      demand, and trim Framer Motion on the home page.
-- [ ] **Heavy source files:** `public/graphics/hans.png` is 9.0 MB and
-      `hero-avatar.jpg` 624 KB. next/image serves them resized, but they
-      slow builds and first requests. Also check when `torchic.gif`
-      (1.4 MB) and `pokemon-bgmusic.mp3` (4.0 MB) download: only on hover
-      and once sound is on.
+- [x] **Phases 1–6 are live.** They were uncommitted on `main` and
+      hansvidaure.dev still served the old site. Now committed in six
+      pieces by area plus a docs commit (only the last one is meant to
+      build on its own; the files depend on each other), built as a Vercel
+      preview, then fast-forwarded to `main` and deployed. Checked on
+      production: Work / About / Contact, focus picker, Options, time of
+      day, case-study tabs, the 404, no console errors.
+- [x] **Startup blocking time ~420 ms → ~30 ms.** The cause was one long
+      hydration task, not one library. Work, About and Contact are now in
+      their own Suspense boundaries, so React hydrates them in separate
+      short tasks after the hero. The Options and contact dialogs load
+      when the page is idle and mount on first open. The Contact typing
+      sound (72 KB) was downloaded and decoded on every visit; it now loads
+      only when sound is on. Framer Motion didn't need trimming after this.
+- [x] **Heavy source files:** `hans.png` 2980×4160 / 9.0 MB → 768×1072 /
+      387 KB (still 4× its display size, transparency kept);
+      `hero-avatar.jpg` 1479px / 623 KB → 1080px / 219 KB. `torchic.gif`
+      already loads lazily near Contact, and `pokemon-bgmusic.mp3` only
+      once sound is turned on.
+- [x] **Behavior Tree Editor card** said 13 trees (and a 13/13 stat bar)
+      after the write-up moved to all 14; both now say 14.
+
+Mobile Lighthouse, same tool and machine before and after (median of 3):
+
+| Page | Performance | Blocking time | LCP | CLS | A11y / BP / SEO |
+| --- | --- | --- | --- | --- | --- |
+| Home, local, before | 90 | 417 ms | 1.06 s | 0.017 | 100 |
+| Home, local, after | 100 | 29 ms | 1.06 s | 0.017 | 100 |
+| Home, **production** | 100 | 46 ms | 1.0 s | 0 | 100 / 100 / 100 |
+| SliceOfPie case study, **production** | 99 | 30 ms | 2.0 s | 0 | — |
+
+Phase 6's "72–73" came from an older Lighthouse setup, so compare within
+this table only.
+
+Gotcha found on the way: `next dev` and `next build` share `.next/`.
+Building while a dev server runs leaves a broken production build (500s
+with `Cannot find module './vendor-chunks/...'`). Stop the dev server
+first, or build from a separate copy.
 
 **Waiting on other people**
 
@@ -57,17 +81,19 @@ Nov 7. Nothing new starts until the first item is done.
 **Watch, fix if it bites**
 
 - [ ] **Contact rate limit is per server instance** (in memory, resets on
-      every deploy). If spam shows up, add a free fix first (a honeypot
-      field, a minimum time-to-submit) before any hosted store.
+      every deploy). The form already has a honeypot field; if spam still
+      shows up, add another free check first (a minimum time-to-submit)
+      before any hosted store.
 
 **Kept by choice, with a deadline**
 
-- [ ] **Borrowed Pokémon assets** (Torchic, music, card art, Pokédex
-      frame). Kept for now. Everything new in this plan uses original art
+- [ ] **Borrowed Pokémon assets** (Torchic, music, the trading-card frame
+      around `hans.png`, the Piplup drawn into `hero-avatar.jpg`, the
+      Pokédex frame). Kept for now. Everything new in this plan uses original art
       only, and an original pixel mascot must replace these before
       Phase 12, which makes the site much more game-like.
 
-**Done in this edit**
+**Housekeeping**
 
 - [x] The two "Later / parked" lists are merged here. The Contact typing
       line marked "not yet watched live" in Phase 3 was watched in
@@ -342,10 +368,10 @@ Everything from Phases 1–6 still applies. For the new features:
 
 ---
 
-# Record: Phases 1–6 (done locally)
+# Record: Phases 1–6 (done)
 
-Kept as the record of how the design system was built. Built and checked
-locally; see Phase 7 for deploying it.
+Kept as the record of how the design system was built. Deployed in
+Phase 7.
 
 ## Phase 1 — Foundation: tokens and motion rules
 
@@ -514,4 +540,4 @@ Everything later depends on this.
       page for 2s (it waited on requestAnimationFrame, which browsers pause
       during a view transition). The morph now starts in ~0.3s. Stat bars
       now all share one length.
-- [ ] **Launch**: not deployed yet (Phase 7).
+- [x] **Launch**: deployed Nov 7 in Phase 7.
