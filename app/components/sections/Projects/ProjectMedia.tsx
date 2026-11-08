@@ -125,6 +125,9 @@ export default function ProjectMedia({ title, cover, video, sizes, transitionNam
             src={optimizedSrc(cover.src, w)}
             alt=""
             aria-hidden="true"
+            // Decoration: load with the card, not with the page (15 requests at startup before).
+            loading={priority ? "eager" : "lazy"}
+            decoding="async"
             className={styles.mosaic}
             style={{ visibility: i === stage ? "visible" : "hidden" }}
           />
