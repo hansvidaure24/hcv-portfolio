@@ -28,3 +28,16 @@
 .panelBody {
   padding: 1.1rem 1.35rem;
 }
+
+// On paper a panel is just its content: no border, shadow or cream fill.
+@media print {
+  .panel {
+    border: none;
+    box-shadow: none;
+    background: #fff;
+  }
+
+  .panelBody {
+    padding: 0;
+  }
+}
