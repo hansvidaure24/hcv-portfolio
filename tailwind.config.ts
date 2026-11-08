@@ -1,5 +1,7 @@
 import type { Config } from 'tailwindcss'
 
+// Colors and fonts point at the CSS custom properties in app/scss/globals.scss,
+// so Tailwind utilities and the Sass modules share one set of tokens.
 const config: Config = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -8,23 +10,21 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        glass: '#E6EAF0',
-        navy: '#0B1C2D',
-        blue: '#1F3A5F',
-        gold: '#C9A24D',
-        slate: '#2C2F36',
-        // Emerald (GBA) palette
-        routeGreen: '#4C8C6B',
-        routeGreenDark: '#2E5C45',
-        routeGreenDeep: '#1B3B2C',
-        panelCream: '#F8EFD8',
-        panelBorder: '#2A2A1E',
-        pathBrown: '#8A6D4B',
+        ink: 'var(--ink)',
+        'ink-soft': 'var(--ink-soft)',
+        'ink-muted': 'var(--ink-muted)',
+        cream: 'var(--cream)',
+        paper: 'var(--paper)',
+        gold: 'var(--gold)',
+        'gold-light': 'var(--gold-light)',
+        'gold-deep': 'var(--gold-deep)',
+        green: 'var(--green)',
+        red: 'var(--red)',
+        wood: 'var(--wood)',
       },
       fontFamily: {
-        inter: ['Inter', 'sans-serif'],
-        quickSand: ['Quicksand', 'sans-serif'],
-        pokePixel: ['PokePixel', 'monospace'],
+        display: ['var(--font-display)'],
+        body: ['var(--font-body)'],
       },
     },
   },

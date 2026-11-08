@@ -1,7 +1,165 @@
-@use './fonts.scss';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Design tokens: the one source of truth for color, type, borders, shadows
+   and motion. Component stylesheets use these instead of raw values, and
+   tailwind.config.ts points at the same variables. */
+:root {
+  /* Core palette */
+  --ink: #2A2A1E;
+  --ink-rgb: 42 42 30;
+  --ink-soft: #3a3a2c;
+  --ink-muted: #6b5a3a;
+  --cream: #F8EFD8;
+  --cream-rgb: 248 239 216;
+  --paper: #FFFDF5;
+  --gold: #FDE68A;
+  --gold-light: #fff3c4;
+  --gold-deep: #F5B942;
+  --title-yellow: #fde047;
+  --title-outline: #1e3a8a;
+  --green: #4ade80;
+  --accent-green: #157a64; /* bullets and small text on cream: 4.5:1 or better */
+  --red: #D64541;
+  --wood: #8A6D4B;
+  --wood-light: #C99A5B;
+  --wood-ink: #4A3620;
+  --focus: #22c55e;
+
+  /* Type: PokePixel for display, labels and buttons (never below --text-xs);
+     Inter for all body text. */
+  --font-display: var(--font-pokepixel), monospace;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+  --font-mono: ui-monospace, monospace;
+  --text-2xs: 0.8rem;   /* body font only: chips, fine print */
+  --text-xs: 0.875rem;  /* smallest allowed size for the display font */
+  --text-sm: 1rem;
+  --text-md: 1.1rem;
+  --text-lg: 1.4rem;
+  --text-xl: 2rem;
+  --text-2xl: 2.75rem;
+
+  /* Borders and hard pixel shadows. Corners are square: the only rounded
+     shapes are genuinely round things (the Pokéball, status dots). */
+  --border: 3px;
+  --border-thin: 2px;
+  --shadow-color: rgba(0, 0, 0, 0.4);
+  --shadow-xs: 2px 2px 0 var(--shadow-color);
+  --shadow-sm: 3px 3px 0 var(--shadow-color);
+  --shadow-md: 4px 4px 0 var(--shadow-color);
+  --shadow-lg: 6px 6px 0 var(--shadow-color);
+
+  /* Motion: UI moves in whole-pixel steps; only scenery and scene changes
+     use the smooth curve. Mirrored for Framer Motion in app/lib/motion.ts. */
+  --dur-fast: 120ms;
+  --dur-base: 240ms;
+  --dur-scene: 480ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-step: steps(2, end);
+  --lift: 2px;
+}
+
+/* Scenery palette, one per time of day (set by TIME_BOOT_SCRIPT in
+   app/lib/timeOfDay.ts). Every section background reads these, so the whole
+   page is one place at one time. Night is also the no-JavaScript fallback.
+   Sky colors behind hero text keep cream text at 4.5:1 or better. */
+:root,
+:root[data-time="night"] {
+  --sky-1: #0a2e45;
+  --sky-2: #0f4d5e;
+  --sky-3: #146b6a;
+  --sky-4: #1c8a72;
+  --sky-glow: #fde68a;
+  --sky-glow-2: #facc15;
+  --hill-far-1: #0e5a52;
+  --hill-far-2: #0a3d3f;
+  --hill-near-1: #0f3d2a;
+  --hill-near-2: #08251a;
+  --water-1: #123f66;
+  --water-2: #04142b;
+  --water-deep-1: #0d3355;
+  --water-deep-2: #020a1a;
+  --water-3: #1b5c8c;
+  --grass: #2f6f57;
+  --grass-stripe: #2a644f;
+  --forest-1: #12302a;
+  --forest-2: #060f0c;
+  --scene-tint: rgba(16, 32, 80, 0.55);
+  --stars: 1;
+}
+
+:root[data-time="morning"] {
+  --sky-1: #2b4a7a;
+  --sky-2: #4a5f8f;
+  --sky-3: #6a6688;
+  --sky-4: #c98d74;
+  --sky-glow: #ffd9a0;
+  --sky-glow-2: #ffb070;
+  --hill-far-1: #557a6a;
+  --hill-far-2: #40625a;
+  --hill-near-1: #34584a;
+  --hill-near-2: #243f36;
+  --water-1: #3a6a9a;
+  --water-2: #1a3558;
+  --water-deep-1: #2e5785;
+  --water-deep-2: #10243f;
+  --water-3: #5a8ab8;
+  --grass: #5aa585;
+  --grass-stripe: #519778;
+  --forest-1: #20402f;
+  --forest-2: #0c1812;
+  --scene-tint: rgba(255, 190, 150, 0.22);
+  --stars: 0;
+}
+
+:root[data-time="day"] {
+  --sky-1: #1d4f7a;
+  --sky-2: #2a6a94;
+  --sky-3: #2c7090;
+  --sky-4: #4f98ad;
+  --sky-glow: #fff6c0;
+  --sky-glow-2: #fde68a;
+  --hill-far-1: #3f8a6c;
+  --hill-far-2: #2e6f55;
+  --hill-near-1: #2a6646;
+  --hill-near-2: #1c4a32;
+  --water-1: #2a6fa8;
+  --water-2: #123f66;
+  --water-deep-1: #1f5a8a;
+  --water-deep-2: #0b2c4f;
+  --water-3: #3a86c0;
+  --grass: #4FAE87;
+  --grass-stripe: #46A17C;
+  --forest-1: #1B3B2C;
+  --forest-2: #0A140F;
+  --scene-tint: transparent;
+  --stars: 0;
+}
+
+:root[data-time="dusk"] {
+  --sky-1: #1f1f4a;
+  --sky-2: #3d2c5c;
+  --sky-3: #8a4a5e;
+  --sky-4: #d9774e;
+  --sky-glow: #ffb070;
+  --sky-glow-2: #ff8a4a;
+  --hill-far-1: #4a3f5f;
+  --hill-far-2: #382f4c;
+  --hill-near-1: #2a2640;
+  --hill-near-2: #1b1830;
+  --water-1: #4a3a6a;
+  --water-2: #1a1430;
+  --water-deep-1: #3a2c58;
+  --water-deep-2: #120e24;
+  --water-3: #6a4a80;
+  --grass: #3f7a62;
+  --grass-stripe: #386d58;
+  --forest-1: #1c2a2a;
+  --forest-2: #0b1012;
+  --scene-tint: rgba(220, 110, 80, 0.35);
+  --stars: 1;
+}
 
 * {
   margin: 0;
@@ -19,7 +177,7 @@
 body {
   scroll-behavior: smooth;
   color: white;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-user-select: none;
@@ -44,12 +202,22 @@ html {
    in either direction, instead of only ever being able to add reduced
    motion on top of it. */
 html.reduce-motion {
+  // <html> itself is the scrolling element, so it needs the rule too.
+  scroll-behavior: auto !important;
+
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Card → case-study morph (app/lib/morphNavigation.ts). A scene change, so it
+   uses the smooth curve rather than steps. */
+::view-transition-group(*) {
+  animation-duration: var(--dur-scene);
+  animation-timing-function: var(--ease-out);
 }
 
 /* Visible keyboard-focus ring, site-wide, styled like the corner-bracket
@@ -74,14 +242,14 @@ html.reduce-motion {
      elements (e.g. a short text link) stay as separated corners rather than
      merging into what reads as a solid rectangle. */
   background:
-    linear-gradient(#22c55e, #22c55e) top left / min(30%, 16px) 3px no-repeat,
-    linear-gradient(#22c55e, #22c55e) top left / 3px min(30%, 16px) no-repeat,
-    linear-gradient(#22c55e, #22c55e) top right / min(30%, 16px) 3px no-repeat,
-    linear-gradient(#22c55e, #22c55e) top right / 3px min(30%, 16px) no-repeat,
-    linear-gradient(#22c55e, #22c55e) bottom left / min(30%, 16px) 3px no-repeat,
-    linear-gradient(#22c55e, #22c55e) bottom left / 3px min(30%, 16px) no-repeat,
-    linear-gradient(#22c55e, #22c55e) bottom right / min(30%, 16px) 3px no-repeat,
-    linear-gradient(#22c55e, #22c55e) bottom right / 3px min(30%, 16px) no-repeat;
+    linear-gradient(var(--focus), var(--focus)) top left / min(30%, 16px) 3px no-repeat,
+    linear-gradient(var(--focus), var(--focus)) top left / 3px min(30%, 16px) no-repeat,
+    linear-gradient(var(--focus), var(--focus)) top right / min(30%, 16px) 3px no-repeat,
+    linear-gradient(var(--focus), var(--focus)) top right / 3px min(30%, 16px) no-repeat,
+    linear-gradient(var(--focus), var(--focus)) bottom left / min(30%, 16px) 3px no-repeat,
+    linear-gradient(var(--focus), var(--focus)) bottom left / 3px min(30%, 16px) no-repeat,
+    linear-gradient(var(--focus), var(--focus)) bottom right / min(30%, 16px) 3px no-repeat,
+    linear-gradient(var(--focus), var(--focus)) bottom right / 3px min(30%, 16px) no-repeat;
 }
 
 @keyframes focusBracketBob {
