@@ -11,6 +11,7 @@ import StatBars from "../../components/sections/Projects/StatBars";
 import { morphNames } from "../../lib/morphNavigation";
 import { ProjectLinks } from "../../components/sections/Projects/ProjectCard";
 import { CONTACT_EMAIL, RESUME_URL } from "../../lib/site";
+import { dexEntryFor, dexHash } from "../../data/dex";
 import styles from "./page.module.scss";
 
 type Params = { slug: string };
@@ -123,7 +124,24 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
             )}
             <div>
               <dt>Stack</dt>
-              <dd>{project.stack.join(" · ")}</dd>
+              <dd>
+                {/* Each skill links to its proof in the home page's SKILL DEX. */}
+                {project.stack.map((tech, i) => {
+                  const entry = dexEntryFor(tech);
+                  return (
+                    <span key={tech}>
+                      {i > 0 && " · "}
+                      {entry ? (
+                        <Link href={`/${dexHash(entry)}`} className={styles.stackLink}>
+                          {tech}
+                        </Link>
+                      ) : (
+                        tech
+                      )}
+                    </span>
+                  );
+                })}
+              </dd>
             </div>
           </dl>
 

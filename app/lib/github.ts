@@ -72,6 +72,18 @@ export async function getCiStatus(repo: string): Promise<CiStatus | null> {
   return { passing: true, ranAt: latest.created_at, url: latest.html_url };
 }
 
+/** Each project's latest passing CI run, keyed by slug (projects without one are left out). */
+export async function getCiBySlug(projects: { slug: string; links: { label: string; href: string }[] }[]) {
+  const entries = await Promise.all(
+    projects.map(async (p) => {
+      const repo = repoFromUrl(p.links.find((l) => l.label === "Code")?.href);
+      const ci = repo ? await getCiStatus(repo) : null;
+      return ci ? ([p.slug, ci] as const) : null;
+    })
+  );
+  return Object.fromEntries(entries.filter((e): e is readonly [string, CiStatus] => e !== null));
+}
+
 type Repo = { name: string; fork: boolean; archived: boolean; pushed_at: string };
 
 export type TrainerStats = {

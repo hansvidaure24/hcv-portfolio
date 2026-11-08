@@ -1,5 +1,5 @@
 import { CAREER_START, NOW } from "../../../data/now";
-import { GITHUB_USER, getTrainerStats } from "../../../lib/github";
+import { GITHUB_USER, type TrainerStats as TrainerData } from "../../../lib/github";
 import styles from "./TrainerStats.module.scss";
 
 const UTC_DATE: Intl.DateTimeFormatOptions = { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" };
@@ -29,10 +29,10 @@ function level(count: number, max: number): number {
  * The trainer card's live stats: play time since the first full-time role,
  * public GitHub numbers and a year of side-project commits, plus the Now
  * line. GitHub data refreshes at most once a day; if GitHub is unavailable,
- * only play time and Now show.
+ * only play time and Now show. The page fetches it (app/page.tsx) and passes
+ * it down, so nothing in About waits on the network while rendering.
  */
-export default async function TrainerStats() {
-  const stats = await getTrainerStats();
+export default function TrainerStats({ stats }: { stats: TrainerData | null }) {
   const now = new Date();
   const weekly = stats?.weeklyCommits;
   const total = weekly?.reduce((sum, n) => sum + n, 0) ?? 0;

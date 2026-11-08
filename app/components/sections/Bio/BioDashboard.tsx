@@ -3,13 +3,15 @@ import PixelPanel from "../../ui/PixelPanel";
 import SectionHeading from "../../ui/SectionHeading";
 import Evolution from "./Evolution";
 import TrainerStats from "./TrainerStats";
+import type { TrainerStats as TrainerData } from "../../../lib/github";
+import SkillDex from "./SkillDex";
+import { DEX } from "../../../data/dex";
 import { MOVES, TESTIMONIALS } from "../../../data/party";
 import styles from "./BioDashboard.module.scss";
 
-const SKILL_GROUPS = [
-  { label: "AT WORK", skills: ["C#", "ASP.NET", "React", "SQL"] },
-  { label: "ALSO", skills: ["TypeScript", "Next.js", "Playwright", "WebRTC", "Tauri", "Unity", "Java / Spring Boot", "Python"] },
-];
+// The SKILL DEX title bar counts (app/data/dex.ts).
+const CAUGHT = DEX.filter((entry) => entry.status === "caught").length;
+const SEEN = DEX.length - CAUGHT;
 
 const INTERESTS = ["Full-stack engineering", "Application security", "Game dev (hobby)"];
 
@@ -29,7 +31,7 @@ const SHOW_QUOTES_PLACEHOLDER = process.env.NODE_ENV === "development";
  * timeline), what he's shipped, and why hire him (moves). The old separate
  * "Why me" section now lives here, so nothing is said twice.
  */
-export default function BioDashboard() {
+export default function BioDashboard({ trainer }: { trainer: TrainerData | null }) {
   const showQuotes = TESTIMONIALS.length > 0 || SHOW_QUOTES_PLACEHOLDER;
 
   return (
@@ -43,7 +45,7 @@ export default function BioDashboard() {
           </div>
           <p className={styles.name}>HANS VIDAURE</p>
           <p className={styles.tagline}>{LOOKING_FOR}</p>
-          <TrainerStats />
+          <TrainerStats stats={trainer} />
           <div>
             <p className={styles.label}>INTERESTS</p>
             <ul className={styles.chips}>
@@ -54,22 +56,11 @@ export default function BioDashboard() {
           </div>
         </PixelPanel>
 
-        <PixelPanel title="SKILLS" bodyClassName={styles.panelBody}>
+        <PixelPanel title="SKILL DEX" titleAside={`CAUGHT ${CAUGHT} · SEEN ${SEEN}`} bodyClassName={styles.panelBody}>
           <div className={styles.clip}>
             <LazyVideo src="/videos/bio-thoughts.mp4" poster="/videos/bio-thoughts.jpg" />
           </div>
-          <dl className={styles.skillGroups}>
-            {SKILL_GROUPS.map((group) => (
-              <div key={group.label}>
-                <dt className={styles.label}>{group.label}</dt>
-                <dd className={styles.chips}>
-                  {group.skills.map((skill) => (
-                    <span key={skill}>{skill}</span>
-                  ))}
-                </dd>
-              </div>
-            ))}
-          </dl>
+          <SkillDex />
         </PixelPanel>
 
         <Evolution className={styles.wide} />

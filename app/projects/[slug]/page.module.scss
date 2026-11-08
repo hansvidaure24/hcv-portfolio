@@ -76,6 +76,19 @@
   }
 }
 
+.stackLink {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration-thickness: 2px;
+    background: rgb(var(--ink-rgb) / 0.12);
+  }
+}
+
 .media {
   margin-bottom: 1.5rem;
 }
