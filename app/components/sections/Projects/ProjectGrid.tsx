@@ -215,8 +215,9 @@ export default function ProjectGrid({ projects, ci = {} }: { projects: Project[]
         <PixelPanel title="MOST OF THIS WORK IS AT FISERV" bodyClassName={styles.noteBody}>
           <p>
             My day-to-day C#, ASP.NET and SQL work is on Fiserv&apos;s online banking platform, which isn&apos;t public:
-            1,150+ Fortify findings remediated, 20 high-severity CVEs closed in one release across 17 projects, and
-            thread-safety fixes across five banking cores.
+            cursor-based pagination that ended multi-minute timeouts for high-volume business accounts, 20
+            high-severity CVEs closed in one release across 17 projects, and thread-safety fixes across five banking
+            cores.
           </p>
           <div className={styles.noteLinks}>
             <a
@@ -243,11 +244,20 @@ export default function ProjectGrid({ projects, ci = {} }: { projects: Project[]
         </motion.div>
         {rest.length > 0 && (
           <div className={styles.grid}>
-            {rest.map((project) => (
-              <motion.div key={project.slug} layoutId={project.slug} transition={animateLayout ? LAYOUT_TRANSITION : INSTANT_LAYOUT} className={styles.cell}>
-                <ProjectCard project={project} featured={false} highlight={highlight} ci={ci[project.slug]} />
-              </motion.div>
-            ))}
+            {rest.map((project, i) => {
+              // An odd card out spans the row in the featured layout instead of leaving half a row empty.
+              const wide = rest.length % 2 === 1 && i === rest.length - 1;
+              return (
+                <motion.div
+                  key={project.slug}
+                  layoutId={project.slug}
+                  transition={animateLayout ? LAYOUT_TRANSITION : INSTANT_LAYOUT}
+                  className={`${styles.cell} ${wide ? styles.cellWide : ""}`}
+                >
+                  <ProjectCard project={project} featured={wide} highlight={highlight} ci={ci[project.slug]} />
+                </motion.div>
+              );
+            })}
           </div>
         )}
       </LayoutGroup>

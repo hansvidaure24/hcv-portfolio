@@ -48,6 +48,45 @@
   }
 }
 
+// An odd last card spans both columns (and gets the featured side-by-side
+// layout from ProjectGrid), so the grid never ends on an empty half row.
+@media (min-width: 768px) {
+  .cellWide {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Published projects kept off the grid (app/data/projects.ts `onGrid`) */
+.alsoBuilding {
+  align-self: flex-start;
+  max-width: 48rem;
+  padding: 0.75rem 1rem;
+  @include pixel-panel(var(--shadow-sm));
+
+  ul {
+    list-style: none;
+    margin-top: 0.3rem;
+  }
+
+  li {
+    font-size: var(--text-sm);
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+
+  a {
+    font-weight: 700;
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+.alsoTitle {
+  @include display-text(var(--text-sm));
+  color: var(--ink-muted);
+}
+
 .drafts {
   align-self: flex-start;
   padding: 0.75rem 1rem;

@@ -29,6 +29,12 @@ export type Project = {
   stats?: { label: string; value: number; max: number }[];
   /** Drafts are hidden from the grid and their case-study page returns 404. */
   published: boolean;
+  /**
+   * false keeps a published project off the Work grid: its case study, sitemap
+   * entry, llms.txt line and Skill Dex links stay, and Work lists it in one
+   * "Also building" line. For work that can't be verified yet (private repo, no demo).
+   */
+  onGrid?: boolean;
 };
 
 // Display order: the featured project first, then the rest in this order.
@@ -186,14 +192,27 @@ const PROJECTS: Project[] = [
     // The repo (hansvidaure24/Nebula) is private, so a Code link 404s for visitors.
     // Add { label: "Code", href: "https://github.com/hansvidaure24/Nebula" } back if it goes public.
     links: [],
-    focus: { games: 3, dotnet: 3 },
+    // No `dotnet` score: a game with no public code shouldn't lead the C# / .NET focus.
+    focus: { games: 3 },
     published: true,
+    // Off the grid until there's a public build or code to check; set to true (or delete) then.
+    onGrid: false,
   },
 ];
 
 export function getPublishedProjects(): Project[] {
   const published = PROJECTS.filter((p) => p.published);
   return [...published.filter((p) => p.featured), ...published.filter((p) => !p.featured)];
+}
+
+/** The Work grid's cards: published projects that aren't kept off the grid. */
+export function getGridProjects(): Project[] {
+  return getPublishedProjects().filter((p) => p.onGrid !== false);
+}
+
+/** Published projects kept off the grid, for Work's "Also building" line. */
+export function getOffGridProjects(): Project[] {
+  return getPublishedProjects().filter((p) => p.onGrid === false);
 }
 
 /** In `next dev` only, drafts get a case-study page too, so they can be reviewed before publishing. */

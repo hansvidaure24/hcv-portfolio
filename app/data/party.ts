@@ -6,7 +6,7 @@
 export type Move = {
   name: string;
   /** Short type label on the chip, like a move's type. */
-  type: "SECURITY" | "RANGE" | "AUTONOMY";
+  type: "SECURITY" | "RANGE" | "OWNERSHIP";
   /** What this strength means for a team, in one sentence. */
   effect: string;
   /** The evidence, already public elsewhere on the site. */
@@ -28,12 +28,14 @@ export const MOVES: Move[] = [
     proof:
       "C#/ASP.NET APIs, React UI and SQL at Fiserv; TypeScript, WebRTC, a Tauri desktop app and Unity on my own projects.",
   },
+  // Ownership inside a team, not "solo": the proof leads with work that went
+  // through other people's review and testing to production.
   {
-    name: "Ships solo",
-    type: "AUTONOMY",
-    effect: "Give me a problem, not a ticket list, and I'll scope it, build it and test it.",
+    name: "Owns it end to end",
+    type: "OWNERSHIP",
+    effect: "Hand me a problem and I'll scope it, build it, test it and see it through to production.",
     proof:
-      "Built SliceOfPie, a behavior tree editor and Pocket Quest solo, from design to CI. Each one runs its tests on every push.",
+      "Took Fiserv's multi-account transaction download to another core banking system: core-specific mapping, CSV export and cross-core regression testing, through to production. On my own projects, SliceOfPie, the behavior tree editor and Pocket Quest run their tests on every push.",
   },
 ];
 

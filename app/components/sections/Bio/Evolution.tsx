@@ -82,7 +82,8 @@ export default function Evolution({ className = "" }: { className?: string }) {
           <span className={styles.stageNo}>NEXT</span>
           <h3 className={styles.stageName}>???</h3>
           <p className={styles.when}>Your team</p>
-          <p className={styles.text}>A senior engineer on a team where I own features end to end.</p>
+          {/* Same target as the trainer card's line in BioDashboard: one level, said once. */}
+          <p className={styles.text}>A team where I own features end to end and grow toward a senior role.</p>
           <button
             type="button"
             className={styles.cta}
