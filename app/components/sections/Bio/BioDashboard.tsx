@@ -3,12 +3,12 @@ import styles from "./BioDashboard.module.scss";
 
 const SKILL_GROUPS = [
   { label: "AT WORK", skills: ["C#", "ASP.NET", "React", "SQL"] },
-  { label: "ALSO", skills: ["TypeScript", "Next.js", "Java / Spring Boot", "Python", "Unity"] },
+  { label: "ALSO", skills: ["TypeScript", "Next.js", "Playwright", "WebRTC", "Tauri", "Unity", "Java / Spring Boot", "Python"] },
 ];
 
 const ORIGIN_PARAGRAPHS = [
   "I'm a full-stack engineer at Fiserv, working on an enterprise online banking platform used by retail and business customers. Most days that means C#/ASP.NET APIs, React UI and SQL, plus the parts that keep a bank safe: security fixes, concurrency bugs and production incidents.",
-  "I grew up in the Philippines and got into programming through video games. I still build games in Unity for fun, which is where Wakebound, my co-op action RPG, comes from.",
+  "I grew up in the Philippines and got into programming through video games. I still build games for fun, like Wakebound and Hold Steadfast in Unity, and lately the tools behind them, like the behavior tree editor that runs Hold Steadfast's enemy AI.",
 ];
 
 const LOOKING_FOR = "Looking for a team where I own features end to end, from API to UI, and grow toward a senior role.";

@@ -9,7 +9,7 @@ export type ProjectLink = {
 export type Project = {
   slug: string;
   title: string;
-  kind: "Side project" | "Work" | "Client" | "Game";
+  kind: "Side project" | "Work" | "Client" | "Game" | "Dev tool";
   /** One-line outcome shown on the card and under the case-study title. */
   tagline: string;
   role?: string;
@@ -52,6 +52,58 @@ const PROJECTS: Project[] = [
       },
     ],
     featured: true,
+    published: true,
+  },
+  {
+    slug: "behavior-tree-editor",
+    title: "Behavior Tree Editor",
+    kind: "Dev tool",
+    tagline:
+      "A visual editor, replay debugger and Unity runtime for game AI. It runs the enemy AI in Hold Steadfast, my co-op horde-defense game.",
+    role: "Solo: design, build and test",
+    stack: ["JavaScript + JSDoc", "Canvas 2D", "Tauri (Rust)", "Unity / C#", "GitHub Actions"],
+    metrics: [
+      "13 enemy trees proven to match the game's runtime",
+      "Saved edits reach a running game within a second",
+      "2.5 MB desktop installer, same code in the browser",
+    ],
+    cover: {
+      src: "/projects/behavior-tree-editor/cover.jpg",
+      alt: "Top: the Gravewarden's behavior tree in the editor, its Halberd Swing branch lit up during a replay. Bottom: the Gravewarden fighting players in Hold Steadfast.",
+      width: 1280,
+      height: 800,
+    },
+    video: { src: "/projects/behavior-tree-editor/demo.mp4" },
+    links: [
+      { label: "Live demo", href: "https://hansvidaure24.github.io/Behavior-Tree-Editor/editor/" },
+      { label: "Code", href: "https://github.com/hansvidaure24/Behavior-Tree-Editor" },
+    ],
+    published: true,
+  },
+  {
+    slug: "pocket-quest",
+    title: "Pocket Quest",
+    kind: "Game",
+    tagline:
+      "A co-op tactics RPG for 2–4 players: one screen hosts, everyone else scans a QR code and plays on their phone.",
+    role: "Solo: design, build and test",
+    stack: ["JavaScript", "HTML5 Canvas", "WebRTC (PeerJS)", "Cloudflare Workers", "Playwright"],
+    metrics: [
+      "No installs or accounts: scan and play",
+      "3 network transports; dropped phones rejoin",
+      "Bots play a full campaign in CI on every push",
+    ],
+    cover: {
+      src: "/projects/pocket-quest/cover.jpg",
+      alt: "Pocket Quest combat: four heroes fighting skeletons and slimes on a hex board, with a Double Kill callout",
+      width: 1280,
+      height: 800,
+    },
+    video: { src: "/projects/pocket-quest/demo.mp4", autoplay: true },
+    links: [
+      { label: "Live demo", href: "https://hansvidaure24.github.io/Pocket-Quest/" },
+      { label: "Code", href: "https://github.com/hansvidaure24/Pocket-Quest" },
+    ],
     published: true,
   },
   {

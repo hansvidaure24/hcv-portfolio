@@ -251,7 +251,8 @@ export default function Hero() {
           </p>
           <p className={`${styles.summary} ${styles.reveal2}`}>
             3 years shipping and securing features on Fiserv&apos;s online banking platform. On the side I build
-            fast, well-tested web apps, like a bill splitter that reads receipts offline in the browser.
+            well-tested apps and tools end to end: an offline receipt-scanning bill splitter, a behavior tree editor
+            for game AI, and a party RPG you play from your phone.
           </p>
           <div className={`${styles.ctaRow} ${styles.reveal3}`}>
             <a
