@@ -51,10 +51,8 @@ const PROJECTS: Project[] = [
     links: [
       { label: "Live demo", href: "https://slice-of-pie-xi.vercel.app" },
       { label: "Code", href: "https://github.com/hansvidaure24/SliceOfPie" },
-      {
-        label: "Write-up",
-        href: "https://github.com/hansvidaure24/SliceOfPie/blob/main/docs/ios-pwa-launch-bug.md",
-      },
+      // The field note on this site (app/data/notes.ts); it links to the GitHub original.
+      { label: "Write-up", href: "/notes/ios-pwa-launch-bug" },
     ],
     featured: true,
     focus: { fullstack: 3, dotnet: 1 },
