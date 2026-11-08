@@ -43,7 +43,7 @@ export default function TrainerStats({ stats }: { stats: TrainerData | null }) {
     <div className={styles.card}>
       <dl className={styles.stats}>
         <div>
-          <dt>PLAY TIME</dt>
+          <dt>EXPERIENCE</dt>
           <dd>{playTime(CAREER_START, now)}</dd>
         </div>
         {stats && (

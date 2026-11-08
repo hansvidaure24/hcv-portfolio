@@ -69,7 +69,7 @@ function Row({ row, onLeave }: { row: MatchRow; onLeave: () => void }) {
           )}{" "}
           <span className={styles.effect}>
             {EFFECT_TEXT[row.effect]}
-            {row.entry.status === "seen" && " (seen, not shipped)"}
+            {row.entry.status === "seen" && " (learned, not shipped)"}
           </span>
         </p>
         {row.entry.evidence[0] && <Proof evidence={row.entry.evidence[0]} onLeave={onLeave} />}

@@ -9,7 +9,7 @@ import styles from "./StatBars.module.scss";
 export default function StatBars({ stats }: { stats: NonNullable<Project["stats"]> }) {
   return (
     <div className={styles.stats}>
-      <p className={styles.title}>BASE STATS</p>
+      <p className={styles.title}>KEY NUMBERS</p>
       <dl className={styles.list}>
         {stats.map((stat) => {
           const pct = Math.round((stat.value / stat.max) * 100);

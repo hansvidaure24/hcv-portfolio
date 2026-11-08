@@ -38,7 +38,7 @@ Don't run `npm run build` while `npm run dev` is running: they share
 | --- | --- |
 | Project cards, case-study metadata, "Choose your focus" scores (`focus`) and stat bars (`stats`) | [`app/data/projects.ts`](app/data/projects.ts) |
 | Focus options (the chips each one highlights come from the dex's `focus` tags) | [`app/data/focus.ts`](app/data/focus.ts) |
-| Skill Dex (About), stack-chip links and focus highlights: every skill with its proof | [`app/data/dex.ts`](app/data/dex.ts). Each entry needs evidence a visitor can follow, and every project stack chip must match an entry's name or alias. |
+| Skills panel (About), stack-chip links and focus highlights: every skill with its proof | [`app/data/dex.ts`](app/data/dex.ts). Each entry needs evidence a visitor can follow, and every project stack chip must match an entry's name or alias. `CORE_DEX_IDS` picks the skills shown before "Show all". |
 | Type Matchup: skills job posts ask for that have no proof on the site, with the nearest ones that do | [`app/data/nearby.ts`](app/data/nearby.ts). The matcher is [`app/lib/matchup.ts`](app/lib/matchup.ts); when it reads a real post wrong, add the post to `tests/fixtures/jobPosts.ts`. |
 | `/llms.txt`, `/resume.json` and the read-only MCP endpoint (`/api/mcp`) | Generated from the files above by [`app/lib/machineReadable.ts`](app/lib/machineReadable.ts); nothing to edit by hand. |
 | Case-study write-ups | `content/projects/<slug>.md` (`## ` headings, `- ` lists, `**bold**`, `[links](https://…)`). Headings are sorted into the Overview / Decisions / Results tabs by `TAB_FOR_HEADING` in [`app/projects/[slug]/page.tsx`](app/projects/[slug]/page.tsx). |

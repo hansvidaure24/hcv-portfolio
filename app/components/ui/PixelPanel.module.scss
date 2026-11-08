@@ -18,6 +18,9 @@
   margin: 0;
   font: inherit;
   letter-spacing: inherit;
+  // Titles are written in sentence case and shown in capitals: screen readers
+  // read words instead of spelling out capitals, and copied text keeps its case.
+  text-transform: uppercase;
 }
 
 .titleAside {

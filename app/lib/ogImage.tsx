@@ -58,8 +58,8 @@ export function TrainerCardOgImage() {
             borderBottom: "6px solid #2A2A1E",
           }}
         >
-          <div style={{ display: "flex", color: "#F8EFD8", fontSize: 28, letterSpacing: 2 }}>TRAINER CARD</div>
-          <div style={{ display: "flex", color: "rgba(248,239,216,0.8)", fontSize: 18 }}>PORTFOLIO.EXE</div>
+          <div style={{ display: "flex", color: "#F8EFD8", fontSize: 28, letterSpacing: 2 }}>HANSVIDAURE.DEV</div>
+          <div style={{ display: "flex", color: "rgba(248,239,216,0.8)", fontSize: 18 }}>OPEN TO FULL-STACK ROLES · NYC / REMOTE</div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", padding: "44px 48px 48px", gap: 26 }}>
