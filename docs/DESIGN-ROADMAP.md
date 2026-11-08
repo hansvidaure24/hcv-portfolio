@@ -16,9 +16,9 @@ with a desktop + phone check in the browser before the next one starts.
 | 1–6. Foundation → QA (record at the bottom) | Nov 7–22, 2026 | Done, live Nov 7 |
 | 7. Ship what's built, fix open issues | Nov 8–10 | Done Nov 7 (2 items wait on others) |
 | 8. Table stakes from top portfolios | Nov 11–15 | Live Nov 8 (2 posts left for Hans) |
-| 9. Evidence Dex | Nov 16–19 | Planned |
-| 10. Type Matchup (the new thing) | Nov 20–26 | Planned |
-| 11. Readable by AI tools | Nov 27–29 | Planned |
+| 9. Evidence Dex | Nov 16–19 | Live Nov 8 |
+| 10. Type Matchup (the new thing) | Nov 20–26 | Live Nov 8 |
+| 11. Readable by AI tools | Nov 27–29 | Live Nov 8 |
 | 12. Explore mode | December | Stretch |
 
 ---
@@ -79,6 +79,15 @@ first, or build from a separate copy.
       is the easiest to link.
 
 **Watch, fix if it bites**
+
+- [ ] **Work, About and Contact need JavaScript to appear.** The Suspense
+      boundaries from this phase (the startup-speed fix) make Next stream
+      those sections as hidden HTML that an inline script moves into place.
+      Browsers with JavaScript, and Google, which runs it, see everything
+      (checked in headless Edge: nothing left hidden). With JavaScript off,
+      and for crawlers that don't run it, only the hero shows. Removing the
+      boundaries brings back the ~400 ms startup block; the other fix leans
+      on React's internal markup. Found Nov 8, during Phase 9.
 
 - [ ] **Contact rate limit is per server instance** (in memory, resets on
       every deploy). The form already has a honeypot field; if spam still
@@ -286,37 +295,142 @@ Print output wasn't checked by eye (no PDF renderer on this machine).
 
 Every skill on the site, described once, with its proof.
 
-- [ ] `app/data/dex.ts`, about 30 entries. Each has a name, aliases (`C#`,
-      `.NET`, `ASP.NET Core`), a status (*caught*: used at work or shipped;
-      *seen*: learned or tried) and evidence links (project slug, Fiserv
-      quest-log line, repo). Card chips and `FOCUS_STACK` read from it.
-- [ ] About's SKILLS panel becomes a dex ("CAUGHT 18 · SEEN 9"); each entry
-      opens its evidence as a ▶ list linking to case studies and repos.
-- [ ] Every skill named anywhere on the site links to its dex entry. A
-      skill with no evidence isn't listed.
+Built Nov 8, shipped with Phases 10 and 11.
+
+- [x] **`app/data/dex.ts`: 33 entries, 30 caught and 3 seen.** Each has a
+      name, a type, aliases (the other names job posts and stack chips use),
+      the focus picks it belongs to, related skills, and evidence that a
+      visitor can follow: a case study, the resume's Fiserv section, a
+      repo or a live app. Every evidence line is taken from the resume, the
+      case studies, the project data or the repos; nothing new is claimed.
+      *Caught* = used at Fiserv or in a live or public project; *seen* =
+      only in training (Java & Spring Boot, the trainee capstone) or in a
+      game still in development with a private repo (Netcode for
+      GameObjects, URP, from Wakebound). Python is in, from the Behavior
+      Tree Editor's validator CLI and tested Python server, though the old
+      SKILLS panel had it with nothing to back it.
+- [x] **About's SKILLS panel is now the SKILL DEX** ("CAUGHT 30 · SEEN 3"):
+      a vertical tab list (↑ ↓ Home End, the menu sound) beside the selected
+      entry on wide panels, above it on phones (a container query). Each
+      entry shows its number, CAUGHT/SEEN, type, ▶ proof links, "Also
+      called" and related skills. All 33 entries stay in the HTML; only the
+      selected one shows. The clip above it stays.
+- [x] **Every stack chip links to its entry:** the 24 chips on the project
+      cards (`#dex-<id>`) and each case study's Stack line (`/#dex-<id>`).
+      Opening one selects the entry, scrolls the dex just below the top bar,
+      scrolls the list to the row and moves keyboard focus there. About
+      appears in place, like the tile-wipe jumps, instead of fading in.
+      The Quick view's skill rows stay plain text: it mirrors the PDF.
+- [x] **`FOCUS_STACK` reads the dex** (each entry's `focus` tags). The
+      highlights match the old hand-kept lists, plus ASP.NET and SQL under
+      Full-stack (only on the unpublished Fiserv drafts).
+- [x] A check script confirmed every stack chip matches an entry, names and
+      aliases are unique, related ids and case-study links exist.
+
+Found on the way:
+
+- [x] **Dex links jumped 32px too far and kept re-firing.** About fades up
+      32px when it first appears, so the scroll target was measured off by
+      that transform; and the listener re-ran on every section change,
+      which would have pulled a visitor back to the dex while scrolling
+      away. Both fixed and re-checked with a scripted browser.
+- [x] Site-wide focus brackets are drawn just inside the dex rows (the list
+      scrolls, which clipped them) and hidden on code blocks, which keep a
+      gold outline for the same reason.
+- [x] The live GitHub data is now fetched once in `app/page.tsx` and passed
+      down, so no section waits on the network and a GitHub failure can't
+      break one.
+
+Lighthouse (mobile, local production build, Nov 8): home 100 performance,
+39 ms blocking time (median of 3; first-load JS 182 → 188 kB for the dex);
+accessibility, best practices and SEO 100 on home, a case study and the
+field note. Checked at 375px and 1280px in a scripted Edge: list above the
+entry on phones, beside it on desktop, no sideways scroll.
 
 ## Phase 10 — Type Matchup
 
-- [ ] Matcher, fixtures and tests (add Vitest as a dev dependency).
-- [ ] Panel (loaded on demand), dialogue line, card reorder, matchup link.
-- [ ] QA: 10 real posts read sensibly; keyboard and screen reader pass;
-      nothing leaves the browser; home page speed unchanged; phone layout
-      at 375px.
+Built with Phase 11 on Nov 8 and shipped together with Phases 9 and 11.
+
+- [x] **Matcher** (`app/lib/matchup.ts`, pure TypeScript, no AI, no
+      network). Matches dex names and aliases on word boundaries, longest
+      first ("React Native" isn't React, "JavaScript" isn't Java, "ASP.NET
+      Core" isn't a bare ".NET"). Acronyms ("JS", "CI", "AWS") and names
+      that are English words ("React", "Unity", "Swift") only match as
+      written, so "react quickly" doesn't count; bare "Go" isn't matched at
+      all, only "Golang". Short heading lines sort what follows into
+      required, nice to have, or ignored (About us, Benefits); "is a plus"
+      or "helpful" lines are nice to have wherever they sit. Reads "3+
+      years" / "5-7 years" asks and compares them with full-time years
+      since Sep 2023.
+- [x] **Effectiveness:** *super effective* = the skill has Fiserv evidence;
+      *effective* = shipped in a project (or seen, marked "seen, not
+      shipped"); *closest experience* = a skill from `app/data/nearby.ts`
+      (32 common asks with no proof on the site: Docker, Kubernetes, AWS,
+      Azure, Node.js, PostgreSQL, GraphQL…) shown with its nearest dex
+      entries instead of a claimed match. Skills it doesn't recognize are
+      left out, and the panel says so.
+- [x] **Tests** (`npm test`, Vitest, dev-only): 71, including 10 synthetic
+      job posts written for this repo in real-post formats (markdown and
+      plain headings, ALL-CAPS sections, "Preferred qualifications",
+      About-us and benefits blurbs, a decoy post full of skill-like words).
+      Each checks required, nice to have, *nothing else* (no false matches)
+      and years. Also: share-link round trips, project ordering, and that
+      every stack chip and alias stays matched and unique. Add real posts
+      as they come in.
+- [x] **Panel:** a gold "Paste a job post ▶" beside the focus picker opens
+      the TYPE MATCHUP dialog (fetched when the page is idle, mounted on
+      first open; home first-load JS 188 → 189 kB). Textarea, the privacy
+      line, "Check matchup ▶" and "Try a sample post". Results: a summary
+      strip, the years ask, REQUIRED and NICE TO HAVE groups in battle text,
+      each with its first proof link; renamed terms ("SQL Server → SQL")
+      link to the dex entry. The dialogue box says the summary.
+- [x] **Card reorder and highlights:** "Show matching projects" orders the
+      cards by matched chips and case-study evidence (required skills count
+      double) and highlights matching chips; a note says what happened, with
+      "View the matchup" and "Clear". Picking a focus replaces it.
+- [x] **Matchup link:** `/?match=csharp,aspnet,react,~docker,y3#projects`:
+      skill ids, "~" for nice to have, "y3" for the years ask; never the
+      post. Opening one orders the cards under a "MATCHUP FOR A SHARED JOB
+      POST" note; Clear removes it from the address.
+- [x] **QA** (scripted Edge, Nov 8): checking a post made **zero network
+      requests**; focus lands in the textarea, then on the summary; Escape
+      closes; reopening after Clear starts empty; the dialog fits at 375px
+      with no sideways scroll; axe finds no violations in either view.
+      Analytics records only `matchup_run` with a skill count.
 
 ## Phase 11 — Readable by AI tools
 
 Recruiters increasingly screen with AI assistants. Give them clean data from
 the same source instead of a scraped page.
 
-- [ ] `/llms.txt`: who he is, what he's looking for, projects with links,
-      generated from the data files.
-- [ ] `/resume.json` in the JSON Resume schema; the JSON-LD `Person` gets
-      `knowsAbout` from the dex.
-- [ ] Optional: a small read-only MCP endpoint (`list_projects`,
-      `get_skill_evidence`, `match_job` reusing the matcher), rate-limited
-      like the contact form, on the current hosting's free tier.
-- [ ] A "LINK CABLE" row in Contact: "Screening with an AI assistant? Point
-      it at hansvidaure.dev/llms.txt."
+All built from the same data files as the pages
+(`app/lib/machineReadable.ts`), so they can't drift. No phone number in any
+of them.
+
+- [x] **`/llms.txt`** (static, llmstxt.org shape): title, summary with what
+      he's looking for and contact, the Now line, start-here links,
+      experience, every published project with stack and proof, every dex
+      skill with its status and evidence, field notes.
+- [x] **`/resume.json`** (static) in the JSON Resume schema: basics,
+      profiles, work, projects, education, leadership as volunteer, skills
+      grouped by dex type (caught only), languages. The site's JSON-LD
+      `Person` gains `knowsAbout` from the caught dex entries.
+- [x] **`/api/mcp`**: a read-only Model Context Protocol server (Streamable
+      HTTP, stateless, no auth, no new dependency). Tools: `get_profile`,
+      `list_projects`, `get_skill_evidence` (any alias; closest skills for
+      ones not in the dex) and `match_job` (the same matcher). Rate-limited
+      per instance like the contact form, 60 requests per 10 minutes;
+      nothing sent is stored. Checked: initialize, the initialized
+      notification (202), tools/list, both lookups, unknown methods
+      (-32601), GET (405). Runs on the free tier.
+- [x] **LINK CABLE row** on the Contact trainer card: "Screening with an AI
+      assistant? Point it at hansvidaure.dev/llms.txt or resume.json." The
+      MCP endpoint is listed in llms.txt rather than on the card, to keep
+      jargon off the page.
+
+Lighthouse (mobile, local production build, Nov 8): home 100 performance,
+25 ms blocking time; accessibility, best practices and SEO 100 on home, a
+shared-matchup link and `/resume`.
 
 ## Phase 12 — Explore mode (stretch)
 
