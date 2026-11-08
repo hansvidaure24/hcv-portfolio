@@ -12,6 +12,7 @@ import { MOTION_BOOT_SCRIPT } from './lib/motionPreference'
 import { TIME_BOOT_SCRIPT } from './lib/timeOfDay'
 import { TEXT_SPEED_BOOT_SCRIPT } from './lib/preferenceKeys'
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from './lib/site'
+import { DEX } from './data/dex'
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
@@ -72,6 +73,8 @@ const PERSON_JSON_LD = {
   name: 'Hans Chandler Vidaure',
   url: SITE_URL,
   jobTitle: 'Full-Stack Software Engineer',
+  // Every skill with proof on the site (app/data/dex.ts), training-only ones left out.
+  knowsAbout: DEX.filter((entry) => entry.status === 'caught').map((entry) => entry.name),
   sameAs: [
     'https://github.com/hansvidaure24',
     'https://www.linkedin.com/in/hans-chandler-vidaure/',
