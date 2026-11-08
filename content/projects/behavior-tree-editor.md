@@ -4,10 +4,11 @@ A visual node-graph editor for game AI. Design a behavior tree, save it straight
 Behavior trees are how most game enemies decide what to do, but editing them usually means opening the whole engine, and when an enemy does something odd mid-fight there's no easy way to ask why. I wanted a standalone editor where a designer can draw the tree, save, see the change in a game that's already running, and replay a real fight on the same tree. I built it alongside Hold Steadfast, my co-op horde-defense game in Unity, so it had 14 real enemy trees to prove itself on.
 
 ## By the numbers
-- 13 of Hold Steadfast's 14 enemy trees open in the editor. The 14th uses a node type the editor doesn't support yet.
-- Each of those 13 runs through both the game's runtime and the editor's, against the same scripted world: 3 seeds × 3,000 ticks, every command compared
+- All 14 of Hold Steadfast's enemy trees open in the editor, from a 5-node mob to the 39-node Pale Warden boss
+- Each one runs through both the game's runtime and the editor's, against the same scripted world: 3 seeds × 3,000 ticks, every command compared
+- 22 shared test scenarios run through both the C# runtime and the editor's JavaScript one, so the editor's simulated replay and the game agree tick for tick
 - The Gravewarden, a halberd-wielding enemy, now plays a tree designed in the editor
-- About 10,000 lines of JavaScript in the editor, type-checked with tsc; about 1,900 lines of C# in the Unity runtime
+- About 10,000 lines of JavaScript in the editor, type-checked with tsc; about 1,600 lines of C# in the Unity runtime, with 54 EditMode tests
 - A 2.5 MB desktop installer. The browser version needs no build step at all.
 - 50+ keyboard shortcuts, auto-layout, minimap, tabs and a command palette
 
