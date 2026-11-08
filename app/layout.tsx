@@ -56,7 +56,7 @@ const PERSON_JSON_LD = {
   jobTitle: 'Full-Stack Software Engineer',
   sameAs: [
     'https://github.com/hansvidaure24',
-    'https://www.linkedin.com/in/hans-chandler-vidaure-0a1797190',
+    'https://www.linkedin.com/in/hans-chandler-vidaure/',
   ],
 };
 
