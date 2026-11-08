@@ -17,6 +17,7 @@
 }
 
 .battleMenuInner {
+  --focus-ring: var(--ink); // cream surface, like a panel
   background: var(--cream);
   border: 3px solid var(--ink);
   border-radius: 0;

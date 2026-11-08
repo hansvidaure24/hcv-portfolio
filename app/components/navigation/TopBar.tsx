@@ -41,6 +41,12 @@ export default function TopBar() {
   }
 
   return (
+    <>
+    {/* The first tab stop on every page (each one renders TopBar first): skips
+        the bar's links. Visible only while focused. */}
+    <a href="#content" className={styles.skip}>
+      Skip to content
+    </a>
     <header className={styles.bar}>
       <a href={scene ? "#hero" : "/"} className={styles.brand} onClick={(e) => go(e, "hero")}>
         HANS VIDAURE
@@ -76,5 +82,10 @@ export default function TopBar() {
         </button>
       </nav>
     </header>
+    {/* Where "Skip to content" lands: focusable, so the next Tab goes to the
+        page's first link. Not a section id, so the home page's hash handling
+        ignores it. */}
+    <div id="content" tabIndex={-1} className={styles.skipTarget} />
+    </>
   );
 }

@@ -115,6 +115,47 @@
   }
 }
 
+// The narrowest phones (320px) can't fit brand + Resume + Options: the
+// Options button was clipped off-screen. It's also the OPTIONS row in the
+// Pokéball menu, so it leaves the bar here.
+@media (max-width: 359px) {
+  .iconButton {
+    display: none;
+  }
+}
+
+
+// "Skip to content": visually hidden until a keyboard user tabs onto it, then
+// a gold pixel button over the top bar.
+.skip {
+  @include pixel-button(var(--gold), var(--ink), var(--text-sm), 3px);
+  position: fixed;
+  top: 0.5rem;
+  left: 0.75rem;
+  z-index: 120;
+
+  &:not(:focus) {
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+    box-shadow: none;
+  }
+}
+
+.skipTarget {
+  height: 0;
+  outline: none;
+
+  // No focus brackets around an empty landing spot.
+  &:focus-visible::after {
+    content: none;
+  }
+}
 
 // Printed pages (the resume, case studies) don't need the site's navigation.
 @media print {
