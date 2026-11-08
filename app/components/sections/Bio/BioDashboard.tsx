@@ -17,19 +17,21 @@ const INTERESTS = ["Full-stack engineering", "Application security", "Game dev (
 
 const LOOKING_FOR = "Looking for a team where I own features end to end, from API to UI, and grow toward a senior role.";
 
+// Strongest first: outcomes with a before/after, then scope, then volume.
+// Same facts as the resume (app/data/resume.ts); keep the two in sync.
 const QUEST_LOG = [
-  "Shipped 10+ features and third-party integrations across C#, ASP.NET, React and SQL",
+  "Shipped features and third-party integrations: REST APIs and React UI in C#, ASP.NET and SQL",
+  "Worked production incidents from triage to resolution, and wrote runbooks for the team",
   "Automated data maintenance with SQL scripts and a scheduled sync job",
-  "Wrote runbooks for the team",
 ];
 
 // Teammate quotes stay hidden in production until there is at least one.
 const SHOW_QUOTES_PLACEHOLDER = process.env.NODE_ENV === "development";
 
 /**
- * About: who Hans is (trainer card, skills), how he got here (the evolution
- * timeline), what he's shipped, and why hire him (moves). The old separate
- * "Why me" section now lives here, so nothing is said twice.
+ * About: what Hans has shipped and why hire him (moves) first, then who he is
+ * (trainer card, skills) and how he got here (the evolution timeline). The old
+ * separate "Why me" section now lives here, so nothing is said twice.
  */
 export default function BioDashboard({ trainer }: { trainer: TrainerData | null }) {
   const showQuotes = TESTIMONIALS.length > 0 || SHOW_QUOTES_PLACEHOLDER;
@@ -39,6 +41,32 @@ export default function BioDashboard({ trainer }: { trainer: TrainerData | null 
       <SectionHeading>Trainer profile</SectionHeading>
 
       <div className={styles.grid}>
+        {/* Work first: it's the evidence a recruiter came for. */}
+        <PixelPanel title="WHAT I'VE SHIPPED AT FISERV" bodyClassName={styles.panelBody}>
+          <ul className={styles.questLog}>
+            {QUEST_LOG.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </PixelPanel>
+
+        <PixelPanel title="WHY HIRE ME: MOVES" bodyClassName={styles.panelBody}>
+          <ol className={styles.moves}>
+            {MOVES.map((move) => (
+              <li key={move.name} className={styles.move}>
+                <div className={styles.moveTop}>
+                  <span className={styles.moveName}>{move.name}</span>
+                  <span className={styles.type}>{move.type}</span>
+                </div>
+                <p className={styles.effect}>{move.effect}</p>
+                <p className={styles.proof}>
+                  <span className={styles.proofLabel}>PROOF</span> {move.proof}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </PixelPanel>
+
         <PixelPanel title="TRAINER" titleAside="NO. 001" bodyClassName={styles.panelBody}>
           <div className={styles.portrait}>
             <LazyVideo src="/videos/bio-photos.mp4" poster="/videos/bio-photos.jpg" />
@@ -64,31 +92,6 @@ export default function BioDashboard({ trainer }: { trainer: TrainerData | null 
         </PixelPanel>
 
         <Evolution className={styles.wide} />
-
-        <PixelPanel title="WHAT I'VE SHIPPED AT FISERV" bodyClassName={styles.panelBody}>
-          <ul className={styles.questLog}>
-            {QUEST_LOG.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </PixelPanel>
-
-        <PixelPanel title="WHY HIRE ME: MOVES" bodyClassName={styles.panelBody}>
-          <ol className={styles.moves}>
-            {MOVES.map((move) => (
-              <li key={move.name} className={styles.move}>
-                <div className={styles.moveTop}>
-                  <span className={styles.moveName}>{move.name}</span>
-                  <span className={styles.type}>{move.type}</span>
-                </div>
-                <p className={styles.effect}>{move.effect}</p>
-                <p className={styles.proof}>
-                  <span className={styles.proofLabel}>PROOF</span> {move.proof}
-                </p>
-              </li>
-            ))}
-          </ol>
-        </PixelPanel>
 
         {showQuotes && (
           <PixelPanel title="WHAT TEAMMATES SAY" className={styles.wide} bodyClassName={styles.panelBody}>

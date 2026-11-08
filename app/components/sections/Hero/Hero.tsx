@@ -8,6 +8,7 @@ import { CONTACT_EMAIL, RESUME_URL } from "../../../lib/site";
 import { useDialogue } from "../../providers/DialogueProvider";
 import styles from "./Hero.module.scss";
 
+// Outcomes, not volume counts: the two Fiserv results with a clear before/after.
 const PROOF_POINTS = ["Fiserv · 3 yrs", "C# · .NET · React · SQL", "Online banking, API to UI"];
 
 const TILE_COLS = 10;
@@ -226,9 +227,8 @@ export default function Hero() {
             <span className={styles.roleStack}>C# / .NET · React · SQL</span>
           </p>
           <p className={styles.summary}>
-            3 years shipping and securing features on Fiserv&apos;s online banking platform. On the side I build
-            well-tested apps and tools end to end: an offline receipt-scanning bill splitter, a behavior tree editor
-            for game AI, and a party RPG you play from your phone.
+            3 years building and securing features on Fiserv&apos;s online banking platform. On the side I ship
+            well-tested apps end to end, like an offline receipt scanner with 245 tests on every push.
           </p>
           <div className={`${styles.ctaRow} ${styles.reveal3}`}>
             <a
