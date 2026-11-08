@@ -37,9 +37,9 @@ export const RESUME = {
       detail: "Software Development Engineer, Berkeley Heights, NJ",
       when: "Jan 2024 – Present",
       points: [
-        "Shipped features and third-party integrations, building REST APIs and React UI in C#, ASP.NET and SQL",
-        "Automated data maintenance with SQL scripts and a scheduled sync job, replacing manual work",
-        "Worked production incidents from triage to resolution, and wrote runbooks for the team",
+        "Build full-stack online banking features for retail and business customers, with REST APIs and React UI in C#, ASP.NET and SQL",
+        "Take features through peer review, regression testing and release",
+        "Support production issues from triage to resolution, and document runbooks for the team",
       ],
     },
     {

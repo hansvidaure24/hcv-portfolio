@@ -91,7 +91,7 @@ export const DEX: DexEntry[] = [
     aliases: ["C Sharp", "CSharp", "Unity / C#"],
     focus: ["dotnet", "games"],
     evidence: [
-      { source: FISERV, text: "Features, integrations and REST APIs in C#", href: WORK },
+      { source: FISERV, text: "Online banking features and REST APIs in C#", href: WORK },
       { ...P.bte, text: "The Unity runtime in C#, with 54 EditMode tests" },
       { ...P.wakebound, text: "About 58,000 lines of C# across 329 scripts" },
     ],
@@ -129,7 +129,7 @@ export const DEX: DexEntry[] = [
     aliases: ["T-SQL", "SQL Server", "MySQL", "relational databases"],
     focus: ["dotnet", "fullstack"],
     evidence: [
-      { source: FISERV, text: "Automated data maintenance with SQL scripts and a scheduled sync job", href: WORK },
+      { source: FISERV, text: "SQL for online banking features", href: WORK },
       { source: TRAINEE, text: "MySQL behind a Spring Boot REST API in the capstone", href: WORK },
     ],
     related: ["aspnet", "rest"],
@@ -156,7 +156,7 @@ export const DEX: DexEntry[] = [
     aliases: ["REST", "REST API", "RESTful APIs", "REST API design", "Web APIs"],
     focus: ["dotnet", "fullstack"],
     evidence: [
-      { source: FISERV, text: "REST APIs in C# and ASP.NET, plus third-party integrations", href: WORK },
+      { source: FISERV, text: "REST APIs in C# and ASP.NET", href: WORK },
       { source: TRAINEE, text: "A Spring Boot REST API for the five-month capstone", href: WORK },
     ],
     related: ["aspnet", "java"],
@@ -197,7 +197,7 @@ export const DEX: DexEntry[] = [
     focus: ["dotnet"],
     evidence: [
       { source: FISERV, text: "Production support from triage to resolution", href: WORK },
-      { source: FISERV, text: "Wrote Confluence runbooks for the team", href: WORK },
+      { source: FISERV, text: "Runbooks for the team", href: WORK },
     ],
     related: ["concurrency"],
   },

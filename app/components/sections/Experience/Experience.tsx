@@ -4,13 +4,13 @@ import PixelPanel from "../../ui/PixelPanel";
 import SectionHeading from "../../ui/SectionHeading";
 import styles from "./Experience.module.scss";
 
-// Same facts as the resume (app/data/resume.ts); keep the two in sync. No
-// performance figures, security counts or defect details: those need Fiserv's
-// review before they can be public.
+// Same facts as the resume (app/data/resume.ts); keep the two in sync. General
+// responsibilities only: specifics about Fiserv's systems, performance or
+// security need its review before they can be public.
 const HIGHLIGHTS = [
-  "Shipped features and third-party integrations: REST APIs and React UI in C#, ASP.NET and SQL",
-  "Worked production incidents from triage to resolution, and wrote runbooks for the team",
-  "Automated data maintenance with SQL scripts and a scheduled sync job",
+  "Build full-stack online banking features for retail and business customers, with REST APIs and React UI in C#, ASP.NET and SQL",
+  "Take features through peer review, regression testing and release",
+  "Support production issues from triage to resolution, and document runbooks for the team",
 ];
 
 const ROLES = [

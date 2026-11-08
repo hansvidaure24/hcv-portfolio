@@ -9,12 +9,12 @@ import { useDialogue } from "../../providers/DialogueProvider";
 import { useMotionSettings } from "../../providers/MotionPreferenceProvider";
 import styles from "./Hero.module.scss";
 
-// What was built, without performance or security figures: those need Fiserv's
-// review before they can be public.
+// General responsibilities only: specifics about Fiserv's systems, performance
+// or security need its review before they can be public.
 const PROOF_POINTS = [
-  "Online banking features from API to UI",
-  "Peer review, regression testing and release",
-  "Shipped REST APIs and React UI",
+  "Full-stack features for retail and business banking",
+  "From peer review and testing through production release",
+  "Production support and team runbooks",
 ];
 
 const TILE_COLS = 10;
