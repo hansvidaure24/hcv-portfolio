@@ -130,34 +130,6 @@ const PROJECTS: Project[] = [
     published: true,
   },
   {
-    slug: "fiserv-pagination",
-    title: "Ending timeouts on transaction history",
-    kind: "Work",
-    tagline:
-      "Replaced a load-everything transaction history with cursor-based pagination, ending multi-minute timeouts for high-volume accounts.",
-    role: "Software Development Engineer, Fiserv",
-    stack: ["C#", "ASP.NET", "SQL"],
-    metrics: ["Multi-minute timeouts → normal load times", "10–40x less data per request", "5 account types, 2 cursor strategies"],
-    links: [],
-    // Publish once the write-up is cleared against Fiserv's disclosure policy.
-    focus: { dotnet: 4, fullstack: 2 },
-    published: false,
-  },
-  {
-    slug: "fiserv-cve-upgrade",
-    title: "20 CVEs, 17 projects, one upgrade",
-    kind: "Work",
-    tagline:
-      "Closed 20 high-severity CVEs in one release by upgrading a shared library across a banking monorepo in a single coordinated change.",
-    role: "Software Development Engineer, Fiserv",
-    stack: ["C#", ".NET", "NuGet"],
-    metrics: ["20 high-severity CVEs closed", "17 projects upgraded together", "Became the team's upgrade playbook"],
-    links: [],
-    // Publish once the write-up is cleared against Fiserv's disclosure policy.
-    focus: { dotnet: 4 },
-    published: false,
-  },
-  {
     slug: "rjn-visuals",
     title: "RJN Visuals",
     kind: "Client",

@@ -1,0 +1,87 @@
+@use '../../../scss/mixins' as *;
+
+/* The hero's water carries on behind the first section below it. */
+.experienceBg {
+  background: linear-gradient(to bottom, var(--water-2), var(--water-deep-2));
+}
+
+/* Same content column as Work and About. */
+.experienceContent {
+  padding: 3rem clamp(1rem, 4vw, 2.5rem) 5rem;
+}
+
+.inner {
+  width: 100%;
+  max-width: 72rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+}
+
+@media (min-width: $bp-desktop) {
+  .body {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: 2.5rem;
+  }
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.roles {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+}
+
+.roleTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.roleWhen {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+
+.about {
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.resumeLink {
+  @include pixel-button(var(--gold), var(--ink), var(--text-md), 3px);
+}
+
+.highlights {
+  @include arrow-list;
+  gap: 0.6rem;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  user-select: text;
+  -webkit-user-select: text;
+}

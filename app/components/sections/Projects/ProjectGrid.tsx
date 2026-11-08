@@ -214,22 +214,20 @@ export default function ProjectGrid({ projects, ci = {} }: { projects: Project[]
       {focus === "dotnet" && !matchup && (
         <PixelPanel title="MOST OF THIS WORK IS AT FISERV" bodyClassName={styles.noteBody}>
           <p>
-            My day-to-day C#, ASP.NET and SQL work is on Fiserv&apos;s online banking platform, which isn&apos;t public:
-            cursor-based pagination that ended multi-minute timeouts for high-volume business accounts, 20
-            high-severity CVEs closed in one release across 17 projects, and thread-safety fixes across five banking
-            cores.
+            My day-to-day C#, ASP.NET and SQL work is on Fiserv&apos;s online banking platform, which isn&apos;t public,
+            including server-side cursor pagination for transaction history.
           </p>
           <div className={styles.noteLinks}>
             <a
-              href="#about"
+              href="#experience"
               className={styles.noteLink}
               onClick={(e) => {
                 if (!scene) return;
                 e.preventDefault();
-                scene.goTo("about", () => playSound("/sounds/button.mp3"));
+                scene.goTo("experience", () => playSound("/sounds/button.mp3"));
               }}
             >
-              Fiserv work <span aria-hidden="true">▼</span>
+              Fiserv work <span aria-hidden="true">▲</span>
             </a>
             <a href={RESUME_URL} target="_blank" rel="noopener noreferrer" className={styles.noteLink}>
               Resume (PDF) <span aria-hidden="true">↗</span>

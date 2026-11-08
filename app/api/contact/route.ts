@@ -16,10 +16,17 @@ const MAX_BODY_BYTES = 20_000;
 
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 5;
+const MAX_TRACKED_IPS = 5_000;
 const requestLog = new Map<string, number[]>();
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
+  // Forget visitors whose window has passed, so the map can't grow forever.
+  if (requestLog.size >= MAX_TRACKED_IPS) {
+    for (const [key, times] of requestLog) {
+      if (now - (times[times.length - 1] ?? 0) >= RATE_LIMIT_WINDOW_MS) requestLog.delete(key);
+    }
+  }
   const timestamps = (requestLog.get(ip) ?? []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
   timestamps.push(now);
   requestLog.set(ip, timestamps);
@@ -99,8 +106,16 @@ export async function POST(req: NextRequest) {
   }
 
   // Cloudflare Turnstile: enforced only where TURNSTILE_SECRET_KEY is set
-  // (production), so local dev and previews work without keys.
+  // (production), so local dev and previews work without keys. A site key with
+  // no secret is a broken deploy, so it fails closed instead of skipping the check.
   const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+  if (!turnstileSecret && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
+    console.error("NEXT_PUBLIC_TURNSTILE_SITE_KEY is set but TURNSTILE_SECRET_KEY isn't, so messages can't be verified.");
+    return NextResponse.json(
+      { error: "The contact form isn't available right now. Please email contact@hansvidaure.dev directly." },
+      { status: 503 }
+    );
+  }
   if (turnstileSecret) {
     const check = await verifyTurnstile({
       token: parsed.turnstileToken,
@@ -137,18 +152,16 @@ export async function POST(req: NextRequest) {
 
   const resend = new Resend(apiKey);
 
-  // Use the same Message-ID and subject so replies can share a mail thread.
-  const threadDomain = emailFrom.split("@")[1] || "hansolo.com";
-  const messageId = `<contact-${crypto.randomUUID()}@${threadDomain}>`;
   const subject = `Portfolio message from ${firstName} ${lastName}`;
 
+  // The only email this route sends goes to the site's owner. It never writes
+  // to the address a visitor typed, so the form can't be used to mail anyone else.
   try {
     const notifyResult = await resend.emails.send({
       from: emailFrom,
       to: contactEmail,
       replyTo: email,
       subject,
-      headers: { "Message-ID": messageId },
       html: `
         <p><strong>From:</strong> ${escapeHtml(firstName)} ${escapeHtml(lastName)} (${escapeHtml(email)})</p>
         <p><strong>Message:</strong></p>
@@ -160,31 +173,6 @@ export async function POST(req: NextRequest) {
     if (notifyResult.error) {
       console.error("Resend error sending notification email:", notifyResult.error);
       return NextResponse.json({ error: "Failed to send your message. Please try again later." }, { status: 502 });
-    }
-
-    // The notification succeeded, so a receipt failure is non-blocking.
-    //
-    // The receipt goes to an address nobody has verified, so it carries no
-    // text the submitter wrote: not the message, not the name, not a subject
-    // built from the name. Otherwise anyone could use this form to send their
-    // own words (a phishing link, say) from this domain to any inbox, signed
-    // with its DKIM key.
-    const receiptResult = await resend.emails.send({
-      from: emailFrom,
-      to: email,
-      replyTo: contactEmail,
-      subject: "Your message to Hans Vidaure",
-      headers: { "Message-ID": messageId },
-      html: `
-        <p>Hi,</p>
-        <p>Thanks for your message — I've received it and will get back to you soon. Just reply to this email if you want to add anything.</p>
-        <p style="color:#666">— Hans</p>
-      `,
-      text: `Hi,\n\nThanks for your message — I've received it and will get back to you soon. Just reply to this email if you want to add anything.\n\n— Hans`,
-    });
-
-    if (receiptResult.error) {
-      console.error("Resend error sending visitor receipt:", receiptResult.error);
     }
 
     return NextResponse.json({ ok: true });

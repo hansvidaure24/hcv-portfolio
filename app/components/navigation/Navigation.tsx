@@ -18,6 +18,7 @@ type MenuItem = {
 };
 
 const ITEMS: MenuItem[] = [
+  { label: "EXPERIENCE", id: "experience" },
   { label: "WORK", id: "projects" },
   { label: "ABOUT", id: "about" },
   { label: "CONTACT", id: "contact" },
@@ -35,8 +36,8 @@ const TOTAL_ROWS = ITEMS.length + 1;
  * The phone menu, styled like the battle menu. It's a disclosure: a button
  * that shows and hides a list of links (not an ARIA `menu`, which is for
  * application menus). Opening it moves focus to the first row; ↑ ↓ Home End
- * move between rows, Escape closes it and puts focus back on the Pokéball,
- * and tabbing out of it closes it too.
+ * move between rows, Escape closes it and puts focus back on the button, and
+ * tabbing out of it closes it too. TopBar renders it, on every page.
  */
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -44,7 +45,7 @@ export default function Navigation() {
   const rootRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const rowRefs = useRef<(HTMLElement | null)[]>([]);
-  // Set when closing should hand focus back to the Pokéball (Escape).
+  // Set when closing should hand focus back to the button (Escape).
   const returnFocusRef = useRef(false);
   const scene = useScene();
   // The site's own setting (which can override the OS), not just prefers-reduced-motion.
@@ -61,8 +62,8 @@ export default function Navigation() {
     setMenuOpen(true);
   }
 
-  // Focus follows the menu: into the first row on open, back to the
-  // Pokéball (once it's visible again) when Escape closed it.
+  // Focus follows the menu: into the first row on open, back to the button
+  // when Escape closed it.
   useEffect(() => {
     if (menuOpen) {
       rowRefs.current[0]?.focus();
@@ -154,15 +155,30 @@ export default function Navigation() {
 
   return (
     <nav ref={rootRef} className={styles.navRoot} aria-label="Site navigation" onBlur={onBlur}>
+      <button
+        ref={toggleRef}
+        type="button"
+        className={styles.menuToggle}
+        onClick={() => {
+          playSound("/sounds/button.mp3");
+          if (menuOpen) close(true);
+          else open();
+        }}
+        aria-expanded={menuOpen}
+        aria-controls="battle-menu"
+      >
+        Menu
+      </button>
+
       <AnimatePresence>
         {menuOpen && (
           <motion.div
             id="battle-menu"
             className={styles.battleMenu}
-            style={{ transformOrigin: "bottom right" }}
-            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+            style={{ transformOrigin: "top right" }}
+            initial={reduceMotion ? false : { opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={reduceMotion ? undefined : { opacity: 0, y: 16 }}
+            exit={reduceMotion ? undefined : { opacity: 0, y: -8 }}
             transition={{ duration: DUR.base, ease: steps(4) }}
           >
             <div className={styles.battleMenuInner}>
@@ -182,7 +198,7 @@ export default function Navigation() {
                         {item.label}
                       </Link>
                     ) : (
-                      <a href={`#${item.id}`} {...rowProps(i)} onClick={(e) => jumpTo(e, item.id!)}>
+                      <a href={`${scene ? "" : "/"}#${item.id}`} {...rowProps(i)} onClick={(e) => jumpTo(e, item.id!)}>
                         {cursor(i)}
                         {item.label}
                       </a>
@@ -200,26 +216,6 @@ export default function Navigation() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <button
-        ref={toggleRef}
-        type="button"
-        className={styles.menuToggle}
-        onClick={() => {
-          playSound("/sounds/button.mp3");
-          if (menuOpen) close(true);
-          else open();
-        }}
-        aria-label="Menu"
-        aria-expanded={menuOpen}
-        aria-controls="battle-menu"
-        // The open menu sits on top of the Pokéball. `visibility` (not just
-        // opacity) also takes it out of the tab order while it's covered.
-        style={{ visibility: menuOpen ? "hidden" : undefined }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/icons/icon-pokeball.svg" alt="" className={styles.menuToggleSvg} aria-hidden="true" />
-      </button>
     </nav>
   );
 }

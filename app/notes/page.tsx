@@ -19,8 +19,9 @@ export default function NotesPage() {
   const notes = getNotes();
 
   return (
+    <>
+    <TopBar />
     <main className={styles.page}>
-      <TopBar />
       <nav className={styles.topNav} aria-label="Breadcrumb">
         <Link href="/" className={styles.back}>
           <span aria-hidden="true">←</span> Home
@@ -58,5 +59,6 @@ export default function NotesPage() {
         </ol>
       </div>
     </main>
+    </>
   );
 }

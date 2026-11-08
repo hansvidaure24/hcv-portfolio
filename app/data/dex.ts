@@ -105,11 +105,7 @@ export const DEX: DexEntry[] = [
     aliases: ["dotnet", ".NET Core", ".NET Framework", "NuGet"],
     focus: ["dotnet"],
     evidence: [
-      {
-        source: FISERV,
-        text: "Closed 20 high-severity CVEs by upgrading a shared library across 17 projects in one change, resolving the runtime binding conflicts",
-        href: WORK,
-      },
+      { source: FISERV, text: "Online banking features in C# and .NET across 100+ pull requests", href: WORK },
     ],
     related: ["csharp", "aspnet"],
   },
@@ -122,11 +118,7 @@ export const DEX: DexEntry[] = [
     focus: ["dotnet", "fullstack"],
     evidence: [
       { source: FISERV, text: "Online banking features for retail and business customers in ASP.NET", href: WORK },
-      {
-        source: FISERV,
-        text: "Cursor-based pagination on transaction history: multi-minute timeouts gone, 10–40x less data per request",
-        href: WORK,
-      },
+      { source: FISERV, text: "Server-side cursor pagination for transaction history", href: WORK },
     ],
     related: ["csharp", "rest", "sql"],
   },
@@ -138,8 +130,7 @@ export const DEX: DexEntry[] = [
     aliases: ["T-SQL", "SQL Server", "MySQL", "relational databases"],
     focus: ["dotnet", "fullstack"],
     evidence: [
-      { source: FISERV, text: "Automated 24,000+ ACH and wire routing records with SQL scripts and a scheduled sync job", href: WORK },
-      { source: FISERV, text: "Two cursor strategies across five account types for transaction history", href: WORK },
+      { source: FISERV, text: "Automated ACH and wire routing data maintenance with SQL scripts and a scheduled sync job", href: WORK },
       { source: TRAINEE, text: "MySQL behind a Spring Boot REST API in the capstone", href: WORK },
     ],
     related: ["aspnet", "rest"],
@@ -176,13 +167,12 @@ export const DEX: DexEntry[] = [
     name: "Application security",
     type: "PRACTICE",
     status: "caught",
-    aliases: ["AppSec", "secure coding", "secure code review", "Fortify", "Fortify SSC", "SAST", "vulnerability remediation", "CVE"],
+    aliases: ["AppSec", "secure coding", "secure code review", "SAST", "vulnerability remediation", "CVE"],
     focus: ["dotnet"],
+    // Public projects only: statements about an employer's security work need its approval.
     evidence: [
-      { source: FISERV, text: "Remediated 1,150+ Fortify findings during feature work", href: WORK },
-      { source: FISERV, text: "Closed 20 high-severity CVEs in one release", href: WORK },
-      { source: FISERV, text: "Fixed SQL certificate encryption and SSL/TLS trust configuration", href: WORK },
-      { ...P.sliceofpie, text: "Ships with a strict Content-Security-Policy" },
+      { ...P.sliceofpie, text: "Ships with a strict Content-Security-Policy and keeps every receipt on the device" },
+      { ...SITE, text: "A contact form that verifies bots on the server and only ever emails its owner" },
     ],
     related: ["dotnet", "concurrency"],
   },
@@ -194,11 +184,8 @@ export const DEX: DexEntry[] = [
     aliases: ["thread safety", "multithreading", "race conditions", "parallel processing"],
     focus: ["dotnet"],
     evidence: [
-      {
-        source: FISERV,
-        text: "Fixed race conditions in parallel account processing: a thread-safe data-access layer and cached data isolated across five banking cores",
-        href: WORK,
-      },
+      { ...P.pocketQuest, text: "Host-authoritative multiplayer: simultaneous inputs resolve together, and dropped phones keep their slot" },
+      { ...P.bte, text: "Hot reload that writes to a temp file and renames it, so a running game never reads half a file" },
     ],
     related: ["csharp", "appsec"],
   },
@@ -211,7 +198,7 @@ export const DEX: DexEntry[] = [
     focus: ["dotnet"],
     evidence: [
       { source: FISERV, text: "Drove ACH production incidents from JIRA triage to resolution", href: WORK },
-      { source: FISERV, text: "Wrote Confluence runbooks that cut ramp-up time for the next incident", href: WORK },
+      { source: FISERV, text: "Wrote Confluence runbooks for the team", href: WORK },
     ],
     related: ["concurrency"],
   },
@@ -289,7 +276,7 @@ export const DEX: DexEntry[] = [
     aliases: ["performance optimization", "Lighthouse", "Core Web Vitals", "pagination", "Web Workers"],
     focus: ["fullstack"],
     evidence: [
-      { source: FISERV, text: "Ended multi-minute timeouts on high-volume transaction history", href: WORK },
+      { source: FISERV, text: "Server-side cursor pagination for transaction history", href: WORK },
       { ...P.sliceofpie, text: "99 Lighthouse mobile performance with ~25 KB of startup JavaScript" },
       { ...SITE, text: "Cut startup blocking time from ~420 ms to ~30 ms" },
     ],

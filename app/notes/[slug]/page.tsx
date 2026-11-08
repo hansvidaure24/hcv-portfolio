@@ -36,8 +36,9 @@ export default async function NotePage({ params }: { params: Promise<Params> }) 
   const project = note.project ? getProject(note.project) : undefined;
 
   return (
+    <>
+    <TopBar />
     <main className={styles.page}>
-      <TopBar />
       <nav className={styles.topNav} aria-label="Breadcrumb">
         <Link href="/notes" className={styles.back}>
           <span aria-hidden="true">←</span> All field notes
@@ -87,5 +88,6 @@ export default async function NotePage({ params }: { params: Promise<Params> }) 
         </footer>
       </PixelPanel>
     </main>
+    </>
   );
 }

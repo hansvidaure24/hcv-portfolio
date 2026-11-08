@@ -18,24 +18,24 @@ export const MOVES: Move[] = [
     name: "Secure by default",
     type: "SECURITY",
     effect: "I treat security as part of the feature, not a review step at the end.",
+    // Public proof only: statements about an employer's security work need its approval.
     proof:
-      "Fixed thread-safety and cache-isolation defects in banking code, and cleared Fortify findings as part of feature work instead of a separate pass.",
+      "SliceOfPie keeps every receipt on the device under a strict Content-Security-Policy. This site's contact form verifies bots on the server and only ever emails me, so it can't be used to send someone else's text.",
   },
   {
     name: "Full-stack range",
     type: "RANGE",
     effect: "I can take a feature from the database to the button without handing it off.",
-    proof:
-      "C#/ASP.NET APIs, React UI and SQL at Fiserv; TypeScript, WebRTC, a Tauri desktop app and Unity on my own projects.",
+    proof: "C#/ASP.NET APIs, SQL and React UI in production online banking at Fiserv.",
   },
   // Ownership inside a team, not "solo": the proof leads with work that went
   // through other people's review and testing to production.
   {
     name: "Owns it end to end",
     type: "OWNERSHIP",
-    effect: "Hand me a problem and I'll scope it, build it, test it and see it through to production.",
+    effect: "I take work from scope through production, and I stay with it after it ships.",
     proof:
-      "Took Fiserv's multi-account transaction download to another core banking system: core-specific mapping, CSV export and cross-core regression testing, through to production. On my own projects, SliceOfPie, the behavior tree editor and Pocket Quest run their tests on every push.",
+      "Shipped features through peer review and regression testing at Fiserv, and supported them in production. SliceOfPie, the Behavior Tree Editor and Pocket Quest run their tests on every push.",
   },
 ];
 

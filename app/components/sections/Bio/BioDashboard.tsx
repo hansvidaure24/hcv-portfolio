@@ -12,29 +12,15 @@ import styles from "./BioDashboard.module.scss";
 // The skills panel's title bar counts (app/data/dex.ts).
 const CORE_COUNT = CORE_DEX_IDS.length;
 
-const INTERESTS = ["Full-stack engineering", "Application security", "Game dev (hobby)"];
-
 const LOOKING_FOR = "Looking for a team where I own features end to end, from API to UI, and grow toward a senior role.";
-
-// Strongest first: outcomes with a before/after, then scope, then volume.
-// Same facts as the resume (app/data/resume.ts); keep the two in sync.
-const QUEST_LOG = [
-  "Replaced a load-everything transaction history with cursor-based pagination, ending multi-minute timeouts for high-volume business accounts and cutting data per request 10–40x",
-  "Closed 20 high-severity CVEs in one release by upgrading a shared library across 17 projects in one coordinated change; the approach became the team’s upgrade playbook",
-  "Fixed thread-safety and cache-isolation defects in a multi-account download feature running against five banking cores",
-  "Shipped features and third-party integrations across 100+ pull requests: REST APIs and React UI in C#, ASP.NET and SQL",
-  "Drove ACH production incidents from triage to resolution, and wrote runbooks that cut ramp-up time for the next one",
-  "Replaced hand-maintained routing tables with a scheduled sync job covering 24,000+ ACH and wire records",
-  "Remediated 1,150+ Fortify security findings during feature work",
-];
 
 // Teammate quotes stay hidden in production until there is at least one.
 const SHOW_QUOTES_PLACEHOLDER = process.env.NODE_ENV === "development";
 
 /**
- * About: what Hans has shipped and why hire him (moves) first, then who he is
- * (trainer card, skills) and how he got here (the evolution timeline). The old
- * separate "Why me" section now lives here, so nothing is said twice.
+ * About: why hire him (moves) first, then who he is (trainer card, skills) and
+ * his education and the role he wants next. What he has shipped is in the
+ * Experience section above, so nothing is said twice.
  */
 export default function BioDashboard({ trainer }: { trainer: TrainerData | null }) {
   const showQuotes = TESTIMONIALS.length > 0 || SHOW_QUOTES_PLACEHOLDER;
@@ -44,16 +30,7 @@ export default function BioDashboard({ trainer }: { trainer: TrainerData | null 
       <SectionHeading>About</SectionHeading>
 
       <div className={styles.grid}>
-        {/* Work first: it's the evidence a recruiter came for. */}
-        <PixelPanel title="What I’ve shipped at Fiserv" bodyClassName={styles.panelBody}>
-          <ul className={styles.questLog}>
-            {QUEST_LOG.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </PixelPanel>
-
-        <PixelPanel title="Why hire me" bodyClassName={styles.panelBody}>
+        <PixelPanel title="Why hire me" className={styles.wide} bodyClassName={styles.panelBody}>
           <ol className={styles.moves}>
             {MOVES.map((move) => (
               <li key={move.name} className={styles.move}>
@@ -77,14 +54,6 @@ export default function BioDashboard({ trainer }: { trainer: TrainerData | null 
           <p className={styles.name}>HANS VIDAURE</p>
           <p className={styles.tagline}>{LOOKING_FOR}</p>
           <TrainerStats stats={trainer} />
-          <div>
-            <p className={styles.label}>INTERESTS</p>
-            <ul className={styles.chips}>
-              {INTERESTS.map((interest) => (
-                <li key={interest}>{interest}</li>
-              ))}
-            </ul>
-          </div>
         </PixelPanel>
 
         <PixelPanel title="Skills, with proof" titleAside={`${CORE_COUNT} CORE · ${DEX.length} IN ALL`} bodyClassName={styles.panelBody}>

@@ -35,6 +35,7 @@
 /* --- Trainer panel --- */
 .portrait,
 .clip {
+  position: relative; // the clip's pause button sits in its corner
   border: var(--border) solid var(--ink);
   overflow: hidden;
   background: #000;
@@ -73,43 +74,19 @@
   -webkit-user-select: text;
 }
 
-.label {
-  margin-bottom: 0.4rem;
-  font-family: var(--font-display);
-  font-size: var(--text-xs);
-  letter-spacing: 0.05em;
-  color: var(--ink-muted);
-}
-
-.chips {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-
-  > * {
-    @include chip;
-  }
-}
-
-/* --- Shipped list --- */
-.questLog {
-  @include arrow-list;
-  gap: 0.6rem;
-  font-size: var(--text-sm);
-  line-height: 1.5;
-  color: var(--ink-soft);
-  user-select: text;
-  -webkit-user-select: text;
-}
-
-/* --- Skills --- */
 /* --- Why hire me: moves (was the separate Why me section) --- */
 .moves,
 .quotes {
   list-style: none;
   display: grid;
   gap: 0.9rem;
+}
+
+// The moves sit side by side once the panel spans the page.
+@media (min-width: $bp-desktop) {
+  .moves {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .move,

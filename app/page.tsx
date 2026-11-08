@@ -1,15 +1,15 @@
-import Navigation from '@/app/components/navigation/Navigation'
 import TopBar from '@/app/components/navigation/TopBar'
 import SceneProvider from '@/app/components/scene/SceneProvider'
 import SceneStage from '@/app/components/scene/SceneStage'
 import Hero from '@/app/components/sections/Hero/Hero'
+import Experience from '@/app/components/sections/Experience/Experience'
 import Projects from '@/app/components/sections/Projects/Projects'
 import Bio from '@/app/components/sections/Bio/Bio'
 import Contact from '@/app/components/sections/Contact/Contact'
 import { getPublishedProjects } from '@/app/data/projects'
 import { getCiBySlug, getTrainerStats } from '@/app/lib/github'
 
-const SECTION_IDS = ['hero', 'projects', 'about', 'contact']
+const SECTION_IDS = ['hero', 'experience', 'projects', 'about', 'contact']
 
 // Every section renders straight into the HTML, so visitors and crawlers
 // without JavaScript get the whole page, not just the hero.
@@ -27,21 +27,19 @@ export default async function Home() {
   const [ci, trainer] = await Promise.all([getCiBySlug(getPublishedProjects()), getTrainerStats()])
 
   return (
-    <div id="main-content-wrapper">
-      <main role="main" className="min-h-screen">
-        <SceneProvider sectionIds={SECTION_IDS}>
-          <TopBar />
-          <Navigation />
-          <SceneStage
-            sections={[
-              { id: 'hero', node: <Hero /> },
-              { id: 'projects', node: <Projects ci={ci} /> },
-              { id: 'about', node: <Bio trainer={trainer} /> },
-              { id: 'contact', node: <Contact /> },
-            ]}
-          />
-        </SceneProvider>
+    <SceneProvider sectionIds={SECTION_IDS}>
+      <TopBar />
+      <main className="min-h-screen">
+        <SceneStage
+          sections={[
+            { id: 'hero', node: <Hero /> },
+            { id: 'experience', node: <Experience /> },
+            { id: 'projects', node: <Projects ci={ci} /> },
+            { id: 'about', node: <Bio trainer={trainer} /> },
+            { id: 'contact', node: <Contact /> },
+          ]}
+        />
       </main>
-    </div>
+    </SceneProvider>
   );
 }

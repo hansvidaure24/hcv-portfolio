@@ -57,20 +57,17 @@
 </header>
 
 <h2>Summary</h2>
-<p>Full-stack engineer with 3 years at Fiserv building and securing online banking features for retail and business customers in C#, ASP.NET, React and SQL. Independently ships tested web apps and developer tools in TypeScript, JavaScript and Unity.</p>
+<p>Full-stack engineer with 3 years at Fiserv building online banking features for retail and business customers in C#, ASP.NET, React and SQL. Independently ships tested web apps and developer tools in TypeScript, JavaScript and Unity.</p>
 
 <h2>Experience</h2>
 <div class="entry">
   <div class="row"><span class="what">Fiserv <span class="sub">&mdash; Software Development Engineer, Berkeley Heights, NJ</span></span><span class="when">Jan 2024 &ndash; Present</span></div>
   <ul>
     <li>Shipped features and third-party integrations across 100+ pull requests, building REST APIs and React UI in C#, ASP.NET and SQL</li>
-    <li>Replaced a load-everything transaction history with cursor-based pagination (2 cursor strategies, 5 account types), ending multi-minute timeouts for high-volume business accounts and cutting data per request 10&ndash;40x</li>
+    <li>Replaced a load-everything transaction history with server-side cursor pagination, adding a separate cached path for unusually large histories</li>
     <li>Extended multi-account transaction download to another core banking system, building core-specific transaction mapping and CSV export, and took it through cross-core regression testing to production</li>
-    <li>Fixed race conditions in that feature, where parallel account processing wrote transaction results into shared data, by making its data-access layer thread-safe and isolating cached data across all five cores</li>
-    <li>Closed 20 high-severity CVEs in one release by upgrading a shared library across 17 projects in one coordinated change and resolving the runtime binding conflicts; the approach became the team&rsquo;s upgrade playbook</li>
-    <li>Remediated 1,150+ Fortify findings during feature work and fixed SQL certificate encryption and SSL/TLS trust configuration</li>
-    <li>Automated 24,000+ ACH and wire routing records with SQL scripts and a scheduled sync job, replacing manual maintenance</li>
-    <li>Drove ACH production incidents from JIRA triage to resolution using AI-assisted root-cause analysis, and wrote Confluence runbooks that cut ramp-up time for the next one</li>
+    <li>Automated ACH and wire routing data maintenance with SQL scripts and a scheduled sync job, replacing manual work</li>
+    <li>Drove ACH production incidents from JIRA triage to resolution using AI-assisted root-cause analysis, and wrote Confluence runbooks for the team</li>
   </ul>
 </div>
 <div class="entry">
@@ -134,7 +131,7 @@
 <div class="skills">
   <p><b>Languages and frameworks:</b> C#, TypeScript, JavaScript, SQL, Java, Python &middot; ASP.NET, .NET, React, Next.js, Spring Boot, Unity</p>
   <p><b>Testing and DevOps:</b> Playwright, Vitest, unit testing, Git, GitHub Actions (CI/CD), Vercel, Cloudflare Workers</p>
-  <p><b>Data and tools:</b> SQL Server, MySQL, Fortify SSC, JIRA, Confluence, ReSharper</p>
+  <p><b>Data and tools:</b> SQL Server, MySQL, JIRA, Confluence, ReSharper</p>
   <p><b>Practices:</b> REST API design, application security, secure code review, Agile/Scrum</p>
   <p><b>Spoken:</b> English, Tagalog (native) &middot; French (intermediate; minor) &middot; Spanish (basic)</p>
 </div>

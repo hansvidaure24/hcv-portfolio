@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useMotionSettings } from "../../providers/MotionPreferenceProvider";
+import VideoToggle from "../../ui/VideoToggle";
 import type { Project } from "../../../data/projects";
 import styles from "./ProjectCard.module.scss";
 
@@ -25,8 +26,9 @@ function optimizedSrc(src: string, width: number) {
   return `/_next/image?url=${encodeURIComponent(src)}&w=${width}&q=75`;
 }
 
-// Same breakpoint as the top bar: phones and small tablets get tap-to-play.
-const DESKTOP_QUERY = "(min-width: 761px)";
+// Same breakpoint as the top bar ($bp-nav + $bp-step): phones and small
+// tablets get tap-to-play.
+const DESKTOP_QUERY = "(min-width: 47.5625em)";
 
 /**
  * A project's cover and demo clip, with one rule for every card:
@@ -45,6 +47,9 @@ export default function ProjectMedia({ title, cover, video, sizes, transitionNam
   const [seen, setSeen] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
   const [clickedPlay, setClickedPlay] = useState(false);
+  const [paused, setPaused] = useState(false);
+  // The observer reads this without being recreated when it changes.
+  const pausedRef = useRef(false);
 
   useEffect(() => {
     const mq = window.matchMedia(DESKTOP_QUERY);
@@ -85,7 +90,7 @@ export default function ProjectMedia({ title, cover, video, sizes, transitionNam
         if (!entry) return;
         if (entry.isIntersecting) {
           setSeen(true);
-          videoRef.current?.play().catch(() => {});
+          if (!pausedRef.current) videoRef.current?.play().catch(() => {});
         } else {
           videoRef.current?.pause();
         }
@@ -98,6 +103,14 @@ export default function ProjectMedia({ title, cover, video, sizes, transitionNam
 
   const showVideo = video && ((autoplay && seen) || clickedPlay);
   const mosaicDone = stage >= MOSAIC_WIDTHS.length;
+
+  function togglePlayback() {
+    const next = !pausedRef.current;
+    pausedRef.current = next;
+    setPaused(next);
+    if (next) videoRef.current?.pause();
+    else videoRef.current?.play().catch(() => {});
+  }
 
   return (
     <div ref={rootRef} className={styles.media} style={transitionName ? { viewTransitionName: transitionName } : undefined}>
@@ -148,6 +161,10 @@ export default function ProjectMedia({ title, cover, video, sizes, transitionNam
           aria-label={`${title} demo video`}
           disablePictureInPicture
         />
+      )}
+
+      {showVideo && autoplay && !clickedPlay && (
+        <VideoToggle paused={paused} label={`${title} demo`} onToggle={togglePlayback} />
       )}
 
       {video && !autoplay && !clickedPlay && (

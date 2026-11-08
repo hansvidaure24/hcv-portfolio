@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { createPortal } from "react-dom";
 import { playSound } from "../../../lib/sound";
+import { track } from "../../../lib/analytics";
 import { useDialogFocus } from "../../../lib/useDialogFocus";
 import { useDialogue } from "../../providers/DialogueProvider";
 import Turnstile from "../../ui/Turnstile";
@@ -126,9 +127,9 @@ export default function ContactComputer({ open, onClose }: { open: boolean; onCl
       playSound("/sounds/menu-navigation.mp3", 0.6);
       // Close the mailbox and confirm in the site's dialogue box.
       const name = values.firstName.trim() || "trainer";
-      const email = values.email.trim();
+      track("message_sent");
       resetAndClose();
-      say(`Message sent! Thanks, ${name}. A confirmation email is on its way to ${email}.`);
+      say(`Message sent! Thanks, ${name}. I'll get back to you soon.`);
     } catch {
       setSubmitError("Couldn't reach the server. Check your connection and try again.");
       setSubmitting(false);

@@ -30,7 +30,7 @@ export const RESUME = {
     { label: "LinkedIn", href: "https://www.linkedin.com/in/hans-chandler-vidaure/" },
   ] satisfies ResumeLink[],
   summary:
-    "Full-stack engineer with 3 years at Fiserv building and securing online banking features for retail and business customers in C#, ASP.NET, React and SQL. Independently ships tested web apps and developer tools in TypeScript, JavaScript and Unity.",
+    "Full-stack engineer with 3 years at Fiserv building online banking features for retail and business customers in C#, ASP.NET, React and SQL. Independently ships tested web apps and developer tools in TypeScript, JavaScript and Unity.",
   experience: [
     {
       name: "Fiserv",
@@ -38,13 +38,10 @@ export const RESUME = {
       when: "Jan 2024 – Present",
       points: [
         "Shipped features and third-party integrations across 100+ pull requests, building REST APIs and React UI in C#, ASP.NET and SQL",
-        "Replaced a load-everything transaction history with cursor-based pagination (2 cursor strategies, 5 account types), ending multi-minute timeouts for high-volume business accounts and cutting data per request 10–40x",
+        "Replaced a load-everything transaction history with server-side cursor pagination, adding a separate cached path for unusually large histories",
         "Extended multi-account transaction download to another core banking system, building core-specific transaction mapping and CSV export, and took it through cross-core regression testing to production",
-        "Fixed race conditions in that feature, where parallel account processing wrote transaction results into shared data, by making its data-access layer thread-safe and isolating cached data across all five cores",
-        "Closed 20 high-severity CVEs in one release by upgrading a shared library across 17 projects in one coordinated change and resolving the runtime binding conflicts; the approach became the team’s upgrade playbook",
-        "Remediated 1,150+ Fortify findings during feature work and fixed SQL certificate encryption and SSL/TLS trust configuration",
-        "Automated 24,000+ ACH and wire routing records with SQL scripts and a scheduled sync job, replacing manual maintenance",
-        "Drove ACH production incidents from JIRA triage to resolution using AI-assisted root-cause analysis, and wrote Confluence runbooks that cut ramp-up time for the next one",
+        "Automated ACH and wire routing data maintenance with SQL scripts and a scheduled sync job, replacing manual work",
+        "Drove ACH production incidents from JIRA triage to resolution using AI-assisted root-cause analysis, and wrote Confluence runbooks for the team",
       ],
     },
     {
@@ -150,7 +147,7 @@ export const RESUME = {
       label: "Testing and DevOps",
       text: "Playwright, Vitest, unit testing, Git, GitHub Actions (CI/CD), Vercel, Cloudflare Workers",
     },
-    { label: "Data and tools", text: "SQL Server, MySQL, Fortify SSC, JIRA, Confluence, ReSharper" },
+    { label: "Data and tools", text: "SQL Server, MySQL, JIRA, Confluence, ReSharper" },
     { label: "Practices", text: "REST API design, application security, secure code review, Agile/Scrum" },
     { label: "Spoken", text: "English, Tagalog (native) · French (intermediate; minor) · Spanish (basic)" },
   ],

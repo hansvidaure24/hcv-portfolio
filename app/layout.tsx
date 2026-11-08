@@ -8,6 +8,7 @@ import ContactDialogProvider from './components/providers/ContactDialogProvider'
 import DialogueProvider from './components/providers/DialogueProvider'
 import OptionsProvider from './components/providers/OptionsProvider'
 import MorphWatcher from './components/scene/MorphWatcher'
+import AnalyticsClicks from './components/providers/AnalyticsClicks'
 import { MOTION_BOOT_SCRIPT } from './lib/motionPreference'
 import { TIME_BOOT_SCRIPT } from './lib/timeOfDay'
 import { TEXT_SPEED_BOOT_SCRIPT } from './lib/preferenceKeys'
@@ -146,6 +147,7 @@ export default function RootLayout({
             <OptionsProvider>
               <ContactDialogProvider>{children}</ContactDialogProvider>
               <MorphWatcher />
+              <AnalyticsClicks />
             </OptionsProvider>
           </DialogueProvider>
         </MotionPreferenceProvider>
