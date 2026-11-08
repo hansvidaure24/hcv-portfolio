@@ -15,7 +15,7 @@ with a desktop + phone check in the browser before the next one starts.
 | --- | --- | --- |
 | 1–6. Foundation → QA (record at the bottom) | Nov 7–22, 2026 | Done, live Nov 7 |
 | 7. Ship what's built, fix open issues | Nov 8–10 | Done Nov 7 (2 items wait on others) |
-| 8. Table stakes from top portfolios | Nov 11–15 | Planned |
+| 8. Table stakes from top portfolios | Nov 11–15 | Built Nov 8, not deployed (2 posts left for Hans) |
 | 9. Evidence Dex | Nov 16–19 | Planned |
 | 10. Type Matchup (the new thing) | Nov 20–26 | Planned |
 | 11. Readable by AI tools | Nov 27–29 | Planned |
@@ -214,25 +214,62 @@ How it works (Phases 9–10):
 
 ## Phase 8 — Table stakes from top portfolios
 
-- [ ] **Quick view** (`/resume`): the resume as one plain page built from
-      the same data (Fiserv quest log, timeline, projects, skills), with
-      print styles so Save as PDF works. "Quick view" in the top bar and
-      the phone menu; the hero stays as it is. Keep `hcv-resume.pdf` in
-      sync until it can be printed from this page.
-- [ ] **Live trainer card:** GitHub data at build time, refreshed daily:
-      public repos, last push ("Last seen: Behavior Tree Editor, 2 days
-      ago"), a year of activity as a pixel strip, "play time" since the
-      first job. The activity calendar needs a `GITHUB_TOKEN` (GraphQL);
-      without one, show what the public API gives.
-- [ ] **Live proof chips:** where a card claims tests ("245 tests on every
-      push", "Bots play a full campaign in CI"), show the latest GitHub
-      Actions result ("CI ✓ passing, checked today").
-- [ ] **Now line** on the trainer card: what he's building and whether
-      he's open to roles, one dated sentence.
-- [ ] **Field notes** (`/notes`): 2–3 posts in the case-study panel style,
-      from material that already exists: the iOS PWA launch bug, PaddleOCR
-      vs Tesseract on 16 receipts, replaying behavior trees. In the
-      sitemap, linked from the matching cards.
+Built Nov 7–8. Everything runs at build time or in the browser: no paid
+service, no new account.
+
+- [x] **Quick view** (`/resume`): the resume as one plain page from
+      `app/data/resume.ts`, in the cream panel, with a gold "Download PDF ▶"
+      and print styles (Ctrl+P drops the top bar, panel frame and buttons).
+      The top bar's "Resume" now opens it (same tab, marked current there),
+      and the phone menu has a RESUME row; the hero, case-study footer and
+      Contact still link the PDF directly. The phone number stays in the
+      PDF only, not on the public page. The PDF is still printed from
+      `resume/hcv-resume.html`; both say to change them together.
+- [x] **Live trainer card** in About's TRAINER panel: PLAY TIME since the
+      first full-time role (Sep 2023), PUBLIC REPOS, LAST PUSH, and a
+      52-week strip of commits to public repos, from GitHub's free REST API
+      (`app/lib/github.ts`) at build time and at most once a day after
+      (ISR). No token needed; an optional free `GITHUB_TOKEN` raises the
+      rate limit. If GitHub doesn't answer, only play time and Now show.
+      The strip waits until 13 of 52 weeks have public commits: on Nov 8
+      only 9 did (97 commits), because most public repos went up in Oct–Nov
+      and the year's main work was private.
+- [x] **Live proof chips:** "✓ CI passing · last run Nov 7, 2026" on
+      SliceOfPie, Pocket Quest and Behavior Tree Editor, linking to the
+      run. Shown only when the latest `CI` run on `main` passed; a red or
+      missing run shows no chip rather than a false one.
+- [x] **Now line** on the trainer card (`app/data/now.ts`): "Building Hold
+      Steadfast, my co-op horde-defense game in Unity, and the Behavior
+      Tree Editor that runs its enemy AI." Dated NOV 2026. Open-to-roles
+      already shows in the hero and the TRAINER tagline, so it isn't
+      repeated. Edit it when it stops being true.
+- [x] **Field notes** (`/notes`, `/notes/<slug>`): a list page and a post
+      page in the case-study style, in the sitemap. First post: the iOS PWA
+      launch bug, copied word for word from the SliceOfPie repo, with links
+      back to the case study and the GitHub original. SliceOfPie's
+      "Write-up" button now opens it on the site. The case-study Markdown
+      renderer gained ``` code blocks, `inline code` and ### subheadings
+      (no existing case study used them, so those render as before).
+- [ ] **Two more field notes, written by Hans:** PaddleOCR vs Tesseract on
+      16 receipts, and replaying behavior trees. Not drafted for him: the
+      posts should be in his own words. Add each to `app/data/notes.ts`
+      with `published: false` to preview it in `npm run dev` first.
+
+Found on the way:
+
+- [x] **Wakebound's "Code" button 404'd for every visitor:** it linked to
+      `hansvidaure24/Nebula`, which is private. The link is removed; put it
+      back in `app/data/projects.ts` if the repo goes public. Every other
+      GitHub link on the site was checked signed out and works.
+- [x] The resume still said "13 trees" after the write-up moved to 14; the
+      HTML, the PDF (regenerated, still one page) and the Quick view now
+      say 14.
+
+Lighthouse (mobile, local production build, Nov 8): home 100 performance,
+47 ms blocking time; `/resume` and the field note 100. Accessibility, best
+practices and SEO 100 on home, `/resume`, `/notes` and the note. Phone
+width (375px): no sideways scroll; code blocks scroll on their own. Print
+output wasn't checked by eye (no PDF renderer on this machine).
 
 ## Phase 9 — Evidence Dex
 
