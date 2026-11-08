@@ -1,8 +1,10 @@
+import Link from "next/link";
 import PixelPanel from "../../ui/PixelPanel";
 import ProjectMedia from "./ProjectMedia";
 import CaseStudyLink from "./CaseStudyLink";
 import { morphNames } from "../../../lib/morphNavigation";
 import type { Project } from "../../../data/projects";
+import type { CiStatus } from "../../../lib/github";
 import styles from "./ProjectCard.module.scss";
 
 export function ProjectLinks({ project, showCaseStudy = true }: { project: Project; showCaseStudy?: boolean }) {
@@ -13,11 +15,18 @@ export function ProjectLinks({ project, showCaseStudy = true }: { project: Proje
           Case study <span aria-hidden="true">→</span>
         </CaseStudyLink>
       )}
-      {project.links.map((link) => (
-        <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className={styles.link}>
-          {link.label} <span aria-hidden="true">↗</span>
-        </a>
-      ))}
+      {project.links.map((link) =>
+        // On-site pages (a field note) open in the same tab; everything else is external.
+        link.href.startsWith("/") ? (
+          <Link key={link.href} href={link.href} className={styles.link}>
+            {link.label} <span aria-hidden="true">→</span>
+          </Link>
+        ) : (
+          <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className={styles.link}>
+            {link.label} <span aria-hidden="true">↗</span>
+          </a>
+        )
+      )}
     </div>
   );
 }
@@ -28,9 +37,14 @@ type ProjectCardProps = {
   featured?: boolean;
   /** Stack chips to highlight for the visitor's chosen focus. */
   highlight?: string[];
+  /** The repo's latest CI run, when it passed (fetched daily from GitHub). */
+  ci?: CiStatus;
 };
 
-export default function ProjectCard({ project, featured = Boolean(project.featured), highlight = [] }: ProjectCardProps) {
+const ciDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+
+export default function ProjectCard({ project, featured = Boolean(project.featured), highlight = [], ci }: ProjectCardProps) {
   return (
     <PixelPanel as="article" className={`${styles.card} ${featured ? styles.featured : ""}`}>
       <div className={styles.layout}>
@@ -60,6 +74,14 @@ export default function ProjectCard({ project, featured = Boolean(project.featur
                 <li key={metric}>{metric}</li>
               ))}
             </ul>
+          )}
+
+          {ci && (
+            <a href={ci.url} target="_blank" rel="noopener noreferrer" className={styles.ciChip}>
+              <span aria-hidden="true">✓</span> CI passing
+              <span className={styles.ciWhen}>· last run {ciDate(ci.ranAt)}</span>
+              <span className={styles.srOnly}> (opens the GitHub Actions run)</span>
+            </a>
           )}
 
           <ul className={styles.stack} aria-label="Built with">

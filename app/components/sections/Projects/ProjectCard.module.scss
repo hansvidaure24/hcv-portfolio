@@ -159,6 +159,29 @@
   }
 }
 
+// Live proof: the repo's latest CI run passed. Links to that run.
+.ciChip {
+  @include chip;
+  align-self: flex-start;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0 0.35rem;
+  color: var(--accent-green);
+  border-color: var(--accent-green);
+  background: rgb(var(--cream-rgb) / 0.6);
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    background: rgb(var(--ink-rgb) / 0.08);
+  }
+}
+
+.ciWhen {
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
 // A chip that matches the visitor's "Choose your focus" pick.
 .stack li.chipMatch {
   background: var(--gold);

@@ -1,0 +1,101 @@
+@use '../../../scss/mixins' as *;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 0.85rem;
+  border: var(--border-thin) solid rgb(var(--ink-rgb) / 0.35);
+  background: rgb(var(--ink-rgb) / 0.04);
+}
+
+.stats {
+  display: grid;
+  gap: 0.35rem;
+
+  div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0 0.75rem;
+  }
+
+  dt {
+    @include display-text(var(--text-xs));
+    color: var(--ink-muted);
+  }
+
+  dd {
+    font-size: var(--text-sm);
+    font-weight: 700;
+    text-align: right;
+    overflow-wrap: anywhere;
+  }
+
+  a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+
+    &:hover,
+    &:focus-visible {
+      background: rgb(var(--ink-rgb) / 0.12);
+    }
+  }
+}
+
+.muted {
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
+.activity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+// 52 weeks in one row of square "pixels", like the stat bars: stepped, no gradient.
+.strip {
+  display: grid;
+  grid-template-columns: repeat(52, minmax(0, 1fr));
+  gap: 2px;
+}
+
+.week {
+  aspect-ratio: 1;
+  background: rgb(var(--ink-rgb) / 0.1);
+
+  &[data-level='1'] {
+    background: color-mix(in srgb, var(--accent-green) 35%, transparent);
+  }
+  &[data-level='2'] {
+    background: color-mix(in srgb, var(--accent-green) 60%, transparent);
+  }
+  &[data-level='3'] {
+    background: color-mix(in srgb, var(--accent-green) 80%, transparent);
+  }
+  &[data-level='4'] {
+    background: var(--accent-green);
+  }
+}
+
+.caption {
+  font-size: var(--text-2xs);
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.now {
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.nowLabel {
+  @include display-text(var(--text-xs));
+  color: var(--accent-green);
+}
