@@ -49,7 +49,7 @@ const PROJECTS: Project[] = [
     metrics: [
       "PaddleOCR read every price on 16/16 test receipts; Tesseract.js managed 4/16",
       "25 KB of startup JavaScript; the 36 MB scanner downloads only on request",
-      "Works offline with no server; 245 tests on every push",
+      "Works offline with no server; ~207 tests on every push",
     ],
     cover: {
       src: "/projects/sliceofpie/cover.jpg",

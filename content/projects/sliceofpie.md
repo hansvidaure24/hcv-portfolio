@@ -9,7 +9,7 @@ Every bill-splitting app I tried wanted everyone to sign up, needed a connection
 - About 25 KB of gzipped JavaScript at startup: a 23 KB app bundle plus a 2 KB service-worker helper
 - The 36 MB receipt scanner only downloads when you ask for it, then works offline
 - axe finds no accessibility issues on any screen, in light or dark mode
-- 198 unit tests and 47 end-to-end tests, each run on phone and desktop, on every push
+- ~165 unit tests and 42 end-to-end tests, each run on phone and desktop, on every push
 - No framework: about 4,900 lines of TypeScript across 49 modules
 
 ## Key decisions
@@ -22,7 +22,10 @@ Every bill-splitting app I tried wanted everyone to sign up, needed a connection
 
 **Money that always adds up.** Shares are worked out in whole cents and whoever paid takes the leftover cent, so $100 three ways is $33.33, $33.33 and $33.34. Everything rounds through one function, so 178.365 can't round two different ways.
 
-**A bug only a real iPhone showed.** Installed on the Home Screen, the app opened with its tab bar floating above the bottom of the screen. It never happened in a browser or a test. I added a size readout to Settings and went through a screen recording frame by frame to find out why. The fix is shipped and I'm still confirming it on a device.
+**A bug only a real iPhone showed.** Installed on the Home Screen, the app opened with its tab bar floating above the bottom of the screen. It never happened in a browser or a test. I added a size readout to Settings and went through a screen recording frame by frame to find out why: iOS opens Home Screen apps with a window 62 points short and no safe areas, then silently corrects itself a few seconds later. The fix — a solid status bar so there's nothing for iOS to resize — shipped and is confirmed working on device.
+
+## Outcome
+I use SliceOfPie regularly when eating out with friends. It handles the math I used to do on a napkin, and nobody needs to download anything or make an account — I just scan the receipt and split.
 
 ## Built with
 Vite 8, TypeScript, Workbox service worker, PaddleOCR (PP-OCRv5) on ONNX Runtime Web, IndexedDB, Vitest, Playwright + axe-core, Lighthouse CI on GitHub Actions, strict Content-Security-Policy.
