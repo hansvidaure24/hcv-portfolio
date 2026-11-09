@@ -8,16 +8,12 @@ import {
   STATUS_LABEL,
   STATUS_MEANING,
   dexNumber,
-  type DexEntry,
   type DexEvidence,
 } from "../../../data/dex";
 import { useMotionSettings } from "../../providers/MotionPreferenceProvider";
 import { useScene } from "../../scene/SceneProvider";
 import { playSound } from "../../../lib/sound";
 import styles from "./SkillDex.module.scss";
-
-// Chip-style spellings ("Unity / C#", "WebRTC (PeerJS)") match chips but aren't worth listing.
-const shownAliases = (entry: DexEntry) => entry.aliases.filter((alias) => !/[/(+]/.test(alias));
 
 // The core skills' positions in DEX, in dex order (so the numbers only go up).
 const CORE = DEX.map((entry, i) => (CORE_DEX_IDS.includes(entry.id) ? i : -1)).filter((i) => i >= 0);
@@ -201,61 +197,35 @@ export default function SkillDex() {
           </button>
         </div>
 
-        {DEX.map((entry, i) => {
-          const aliases = shownAliases(entry);
-          const related = (entry.related ?? []).map((id) => DEX.findIndex((e) => e.id === id)).filter((n) => n >= 0);
-          return (
-            <section
-              key={entry.id}
-              id={`dex-entry-${entry.id}`}
-              role="tabpanel"
-              aria-labelledby={`dex-tab-${entry.id}`}
-              hidden={i !== selected}
-              tabIndex={0}
-              className={styles.entry}
-            >
-              <header className={styles.entryHead}>
-                <span className={styles.entryNo}>{dexNumber(entry)}</span>
-                <h4 className={styles.entryName}>{entry.name}</h4>
-                <span className={styles.status} data-status={entry.status}>
-                  {STATUS_LABEL[entry.status]}
-                </span>
-              </header>
-              <p className={styles.type}>
-                <span className={styles.label}>TYPE</span> {entry.type}
-              </p>
+        {DEX.map((entry, i) => (
+          <section
+            key={entry.id}
+            id={`dex-entry-${entry.id}`}
+            role="tabpanel"
+            aria-labelledby={`dex-tab-${entry.id}`}
+            hidden={i !== selected}
+            tabIndex={0}
+            className={styles.entry}
+          >
+            <header className={styles.entryHead}>
+              <span className={styles.entryNo}>{dexNumber(entry)}</span>
+              <h4 className={styles.entryName}>{entry.name}</h4>
+              <span className={styles.status} data-status={entry.status}>
+                {STATUS_LABEL[entry.status]}
+              </span>
+            </header>
 
-              <ul className={styles.evidence} aria-label={`Proof of ${entry.name}`}>
-                {entry.evidence.map((ev) => (
-                  <li key={ev.text}>
-                    <span>
-                      <EvidenceLink evidence={ev} />: {ev.text}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              {aliases.length > 0 && (
-                <p className={styles.small}>
-                  <span className={styles.label}>ALSO CALLED</span> {aliases.join(", ")}
-                </p>
-              )}
-              {related.length > 0 && (
-                <p className={styles.small}>
-                  <span className={styles.label}>RELATED</span>{" "}
-                  {related.map((index, n) => (
-                    <span key={DEX[index]!.id}>
-                      {n > 0 && " · "}
-                      <button type="button" className={styles.relatedButton} onClick={() => select(index, true)}>
-                        {DEX[index]!.name}
-                      </button>
-                    </span>
-                  ))}
-                </p>
-              )}
-            </section>
-          );
-        })}
+            <ul className={styles.evidence} aria-label={`Proof of ${entry.name}`}>
+              {entry.evidence.map((ev) => (
+                <li key={ev.text}>
+                  <span>
+                    <EvidenceLink evidence={ev} />: {ev.text}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
 
         <p className={styles.legend}>
           <span className={styles.ball} data-status="caught" aria-hidden="true" /> {STATUS_LABEL.caught}:{" "}

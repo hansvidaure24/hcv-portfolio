@@ -62,7 +62,7 @@ describe("effectiveness", () => {
 describe("summary", () => {
   it("counts required and nice-to-have skills", () => {
     const m = matchPost(JOB_POSTS[0]!.text, NOW);
-    expect(m.rows.filter((r) => r.section === "required")).toHaveLength(5);
+    expect(m.rows.filter((r) => r.section === "required")).toHaveLength(6);
     expect(m.rows.filter((r) => r.section === "nice")).toHaveLength(2);
   });
 

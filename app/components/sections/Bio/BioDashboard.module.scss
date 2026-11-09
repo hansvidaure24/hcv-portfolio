@@ -33,24 +33,15 @@
 }
 
 /* --- Trainer panel --- */
-.portrait,
-.clip {
+.portrait {
   position: relative; // the clip's pause button sits in its corner
+  aspect-ratio: 2 / 1;
   border: var(--border) solid var(--ink);
   overflow: hidden;
   background: #000;
 }
 
-.portrait {
-  aspect-ratio: 2 / 1;
-}
-
-.clip {
-  aspect-ratio: 16 / 9;
-}
-
-.portrait video,
-.clip video {
+.portrait video {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -85,7 +76,7 @@
 // The moves sit side by side once the panel spans the page.
 @media (min-width: $bp-desktop) {
   .moves {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -146,19 +137,12 @@
   white-space: nowrap;
 }
 
-.effect,
 .proof,
 .quoteText,
 .quoteBy,
 .placeholder {
   user-select: text;
   -webkit-user-select: text;
-}
-
-.effect {
-  font-size: var(--text-sm);
-  font-weight: 700;
-  line-height: 1.45;
 }
 
 .proof {

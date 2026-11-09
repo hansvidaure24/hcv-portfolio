@@ -120,6 +120,12 @@
   flex-direction: column;
   gap: 0.7rem;
   min-width: 0;
+
+  // Only the selected skill shows (display: flex above would otherwise beat the
+  // hidden attribute).
+  &[hidden] {
+    display: none;
+  }
 }
 
 .entryHead {
@@ -154,16 +160,6 @@
   }
 }
 
-.label {
-  @include display-text(var(--text-xs));
-  color: var(--ink-muted);
-}
-
-.type {
-  font-size: var(--text-sm);
-  font-weight: 700;
-}
-
 .evidence {
   @include arrow-list;
   font-size: var(--text-sm);
@@ -182,30 +178,6 @@
     &:focus-visible {
       background: rgb(var(--ink-rgb) / 0.12);
     }
-  }
-}
-
-.small {
-  font-size: var(--text-sm);
-  line-height: 1.5;
-  color: var(--ink-soft);
-}
-
-.relatedButton {
-  padding: 0;
-  font: inherit;
-  font-weight: 700;
-  color: var(--ink);
-  background: none;
-  border: none;
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 3px;
-  cursor: pointer;
-
-  &:hover,
-  &:focus-visible {
-    background: rgb(var(--ink-rgb) / 0.12);
   }
 }
 

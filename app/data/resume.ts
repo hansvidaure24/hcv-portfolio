@@ -30,7 +30,7 @@ export const RESUME = {
     { label: "LinkedIn", href: "https://www.linkedin.com/in/hans-chandler-vidaure/" },
   ] satisfies ResumeLink[],
   summary:
-    "Full-stack engineer with 3 years at Fiserv building online banking features for retail and business customers in C#, ASP.NET, React and SQL. Independently ships tested web apps and developer tools in TypeScript, JavaScript and Unity.",
+    "Full-stack engineer with 3 years at Fiserv. Independently ships tested web apps and developer tools in TypeScript, JavaScript and Unity.",
   experience: [
     {
       name: "Fiserv",
@@ -69,7 +69,7 @@ export const RESUME = {
       ],
       points: [
         "Chose PaddleOCR over Tesseract.js after it read every price on 16/16 test receipts vs 4/16; runs offline in a Web Worker",
-        "Reached 99 Lighthouse mobile performance with ~25 KB of startup JavaScript; 245 Vitest and Playwright tests run on every push",
+        "Reached 99 Lighthouse mobile performance with ~25 KB of startup JavaScript; ~207 Vitest and Playwright tests run on every push",
       ],
     },
     {
@@ -109,7 +109,7 @@ export const RESUME = {
         { label: "Live", href: "https://rjn-portfolio.vercel.app" },
         { label: "Code", href: "https://github.com/hansvidaure24/rjn-portfolio" },
       ],
-      points: ["Designed and built a video-heavy portfolio and booking site with case studies, YouTube/Instagram embeds and a contact form"],
+      points: ["Designed and built the studio's portfolio and booking site, with recompressed video and embeds that load only when needed"],
     },
   ] satisfies ResumeEntry[],
   education: [

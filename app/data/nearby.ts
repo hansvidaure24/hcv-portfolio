@@ -48,5 +48,7 @@ export const NEARBY: NearbySkill[] = [
   { id: "blazor", name: "Blazor", aliases: ["Razor"], closest: ["aspnet", "react"] },
   { id: "auth", name: "Authentication", aliases: ["OAuth", "OAuth 2.0", "OpenID Connect", "OIDC", "SSO", "JWT"], closest: ["appsec", "rest"] },
   { id: "unreal", name: "Unreal Engine", aliases: ["Unreal", "Godot"], closest: ["unity", "gameai"] },
+  { id: "sast", name: "Vulnerability scanning", aliases: ["SAST", "CVE", "vulnerability remediation"], closest: ["appsec"] },
+  { id: "threads", name: "Multithreading", aliases: ["thread safety", "parallel processing"], closest: ["concurrency"] },
   { id: "observability", name: "Observability", aliases: ["monitoring", "logging", "Datadog", "Splunk", "Grafana", "OpenTelemetry"], closest: ["incidents"] },
 ];

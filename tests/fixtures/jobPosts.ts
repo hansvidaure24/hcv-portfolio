@@ -36,7 +36,7 @@ Preferred qualifications:
 
 Benefits
 Health insurance, 401(k) match, and a hybrid schedule.`,
-    required: ["csharp", "aspnet", "sql", "rest", "appsec"],
+    required: ["csharp", "aspnet", "sql", "rest", "appsec", "sast"],
     nice: ["azure", "ef"],
     years: 3,
   },
@@ -128,7 +128,7 @@ Responsibilities
 Requirements
 - Python for security tooling
 - Understanding of OAuth and SSO`,
-    required: ["appsec", "python", "auth"],
+    required: ["appsec", "sast", "python", "auth"],
   },
   {
     name: "DevOps",
