@@ -222,7 +222,7 @@ export const DEX: DexEntry[] = [
     aliases: ["TS"],
     focus: ["fullstack"],
     evidence: [
-      { ...P.sliceofpie, text: "A TypeScript PWA with 245 tests on every push" },
+      { ...P.sliceofpie, text: "A TypeScript PWA with ~207 tests on every push" },
       { ...P.rjn, text: "TypeScript on a live Next.js client site" },
       { ...SITE, text: "Next.js and TypeScript, Lighthouse 100" },
     ],
@@ -327,7 +327,7 @@ export const DEX: DexEntry[] = [
     aliases: ["Vitest", "unit tests", "automated testing", "Unity Test Framework", "EditMode tests", "NUnit", "test automation", "automated tests"],
     focus: ["fullstack", "dotnet"],
     evidence: [
-      { ...P.sliceofpie, text: "245 Vitest and Playwright tests on every push" },
+      { ...P.sliceofpie, text: "~207 Vitest and Playwright tests on every push" },
       { ...P.bte, text: "54 EditMode tests, and 22 shared scenarios run through both the C# and JavaScript runtimes" },
       { ...P.pocketQuest, text: "Combat and data tests on Node's built-in test runner" },
     ],
