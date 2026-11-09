@@ -83,7 +83,7 @@ const PROJECTS: Project[] = [
     role: "Solo: design, build and test",
     stack: ["JavaScript + JSDoc", "Canvas 2D", "Tauri (Rust)", "Unity / C#", "GitHub Actions"],
     metrics: [
-      "14 enemy trees run through both runtimes, every command compared over 9,000 ticks",
+      "13 of 14 enemy trees run through both runtimes, every command compared over 9,000 ticks",
       "Saved edits reach a running game within a second",
       "2.5 MB desktop installer, same code in the browser",
     ],
@@ -99,7 +99,7 @@ const PROJECTS: Project[] = [
       { label: "Code", href: "https://github.com/hansvidaure24/Behavior-Tree-Editor" },
     ],
     focus: { games: 3, dotnet: 2, fullstack: 1 },
-    stats: [{ label: "Enemy trees matching the game runtime", value: 14, max: 14 }],
+    stats: [{ label: "Enemy trees matching the game runtime", value: 13, max: 14 }],
     published: true,
   },
   {
