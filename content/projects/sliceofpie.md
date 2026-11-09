@@ -18,11 +18,9 @@ Every bill-splitting app I tried wanted everyone to sign up, needed a connection
 **PaddleOCR instead of Tesseract.** Tesseract.js got every price right on 4 of my 16 test receipts. PaddleOCR on ONNX Runtime, in a Web Worker, got 16 of 16. The cost was size, so the scanner asks before it downloads and is cached for offline use. Tesseract stays as a fallback for browsers that can't run it.
 
 ## What was hard
-**Reading receipts on the phone.** After choosing PaddleOCR I had to make it fast enough on a phone and pair prices back up with items after straightening tilted photos.
-
 **Money that always adds up.** Shares are worked out in whole cents and whoever paid takes the leftover cent, so $100 three ways is $33.33, $33.33 and $33.34. Everything rounds through one function, so 178.365 can't round two different ways.
 
-**A bug only a real iPhone showed.** Installed on the Home Screen, the app opened with its tab bar floating above the bottom of the screen. It never happened in a browser or a test. I added a size readout to Settings and went through a screen recording frame by frame to find out why: iOS opens Home Screen apps with a window 62 points short and no safe areas, then silently corrects itself a few seconds later. The fix — a solid status bar so there's nothing for iOS to resize — shipped and is confirmed working on device.
+**A bug only a real iPhone showed.** Installed on the Home Screen, the tab bar opened 60 points too high, which no browser or test could reproduce. The fix is confirmed working on a device; [the field note](/notes/ios-pwa-launch-bug) covers how I found it.
 
 ## Outcome
 I use SliceOfPie regularly when eating out with friends. It handles the math I used to do on a napkin, and nobody needs to download anything or make an account — I just scan the receipt and split.

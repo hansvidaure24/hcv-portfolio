@@ -136,7 +136,7 @@ const PROJECTS: Project[] = [
     tagline: "A video-heavy portfolio and booking site for a photography and videography studio.",
     role: "Solo: design and build for the studio",
     stack: ["Next.js 16", "React 19", "TypeScript", "SCSS Modules", "EmailJS"],
-    metrics: ["Live client site", "Case studies with YouTube and Instagram embeds"],
+    metrics: ["Case studies with YouTube and Instagram embeds"],
     cover: {
       src: "/projects/rjn-visuals/cover.jpg",
       alt: "RJN Visuals home page: a camera operator filming an interview in a classroom",

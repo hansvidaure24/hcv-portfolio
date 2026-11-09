@@ -27,7 +27,7 @@ const NOTES: Note[] = [
     slug: "how-this-site-is-built",
     title: "How this site is built",
     summary:
-      "The stack, the design system and what I measured: mobile Lighthouse 100, accessibility and security checks, 81 tests, and the trade-offs behind them.",
+      "The stack, the design system and what I measured: mobile Lighthouse 100, accessibility and security checks, 85 tests, and the trade-offs behind them.",
     date: "2026-11-08",
     published: true,
   },

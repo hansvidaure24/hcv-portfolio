@@ -12,15 +12,15 @@ import styles from "./BioDashboard.module.scss";
 // The skills panel's title bar counts (app/data/dex.ts).
 const CORE_COUNT = CORE_DEX_IDS.length;
 
-const LOOKING_FOR = "Looking for a team where I own features end to end, from API to UI, and grow toward a senior role.";
+const LOOKING_FOR = "Looking for a team where I own features from API to UI.";
 
 // Teammate quotes stay hidden in production until there is at least one.
 const SHOW_QUOTES_PLACEHOLDER = process.env.NODE_ENV === "development";
 
 /**
  * About: why hire him (moves) first, then who he is (trainer card, skills) and
- * his education and the role he wants next. What he has shipped is in the
- * Experience section above, so nothing is said twice.
+ * his education. What he has shipped is in the Experience section above, so
+ * nothing is said twice.
  */
 export default function BioDashboard({ trainer }: { trainer: TrainerData | null }) {
   const showQuotes = TESTIMONIALS.length > 0 || SHOW_QUOTES_PLACEHOLDER;
@@ -38,7 +38,6 @@ export default function BioDashboard({ trainer }: { trainer: TrainerData | null 
                   <span className={styles.moveName}>{move.name}</span>
                   <span className={styles.type}>{move.type}</span>
                 </div>
-                <p className={styles.effect}>{move.effect}</p>
                 <p className={styles.proof}>
                   <span className={styles.proofLabel}>PROOF</span> {move.proof}
                 </p>
@@ -57,9 +56,6 @@ export default function BioDashboard({ trainer }: { trainer: TrainerData | null 
         </PixelPanel>
 
         <PixelPanel title="Skills, with proof" titleAside={`${CORE_COUNT} CORE · ${DEX.length} IN ALL`} bodyClassName={styles.panelBody}>
-          <div className={styles.clip}>
-            <LazyVideo src="/videos/bio-thoughts.mp4" poster="/videos/bio-thoughts.jpg" />
-          </div>
           <SkillDex />
         </PixelPanel>
 

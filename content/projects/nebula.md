@@ -1,4 +1,4 @@
-Wakebound (working title Nebula) is a dark-fantasy, souls-like action RPG with drop-in online co-op, built solo in Unity 6 and C#. You explore, fight, die at a checkpoint, spend what you earned on stats, and push toward boss fights, with a friend joining your world as host or client.
+Wakebound is a dark-fantasy, souls-like action RPG with drop-in online co-op, built solo in Unity 6 and C#. You explore, fight, die at a checkpoint, spend what you earned on stats, and push toward boss fights, with a friend joining your world as host or client.
 
 ## By the numbers
 - 329 first-party C# scripts, about 58,000 lines

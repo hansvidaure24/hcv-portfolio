@@ -66,4 +66,3 @@ On the iPhone, the installed app now opens with the tab bar at the bottom from t
 - **Build the diagnostic into the app.** A hidden readout of sizes and the build ID cost about 50 lines and turned "it still looks wrong" into numbers. It's staying.
 - **Treat a screen recording as data.** Pulling frames and measuring pixels showed what moved, by how much, and when.
 - **Tests can't see platform bugs, but they still earn their keep.** No test could reproduce this. A test did catch my workaround leaving the page 2 pixels taller.
-- **Delete workarounds that don't work.** They're just noise that suggests a problem was handled.

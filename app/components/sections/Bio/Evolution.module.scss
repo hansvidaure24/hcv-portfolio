@@ -1,17 +1,3 @@
-@use '../../../scss/mixins' as *;
-
-.cards {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1rem;
-}
-
-@media (min-width: $bp-tablet) {
-  .cards {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
 .card {
   display: flex;
   flex-direction: column;
@@ -21,13 +7,6 @@
   background: var(--paper);
   border: var(--border-thin) solid var(--ink);
   box-shadow: var(--shadow-xs);
-}
-
-.label {
-  font-family: var(--font-display);
-  font-size: var(--text-xs);
-  letter-spacing: 0.06em;
-  color: var(--ink-muted);
 }
 
 .name {
@@ -52,24 +31,4 @@
   color: var(--ink-soft);
   user-select: text;
   -webkit-user-select: text;
-}
-
-.next {
-  color: var(--cream);
-  background: var(--ink);
-
-  .label {
-    color: var(--gold);
-  }
-
-  .text {
-    color: rgb(var(--cream-rgb) / 0.85);
-  }
-}
-
-.cta {
-  @include pixel-button(var(--gold), var(--ink), var(--text-sm), 3px);
-  align-self: flex-start;
-  margin-top: auto;
-  padding: 0.3rem 0.7rem;
 }

@@ -34,9 +34,6 @@ export default function Experience() {
                 </li>
               ))}
             </ul>
-            <p className={styles.about}>
-              Online banking features for retail and business customers, in C#, ASP.NET, React and SQL.
-            </p>
             <Link href="/resume" className={styles.resumeLink}>
               Full resume <span aria-hidden="true">▶</span>
             </Link>

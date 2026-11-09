@@ -9,12 +9,12 @@ import { useDialogue } from "../../providers/DialogueProvider";
 import { useMotionSettings } from "../../providers/MotionPreferenceProvider";
 import styles from "./Hero.module.scss";
 
-// General responsibilities only: specifics about Fiserv's systems, performance
-// or security need its review before they can be public.
+// Public work a visitor can check. Fiserv is covered by the summary above this
+// list and by the Experience section below it.
 const PROOF_POINTS = [
-  "Full-stack features for retail and business banking",
-  "From peer review and testing through production release",
-  "Production support and team runbooks",
+  "SliceOfPie: offline receipt scanner, ~207 tests on every push",
+  "Behavior Tree Editor: visual game-AI editor running in a Unity game",
+  "Pocket Quest: phone-controlled co-op RPG, playable now",
 ];
 
 const TILE_COLS = 10;

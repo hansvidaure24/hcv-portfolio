@@ -26,25 +26,12 @@ export const Socials = {
   ],
 }
 
-type Skill = {
-  name: string;
-  icon: string;
-};
-
 const TYPING_MESSAGE = "Hiring for a full-stack role? Let's talk.";
 // 41 characters in about 1.3s; a click finishes the line at once.
 const TYPING_INTERVAL_MS = 32;
 
-const SKILLS: Skill[] = [
-  { name: 'Full-Stack Development', icon: '/icons/icon-fullstack.svg' },
-  { name: '.NET APIs', icon: '/icons/icon-api.svg' },
-  { name: 'React UI', icon: '/icons/icon-ui.svg' },
-  { name: 'Application Security', icon: '/icons/icon-appsecurity.svg' },
-];
-
 export default function Contact() {
   const { openDialog } = useContactDialog();
-  const currentYear = new Date().getFullYear();
   const scene = useScene();
   const [typingActive, setTypingActive] = useState(false);
   const [typedLength, setTypedLength] = useState(0);
@@ -245,7 +232,6 @@ export default function Contact() {
 
         <PixelPanel
           title="Contact card"
-          titleAside={`ID No. ${currentYear}`}
           className={styles.trainerCard}
           bodyClassName={styles.cardBody}
         >
@@ -281,20 +267,6 @@ export default function Contact() {
                   source on GitHub
                 </a>
               </span>
-            </div>
-
-            <div className={styles.badgeSection}>
-              <span className={styles.badgesLabel}>SKILLSET</span>
-              <ul className={styles.badgeRow}>
-                {SKILLS.map((skill) => (
-                  <li key={skill.name} className={styles.skillBadge}>
-                    <span className={styles.skillIcon} aria-hidden="true">
-                      <img src={skill.icon} alt="" />
-                    </span>
-                    {skill.name}
-                  </li>
-                ))}
-              </ul>
             </div>
 
             <div className={styles.actions}>
