@@ -3,7 +3,7 @@ import Link from "next/link";
 import TopBar from "../components/navigation/TopBar";
 import PixelPanel from "../components/ui/PixelPanel";
 import { RESUME, type ResumeEntry } from "../data/resume";
-import { RESUME_URL } from "../lib/site";
+import { CONTACT_EMAIL, RESUME_URL } from "../lib/site";
 import styles from "./page.module.scss";
 
 export const metadata: Metadata = {
@@ -131,6 +131,17 @@ export default function ResumePage() {
             ))}
           </dl>
         </section>
+        <footer className={styles.cta}>
+          <p className={styles.ctaTitle}>Want to work together?</p>
+          <div className={styles.ctaLinks}>
+            <Link href="/#contact" className={styles.ctaButton}>
+              Contact
+            </Link>
+            <a href={`mailto:${CONTACT_EMAIL}`} className={styles.ctaButton}>
+              {CONTACT_EMAIL}
+            </a>
+          </div>
+        </footer>
       </PixelPanel>
     </main>
     </>

@@ -4,6 +4,7 @@ import TopBar from "../components/navigation/TopBar";
 import PixelPanel from "../components/ui/PixelPanel";
 import { formatNoteDate, getNotes } from "../data/notes";
 import { getProject } from "../data/projects";
+import { CONTACT_EMAIL } from "../lib/site";
 import styles from "./notes.module.scss";
 
 const DESCRIPTION = "Short write-ups from building things: what broke, what I measured, and what I'd do differently.";
@@ -57,6 +58,18 @@ export default function NotesPage() {
             );
           })}
         </ol>
+
+        <footer className={styles.cta}>
+          <p className={styles.ctaTitle}>Hiring for a full-stack role?</p>
+          <div className={styles.ctaLinks}>
+            <Link href="/resume" className={styles.ctaButton}>
+              Resume
+            </Link>
+            <a href={`mailto:${CONTACT_EMAIL}`} className={styles.ctaButton}>
+              {CONTACT_EMAIL}
+            </a>
+          </div>
+        </footer>
       </div>
     </main>
     </>
