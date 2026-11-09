@@ -83,7 +83,7 @@ export const RESUME = {
       ],
       points: [
         "Built a canvas node-graph editor with a replay debugger and sub-second hot reload into Unity, shipped as a 2.5 MB desktop app",
-        "Drives my Unity game’s enemy AI; a test runs 14 trees through both runtimes for 9,000 ticks each and diffs every command",
+        "Drives my Unity game’s enemy AI; a test runs 13 of 14 trees through both runtimes for 9,000 ticks each and diffs every command",
       ],
     },
     {

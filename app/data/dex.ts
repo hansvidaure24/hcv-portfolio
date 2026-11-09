@@ -92,7 +92,7 @@ export const DEX: DexEntry[] = [
     focus: ["dotnet", "games"],
     evidence: [
       { source: FISERV, text: "Online banking features and REST APIs in C#", href: WORK },
-      { ...P.bte, text: "The Unity runtime in C#, with 54 EditMode tests" },
+      { ...P.bte, text: "The Unity runtime in C#, with 31 EditMode tests" },
       { ...P.wakebound, text: "About 58,000 lines of C# across 329 scripts" },
     ],
     related: ["dotnet", "aspnet", "unity"],
@@ -328,7 +328,7 @@ export const DEX: DexEntry[] = [
     focus: ["fullstack", "dotnet"],
     evidence: [
       { ...P.sliceofpie, text: "~207 Vitest and Playwright tests on every push" },
-      { ...P.bte, text: "54 EditMode tests, and 22 shared scenarios run through both the C# and JavaScript runtimes" },
+      { ...P.bte, text: "31 EditMode tests, and shared scenarios run through both the C# and JavaScript runtimes" },
       { ...P.pocketQuest, text: "Combat and data tests on Node's built-in test runner" },
     ],
     related: ["playwright", "ci"],
@@ -463,7 +463,7 @@ export const DEX: DexEntry[] = [
     aliases: ["behavior trees", "behaviour trees", "state machines", "finite state machines", "FSM"],
     focus: ["games"],
     evidence: [
-      { ...P.bte, text: "A visual editor, replay debugger and runtime for game AI; 14 enemy trees run through both runtimes, every command compared" },
+      { ...P.bte, text: "A visual editor, replay debugger and runtime for game AI; 13 of 14 enemy trees run through both runtimes, every command compared" },
       { ...P.wakebound, text: "17 data-driven AI states, built as ScriptableObject assets" },
     ],
     related: ["unity", "canvas"],
