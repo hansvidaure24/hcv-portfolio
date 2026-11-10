@@ -11,7 +11,7 @@ mixins, motion rules) and the plan behind it are in
 
 ## Stack
 
-- [Next.js 15](https://nextjs.org) (App Router) + [React 19](https://react.dev) + TypeScript
+- [Next.js 16](https://nextjs.org) (App Router) + [React 19](https://react.dev) + TypeScript
 - [Sass](https://sass-lang.com) (CSS Modules) for component styles, [Tailwind](https://tailwindcss.com) for utilities
 - [Framer Motion](https://www.framer.com/motion/) for scene/menu animation
 - [Resend](https://resend.com) for the contact form's email delivery

@@ -2,7 +2,7 @@ What this site runs on, what I measured, and the trade-offs I made. The code is 
 
 ## The stack
 
-- Next.js 15 (App Router) and React 19, in TypeScript
+- Next.js 16 (App Router) and React 19, in TypeScript
 - Sass modules for the components, all reading one set of design tokens, plus a few Tailwind utilities
 - Framer Motion for scene changes, Resend for the contact form, Vercel for hosting
 - No paid services: everything runs on free tiers
@@ -13,7 +13,7 @@ Colors, type sizes, borders, shadows and motion durations are tokens in one styl
 
 ## Performance, measured
 
-Mobile Lighthouse on the live home page, three runs on Nov 8, 2026: **100 for performance every time**, 26 to 52 ms of blocking time, about 1.05 seconds to the largest paint and no layout shift. Accessibility, best practices and SEO score 100 as well.
+Mobile Lighthouse on the live home page, five runs on Nov 10, 2026: **100 for performance every time**, 37 to 69 ms of blocking time, about 1 second to the largest paint and no layout shift. Accessibility, best practices and SEO score 100 as well.
 
 What it took:
 
