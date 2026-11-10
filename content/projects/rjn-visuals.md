@@ -12,7 +12,7 @@ The owner sent the content as a page-by-page brief. For each body of work (Scree
 - A contact form that emails the studio directly, with no backend to run
 
 ## Key decisions
-**The wedding films play from the site, not from Drive.** They arrived as Google Drive files. I re-encoded each one for the web and served it from the site itself: a 372 MB 4K film came down to 17 MB at 1080p. A film fetches only its details until someone presses play, and its preview starts a second in, so it doesn't open on a black frame.
+**The wedding films play from the site, not from Drive.** They arrived as Google Drive files. I re-encoded each one for the web and served it from the site itself. A film fetches only its details until someone presses play, and its preview starts a second in, so it doesn't open on a black frame.
 
 **Embeds that load when needed.** YouTube films use YouTube's privacy-enhanced player, load only as they near the screen, and run sandboxed. Instagram's embed script loads once, after the rest of the page, and fills in every reel.
 

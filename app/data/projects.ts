@@ -137,7 +137,7 @@ const PROJECTS: Project[] = [
     stack: ["Next.js 16", "React 19", "TypeScript", "SCSS Modules", "EmailJS"],
     metrics: [
       "Built from the studio's page-by-page brief, then a round of revisions",
-      "A 372 MB 4K film re-encoded to 17 MB; embeds load only when needed",
+      "Wedding films re-encoded to 1080p and served by the site; embeds load as they near the screen",
     ],
     cover: {
       src: "/projects/rjn-visuals/cover.jpg",
