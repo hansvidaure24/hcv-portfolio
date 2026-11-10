@@ -126,6 +126,10 @@ export default function ProjectMedia({ title, cover, video, sizes, transitionNam
         sizes={sizes}
         className={styles.mediaInner}
         priority={priority}
+        // `priority` alone only preloads it; this also puts it ahead of the
+        // scripts, which made it the case-study page's slowest paint (3s on
+        // Lighthouse's mobile run).
+        fetchPriority={priority ? "high" : undefined}
         onLoad={() => setCoverLoaded(true)}
       />
 

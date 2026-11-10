@@ -1,0 +1,17 @@
+// A still pixel-art backdrop (PixelBackdrop.tsx). The canvas holds the art
+// at its real size; CSS scales it up without smoothing.
+.backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+  // Fades in over the section's CSS background once painted.
+  opacity: 0;
+  transition: opacity var(--dur-base) steps(3, end);
+
+  &[data-ready] {
+    opacity: 1;
+  }
+}

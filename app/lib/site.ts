@@ -7,3 +7,6 @@ export const SITE_DESCRIPTION =
 
 export const CONTACT_EMAIL = "contact@hansvidaure.dev";
 export const RESUME_URL = "/resume/hcv-resume.pdf";
+
+/** What the site's link-preview card says, for its alt text. */
+export const SITE_CARD_ALT = "Hans Chandler Vidaure — Full-Stack Software Engineer";

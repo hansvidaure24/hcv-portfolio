@@ -1,7 +1,7 @@
 /**
  * The Skill Dex: every skill on the site, described once, with its proof.
  *
- * It feeds the SKILL DEX panel in About, the links on project stack chips and
+ * It feeds the SKILL DEX panel under Work, the links on project stack chips and
  * case-study stack lines, and the "Choose your focus" highlights (focus.ts).
  * Type Matchup (Phase 10) will match job posts against `aliases`.
  *
@@ -37,7 +37,8 @@ export type DexEntry = {
   aliases: string[];
   /** Which "Choose your focus" picks highlight this skill's chips. */
   focus: Exclude<FocusId, "all">[];
-  evidence: DexEvidence[];};
+  evidence: DexEvidence[];
+};
 
 const WORK = "/resume#resume-experience";
 const FISERV = "Fiserv";
@@ -48,13 +49,14 @@ const P = {
   bte: { source: "Behavior Tree Editor", href: "/projects/behavior-tree-editor" },
   pocketQuest: { source: "Pocket Quest", href: "/projects/pocket-quest" },
   rjn: { source: "RJN Visuals", href: "/projects/rjn-visuals" },
-  wakebound: { source: "Wakebound", href: "/projects/nebula" },
+  wakebound: { source: "Wakebound", href: "/projects/wakebound" },
 };
 
 /**
- * What a full-stack C# / .NET hiring manager looks for first: shown by default
- * in About's skills panel, with the rest one click away ("Show all"). Every
- * entry stays in DEX, so Type Matchup, chip links and llms.txt keep them all.
+ * What a full-stack C# / .NET hiring manager looks for first, plus Unity and
+ * game AI for game studios: shown by default in the skills panel under Work,
+ * with the rest one click away ("Show all"). Every entry stays in DEX, so
+ * Type Matchup, chip links and llms.txt keep them all.
  */
 export const CORE_DEX_IDS = [
   "csharp",
@@ -69,6 +71,8 @@ export const CORE_DEX_IDS = [
   "playwright",
   "unittest",
   "ci",
+  "unity",
+  "gameai",
 ];
 
 /** How the site says each status (the data keeps "caught" / "seen"). */
@@ -91,7 +95,8 @@ export const DEX: DexEntry[] = [
       { source: FISERV, text: "Online banking features and REST APIs in C#", href: WORK },
       { ...P.bte, text: "The Unity runtime in C#, with 31 EditMode tests" },
       { ...P.wakebound, text: "About 58,000 lines of C# across 329 scripts" },
-    ],  },
+    ],
+  },
   {
     id: "dotnet",
     name: ".NET",
@@ -101,7 +106,8 @@ export const DEX: DexEntry[] = [
     focus: ["dotnet"],
     evidence: [
       { source: FISERV, text: "Online banking features in C# and .NET", href: WORK },
-    ],  },
+    ],
+  },
   {
     id: "aspnet",
     name: "ASP.NET",
@@ -111,7 +117,8 @@ export const DEX: DexEntry[] = [
     focus: ["dotnet", "fullstack"],
     evidence: [
       { source: FISERV, text: "Online banking features for retail and business customers in ASP.NET", href: WORK },
-    ],  },
+    ],
+  },
   {
     id: "sql",
     name: "SQL",
@@ -122,7 +129,8 @@ export const DEX: DexEntry[] = [
     evidence: [
       { source: FISERV, text: "SQL for online banking features", href: WORK },
       { source: TRAINEE, text: "MySQL behind a Spring Boot REST API in the capstone", href: WORK },
-    ],  },
+    ],
+  },
   {
     id: "react",
     name: "React",
@@ -134,7 +142,8 @@ export const DEX: DexEntry[] = [
       { source: FISERV, text: "React UI for online banking features", href: WORK },
       { ...P.rjn, text: "React 19 on a live client site" },
       { ...SITE, text: "React 19 with Next.js" },
-    ],  },
+    ],
+  },
   {
     id: "rest",
     name: "REST APIs",
@@ -145,7 +154,8 @@ export const DEX: DexEntry[] = [
     evidence: [
       { source: FISERV, text: "REST APIs in C# and ASP.NET", href: WORK },
       { source: TRAINEE, text: "A Spring Boot REST API for the five-month capstone", href: WORK },
-    ],  },
+    ],
+  },
   {
     id: "appsec",
     name: "Application security",
@@ -157,7 +167,8 @@ export const DEX: DexEntry[] = [
     evidence: [
       { ...P.sliceofpie, text: "Ships with a strict Content-Security-Policy and keeps every receipt on the device" },
       { ...SITE, text: "A contact form that verifies bots on the server and only ever emails its owner" },
-    ],  },
+    ],
+  },
   {
     id: "concurrency",
     name: "Concurrency",
@@ -168,7 +179,8 @@ export const DEX: DexEntry[] = [
     evidence: [
       { ...P.pocketQuest, text: "Host-authoritative multiplayer: simultaneous inputs resolve together, and dropped phones keep their slot" },
       { ...P.bte, text: "Hot reload that writes to a temp file and renames it, so a running game never reads half a file" },
-    ],  },
+    ],
+  },
   {
     id: "incidents",
     name: "Incident response",
@@ -179,7 +191,8 @@ export const DEX: DexEntry[] = [
     evidence: [
       { source: FISERV, text: "Production support from triage to resolution", href: WORK },
       { source: FISERV, text: "Runbooks for the team", href: WORK },
-    ],  },
+    ],
+  },
   {
     id: "git",
     name: "Git",
@@ -190,7 +203,8 @@ export const DEX: DexEntry[] = [
     evidence: [
       { source: FISERV, text: "Peer-reviewed feature work on a shared codebase", href: WORK },
       { source: "GitHub", text: "Public repos with CI on every push", href: "https://github.com/hansvidaure24" },
-    ],  },
+    ],
+  },
   {
     id: "typescript",
     name: "TypeScript",
@@ -199,10 +213,11 @@ export const DEX: DexEntry[] = [
     aliases: ["TS"],
     focus: ["fullstack"],
     evidence: [
-      { ...P.sliceofpie, text: "A TypeScript PWA with ~207 tests on every push" },
+      { ...P.sliceofpie, text: "A TypeScript PWA with 200+ tests on every push" },
       { ...P.rjn, text: "TypeScript on a live Next.js client site" },
       { ...SITE, text: "Next.js and TypeScript, Lighthouse 100" },
-    ],  },
+    ],
+  },
   {
     id: "javascript",
     name: "JavaScript",
@@ -213,7 +228,8 @@ export const DEX: DexEntry[] = [
     evidence: [
       { ...P.bte, text: "About 10,000 lines of JavaScript, type-checked by tsc through JSDoc, with no framework" },
       { ...P.pocketQuest, text: "A co-op tactics RPG in plain JavaScript (ES modules)" },
-    ],  },
+    ],
+  },
   {
     id: "nextjs",
     name: "Next.js",
@@ -224,7 +240,8 @@ export const DEX: DexEntry[] = [
     evidence: [
       { ...P.rjn, text: "Next.js 16 App Router on a live client site" },
       { ...SITE, text: "Next.js 15 App Router, with live GitHub data refreshed daily" },
-    ],  },
+    ],
+  },
   {
     id: "css",
     name: "HTML & CSS",
@@ -235,7 +252,8 @@ export const DEX: DexEntry[] = [
     evidence: [
       { ...SITE, text: "One design system of tokens and Sass mixins behind every panel, from 375px phones up" },
       { ...P.rjn, text: "SCSS Modules on a video-heavy client site" },
-    ],  },
+    ],
+  },
   {
     id: "perf",
     name: "Web performance",
@@ -245,8 +263,9 @@ export const DEX: DexEntry[] = [
     focus: ["fullstack"],
     evidence: [
       { ...P.sliceofpie, text: "99 Lighthouse mobile performance with ~25 KB of startup JavaScript" },
-      { ...SITE, text: "100 mobile Lighthouse performance on three runs in a row" },
-    ],  },
+      { ...SITE, text: "100 mobile Lighthouse performance on the home page, three runs in a row" },
+    ],
+  },
   {
     id: "a11y",
     name: "Accessibility",
@@ -257,7 +276,8 @@ export const DEX: DexEntry[] = [
     evidence: [
       { ...P.sliceofpie, text: "100 Lighthouse accessibility; axe finds no issues on any screen, light or dark" },
       { ...SITE, text: "100 Lighthouse accessibility, full keyboard use and a reduced-motion setting" },
-    ],  },
+    ],
+  },
   {
     id: "pwa",
     name: "PWAs & offline",
@@ -268,7 +288,8 @@ export const DEX: DexEntry[] = [
     evidence: [
       { ...P.sliceofpie, text: "Installs like an app and scans receipts offline (Workbox service worker, IndexedDB)" },
       { source: "Field note", text: "Debugging an iPhone PWA bug I couldn't reproduce", href: "/notes/ios-pwa-launch-bug" },
-    ],  },
+    ],
+  },
   {
     id: "playwright",
     name: "Playwright",
@@ -279,7 +300,8 @@ export const DEX: DexEntry[] = [
     evidence: [
       { ...P.sliceofpie, text: "Playwright and axe-core end-to-end tests on every push" },
       { ...P.pocketQuest, text: "Bots play a full campaign in headless Chromium on every push" },
-    ],  },
+    ],
+  },
   {
     id: "unittest",
     name: "Unit testing",
@@ -288,10 +310,11 @@ export const DEX: DexEntry[] = [
     aliases: ["Vitest", "unit tests", "automated testing", "Unity Test Framework", "EditMode tests", "NUnit", "test automation", "automated tests"],
     focus: ["fullstack", "dotnet"],
     evidence: [
-      { ...P.sliceofpie, text: "~207 Vitest and Playwright tests on every push" },
+      { ...P.sliceofpie, text: "200+ Vitest and Playwright tests on every push" },
       { ...P.bte, text: "31 EditMode tests, and shared scenarios run through both the C# and JavaScript runtimes" },
       { ...P.pocketQuest, text: "Combat and data tests on Node's built-in test runner" },
-    ],  },
+    ],
+  },
   {
     id: "ci",
     name: "GitHub Actions",
@@ -303,7 +326,8 @@ export const DEX: DexEntry[] = [
       { ...P.sliceofpie, text: "Tests and Lighthouse CI on every push" },
       { ...P.bte, text: "CI on every push, and the web version deployed to GitHub Pages" },
       { ...P.pocketQuest, text: "The bot self-play campaign runs in CI" },
-    ],  },
+    ],
+  },
   {
     id: "deploy",
     name: "Deployment",
@@ -315,7 +339,8 @@ export const DEX: DexEntry[] = [
       { ...SITE, text: "Deployed on Vercel from a preview build, then main" },
       { source: "SliceOfPie", text: "Live on Vercel", href: "https://slice-of-pie-xi.vercel.app" },
       { source: "Behavior Tree Editor", text: "Live on GitHub Pages", href: "https://hansvidaure24.github.io/Behavior-Tree-Editor/editor/" },
-    ],  },
+    ],
+  },
   {
     id: "cloudflare",
     name: "Cloudflare Workers",
@@ -323,7 +348,8 @@ export const DEX: DexEntry[] = [
     status: "caught",
     aliases: ["Cloudflare", "Durable Objects", "serverless", "edge functions"],
     focus: ["fullstack"],
-    evidence: [{ ...P.pocketQuest, text: "A WebSocket relay on a Cloudflare Worker with Durable Objects, on the free tier" }],  },
+    evidence: [{ ...P.pocketQuest, text: "A WebSocket relay on a Cloudflare Worker with Durable Objects, on the free tier" }],
+  },
   {
     id: "realtime",
     name: "WebRTC & WebSockets",
@@ -334,7 +360,8 @@ export const DEX: DexEntry[] = [
     evidence: [
       { ...P.pocketQuest, text: "Host-authoritative multiplayer over three fallback transports; dropped phones rejoin" },
       { ...P.pocketQuest, text: "Players join by scanning a QR code, with no install or account" },
-    ],  },
+    ],
+  },
   {
     id: "canvas",
     name: "Canvas",
@@ -345,7 +372,8 @@ export const DEX: DexEntry[] = [
     evidence: [
       { ...P.bte, text: "One Canvas 2D node graph that skips anything off screen" },
       { ...P.pocketQuest, text: "Hex-board battles drawn on HTML5 Canvas" },
-    ],  },
+    ],
+  },
   {
     id: "tauri",
     name: "Tauri",
@@ -353,7 +381,8 @@ export const DEX: DexEntry[] = [
     status: "caught",
     aliases: ["Tauri (Rust)", "desktop apps", "WebView2"],
     focus: ["fullstack"],
-    evidence: [{ ...P.bte, text: "A 2.5 MB desktop installer with Tauri v2, from the same code as the web version" }],  },
+    evidence: [{ ...P.bte, text: "A 2.5 MB desktop installer with Tauri v2, from the same code as the web version" }],
+  },
   {
     id: "onnx",
     name: "ONNX Runtime",
@@ -363,7 +392,8 @@ export const DEX: DexEntry[] = [
     focus: ["fullstack"],
     evidence: [
       { ...P.sliceofpie, text: "PaddleOCR on ONNX Runtime Web in a Web Worker: 16 of 16 test receipts, vs 4 of 16 for Tesseract.js" },
-    ],  },
+    ],
+  },
   {
     id: "email",
     name: "Email delivery",
@@ -374,7 +404,8 @@ export const DEX: DexEntry[] = [
     evidence: [
       { ...P.rjn, text: "The client site's contact form, through EmailJS" },
       { ...SITE, text: "Contact form through Resend, with validation and rate limiting" },
-    ],  },
+    ],
+  },
   {
     id: "python",
     name: "Python",
@@ -382,7 +413,8 @@ export const DEX: DexEntry[] = [
     status: "caught",
     aliases: [],
     focus: [],
-    evidence: [{ ...P.bte, text: "A Python validator CLI for tree files, plus a small tested Python server" }],  },
+    evidence: [{ ...P.bte, text: "A Python validator CLI for tree files, plus a small tested Python server" }],
+  },
   {
     id: "unity",
     name: "Unity",
@@ -393,7 +425,8 @@ export const DEX: DexEntry[] = [
     evidence: [
       { ...P.bte, text: "A C# runtime that runs behavior trees in Unity, with sub-second hot reload from the editor" },
       { ...P.wakebound, text: "A souls-like action RPG, built solo in Unity 6" },
-    ],  },
+    ],
+  },
   {
     id: "gameai",
     name: "Game AI",
@@ -404,7 +437,8 @@ export const DEX: DexEntry[] = [
     evidence: [
       { ...P.bte, text: "A visual editor, replay debugger and runtime for game AI; 13 of 14 enemy trees run through both runtimes, every command compared" },
       { ...P.wakebound, text: "17 data-driven AI states, built as ScriptableObject assets" },
-    ],  },
+    ],
+  },
   {
     id: "netcode",
     name: "Netcode for GameObjects",
@@ -417,7 +451,8 @@ export const DEX: DexEntry[] = [
         ...P.wakebound,
         text: "Drop-in host/client co-op: each client owns its character, the host runs every enemy (in development, private repo)",
       },
-    ],  },
+    ],
+  },
   {
     id: "urp",
     name: "URP",
@@ -425,7 +460,8 @@ export const DEX: DexEntry[] = [
     status: "seen",
     aliases: ["Universal Render Pipeline"],
     focus: ["games"],
-    evidence: [{ ...P.wakebound, text: "Rendered with URP (in development, private repo)" }],  },
+    evidence: [{ ...P.wakebound, text: "Rendered with URP (in development, private repo)" }],
+  },
   {
     id: "java",
     name: "Java & Spring Boot",
@@ -433,7 +469,8 @@ export const DEX: DexEntry[] = [
     status: "seen",
     aliases: ["Java", "Spring Boot", "Spring Framework"],
     focus: [],
-    evidence: [{ source: TRAINEE, text: "A full-stack capstone with a Spring Boot REST API, built in five months", href: WORK }],  },
+    evidence: [{ source: TRAINEE, text: "A full-stack capstone with a Spring Boot REST API, built in five months", href: WORK }],
+  },
 ];
 
 const BY_NAME = new Map<string, DexEntry>();
@@ -446,8 +483,5 @@ export function dexEntryFor(name: string): DexEntry | undefined {
   return BY_NAME.get(name.trim().toLowerCase());
 }
 
-/** "No.007" */
-export const dexNumber = (entry: DexEntry) => `No.${String(DEX.indexOf(entry) + 1).padStart(3, "0")}`;
-
-/** The URL fragment that opens an entry in the About section's dex. */
+/** The URL fragment that opens an entry in the dex (under Work). */
 export const dexHash = (entry: DexEntry) => `#dex-${entry.id}`;

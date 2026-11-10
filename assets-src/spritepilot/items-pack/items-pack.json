@@ -1,0 +1,248 @@
+{
+  "name": "SpritePilot RPG Items Pack",
+  "license": "CC0-1.0",
+  "source": "https://spritepilot.com/free-game-assets",
+  "layout": "Each PNG is one row of square frames, left to right. The file name gives the frame size and count: explosion-32px_strip10.png is 10 frames of 32 × 32.",
+  "effects": [
+    {
+      "id": "sword",
+      "name": "Sword",
+      "frames": 8,
+      "fps": 6,
+      "loop": true,
+      "sheets": [
+        {
+          "file": "16px/sword-16px_strip8.png",
+          "frameWidth": 16,
+          "frameHeight": 16
+        },
+        {
+          "file": "32px/sword-32px_strip8.png",
+          "frameWidth": 32,
+          "frameHeight": 32
+        }
+      ],
+      "preview": "previews/sword-preview.gif"
+    },
+    {
+      "id": "axe",
+      "name": "Axe",
+      "frames": 8,
+      "fps": 6,
+      "loop": true,
+      "sheets": [
+        {
+          "file": "16px/axe-16px_strip8.png",
+          "frameWidth": 16,
+          "frameHeight": 16
+        },
+        {
+          "file": "32px/axe-32px_strip8.png",
+          "frameWidth": 32,
+          "frameHeight": 32
+        }
+      ],
+      "preview": "previews/axe-preview.gif"
+    },
+    {
+      "id": "bow",
+      "name": "Bow",
+      "frames": 8,
+      "fps": 6,
+      "loop": true,
+      "sheets": [
+        {
+          "file": "16px/bow-16px_strip8.png",
+          "frameWidth": 16,
+          "frameHeight": 16
+        },
+        {
+          "file": "32px/bow-32px_strip8.png",
+          "frameWidth": 32,
+          "frameHeight": 32
+        }
+      ],
+      "preview": "previews/bow-preview.gif"
+    },
+    {
+      "id": "magic-staff",
+      "name": "Magic staff",
+      "frames": 8,
+      "fps": 6,
+      "loop": true,
+      "sheets": [
+        {
+          "file": "16px/magic-staff-16px_strip8.png",
+          "frameWidth": 16,
+          "frameHeight": 16
+        },
+        {
+          "file": "32px/magic-staff-32px_strip8.png",
+          "frameWidth": 32,
+          "frameHeight": 32
+        }
+      ],
+      "preview": "previews/magic-staff-preview.gif"
+    },
+    {
+      "id": "helmet",
+      "name": "Helmet",
+      "frames": 8,
+      "fps": 6,
+      "loop": true,
+      "sheets": [
+        {
+          "file": "16px/helmet-16px_strip8.png",
+          "frameWidth": 16,
+          "frameHeight": 16
+        },
+        {
+          "file": "32px/helmet-32px_strip8.png",
+          "frameWidth": 32,
+          "frameHeight": 32
+        }
+      ],
+      "preview": "previews/helmet-preview.gif"
+    },
+    {
+      "id": "chest-armor",
+      "name": "Chest armor",
+      "frames": 8,
+      "fps": 6,
+      "loop": true,
+      "sheets": [
+        {
+          "file": "16px/chest-armor-16px_strip8.png",
+          "frameWidth": 16,
+          "frameHeight": 16
+        },
+        {
+          "file": "32px/chest-armor-32px_strip8.png",
+          "frameWidth": 32,
+          "frameHeight": 32
+        }
+      ],
+      "preview": "previews/chest-armor-preview.gif"
+    },
+    {
+      "id": "boots",
+      "name": "Boots",
+      "frames": 8,
+      "fps": 6,
+      "loop": true,
+      "sheets": [
+        {
+          "file": "16px/boots-16px_strip8.png",
+          "frameWidth": 16,
+          "frameHeight": 16
+        },
+        {
+          "file": "32px/boots-32px_strip8.png",
+          "frameWidth": 32,
+          "frameHeight": 32
+        }
+      ],
+      "preview": "previews/boots-preview.gif"
+    },
+    {
+      "id": "ring",
+      "name": "Ring",
+      "frames": 8,
+      "fps": 6,
+      "loop": true,
+      "sheets": [
+        {
+          "file": "16px/ring-16px_strip8.png",
+          "frameWidth": 16,
+          "frameHeight": 16
+        },
+        {
+          "file": "32px/ring-32px_strip8.png",
+          "frameWidth": 32,
+          "frameHeight": 32
+        }
+      ],
+      "preview": "previews/ring-preview.gif"
+    },
+    {
+      "id": "amulet",
+      "name": "Amulet",
+      "frames": 8,
+      "fps": 6,
+      "loop": true,
+      "sheets": [
+        {
+          "file": "16px/amulet-16px_strip8.png",
+          "frameWidth": 16,
+          "frameHeight": 16
+        },
+        {
+          "file": "32px/amulet-32px_strip8.png",
+          "frameWidth": 32,
+          "frameHeight": 32
+        }
+      ],
+      "preview": "previews/amulet-preview.gif"
+    },
+    {
+      "id": "spell-scroll",
+      "name": "Spell scroll",
+      "frames": 8,
+      "fps": 6,
+      "loop": true,
+      "sheets": [
+        {
+          "file": "16px/spell-scroll-16px_strip8.png",
+          "frameWidth": 16,
+          "frameHeight": 16
+        },
+        {
+          "file": "32px/spell-scroll-32px_strip8.png",
+          "frameWidth": 32,
+          "frameHeight": 32
+        }
+      ],
+      "preview": "previews/spell-scroll-preview.gif"
+    },
+    {
+      "id": "spell-book",
+      "name": "Spell book",
+      "frames": 8,
+      "fps": 6,
+      "loop": true,
+      "sheets": [
+        {
+          "file": "16px/spell-book-16px_strip8.png",
+          "frameWidth": 16,
+          "frameHeight": 16
+        },
+        {
+          "file": "32px/spell-book-32px_strip8.png",
+          "frameWidth": 32,
+          "frameHeight": 32
+        }
+      ],
+      "preview": "previews/spell-book-preview.gif"
+    },
+    {
+      "id": "bread",
+      "name": "Bread",
+      "frames": 8,
+      "fps": 6,
+      "loop": true,
+      "sheets": [
+        {
+          "file": "16px/bread-16px_strip8.png",
+          "frameWidth": 16,
+          "frameHeight": 16
+        },
+        {
+          "file": "32px/bread-32px_strip8.png",
+          "frameWidth": 32,
+          "frameHeight": 32
+        }
+      ],
+      "preview": "previews/bread-preview.gif"
+    }
+  ]
+}

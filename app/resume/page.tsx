@@ -4,14 +4,14 @@ import TopBar from "../components/navigation/TopBar";
 import PixelPanel from "../components/ui/PixelPanel";
 import { RESUME, type ResumeEntry } from "../data/resume";
 import { CONTACT_EMAIL, RESUME_URL } from "../lib/site";
+import { pageMetadata } from "../lib/pageMetadata";
 import styles from "./page.module.scss";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Resume — Hans Vidaure",
   description: RESUME.summary,
-  alternates: { canonical: "/resume" },
-  openGraph: { title: "Resume — Hans Vidaure", description: RESUME.summary },
-};
+  path: "/resume",
+});
 
 function Entry({ entry }: { entry: ResumeEntry }) {
   return (

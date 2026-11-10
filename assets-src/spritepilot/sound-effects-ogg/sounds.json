@@ -1,0 +1,787 @@
+{
+  "name": "SpritePilot Sound Effects Pack",
+  "license": "CC0-1.0",
+  "source": "https://spritepilot.com/free-game-assets/sound-effects",
+  "sounds": [
+    {
+      "id": "explosion-big",
+      "name": "Big explosion",
+      "group": "explosions",
+      "seconds": 2.98,
+      "loop": false,
+      "files": [
+        "ogg/explosions/explosion-big.ogg"
+      ]
+    },
+    {
+      "id": "explosion-distant",
+      "name": "Distant explosion",
+      "group": "explosions",
+      "seconds": 2.75,
+      "loop": false,
+      "files": [
+        "ogg/explosions/explosion-distant.ogg"
+      ]
+    },
+    {
+      "id": "explosion-small",
+      "name": "Small explosion",
+      "group": "explosions",
+      "seconds": 0.8,
+      "loop": false,
+      "files": [
+        "ogg/explosions/explosion-small.ogg"
+      ]
+    },
+    {
+      "id": "debris-crash",
+      "name": "Debris crash",
+      "group": "explosions",
+      "seconds": 1.99,
+      "loop": false,
+      "files": [
+        "ogg/explosions/debris-crash.ogg"
+      ]
+    },
+    {
+      "id": "heavy-thud",
+      "name": "Heavy thud",
+      "group": "explosions",
+      "seconds": 0.6,
+      "loop": false,
+      "files": [
+        "ogg/explosions/heavy-thud.ogg"
+      ]
+    },
+    {
+      "id": "metal-impact",
+      "name": "Metal clang",
+      "group": "explosions",
+      "seconds": 0.47,
+      "loop": false,
+      "files": [
+        "ogg/explosions/metal-impact.ogg"
+      ]
+    },
+    {
+      "id": "crate-break",
+      "name": "Crate break",
+      "group": "explosions",
+      "seconds": 1.5,
+      "loop": false,
+      "files": [
+        "ogg/explosions/crate-break.ogg"
+      ]
+    },
+    {
+      "id": "glass-shatter",
+      "name": "Glass shatter",
+      "group": "explosions",
+      "seconds": 1.24,
+      "loop": false,
+      "files": [
+        "ogg/explosions/glass-shatter.ogg"
+      ]
+    },
+    {
+      "id": "punch",
+      "name": "Punch",
+      "group": "combat",
+      "seconds": 0.24,
+      "loop": false,
+      "files": [
+        "ogg/combat/punch.ogg"
+      ]
+    },
+    {
+      "id": "kick",
+      "name": "Kick",
+      "group": "combat",
+      "seconds": 0.24,
+      "loop": false,
+      "files": [
+        "ogg/combat/kick.ogg"
+      ]
+    },
+    {
+      "id": "sword-swing",
+      "name": "Sword swing",
+      "group": "combat",
+      "seconds": 0.43,
+      "loop": false,
+      "files": [
+        "ogg/combat/sword-swing.ogg"
+      ]
+    },
+    {
+      "id": "sword-clash",
+      "name": "Sword clash",
+      "group": "combat",
+      "seconds": 1.5,
+      "loop": false,
+      "files": [
+        "ogg/combat/sword-clash.ogg"
+      ]
+    },
+    {
+      "id": "bow-shot",
+      "name": "Bow shot",
+      "group": "combat",
+      "seconds": 0.45,
+      "loop": false,
+      "files": [
+        "ogg/combat/bow-shot.ogg"
+      ]
+    },
+    {
+      "id": "arrow-hit",
+      "name": "Arrow hit",
+      "group": "combat",
+      "seconds": 0.15,
+      "loop": false,
+      "files": [
+        "ogg/combat/arrow-hit.ogg"
+      ]
+    },
+    {
+      "id": "shield-block",
+      "name": "Shield block",
+      "group": "combat",
+      "seconds": 0.2,
+      "loop": false,
+      "files": [
+        "ogg/combat/shield-block.ogg"
+      ]
+    },
+    {
+      "id": "body-fall",
+      "name": "Body fall",
+      "group": "combat",
+      "seconds": 0.79,
+      "loop": false,
+      "files": [
+        "ogg/combat/body-fall.ogg"
+      ]
+    },
+    {
+      "id": "laser-shot",
+      "name": "Laser shot",
+      "group": "scifi",
+      "seconds": 0.69,
+      "loop": false,
+      "files": [
+        "ogg/scifi/laser-shot.ogg"
+      ]
+    },
+    {
+      "id": "laser-heavy",
+      "name": "Heavy laser",
+      "group": "scifi",
+      "seconds": 1.5,
+      "loop": false,
+      "files": [
+        "ogg/scifi/laser-heavy.ogg"
+      ]
+    },
+    {
+      "id": "energy-charge",
+      "name": "Energy charge",
+      "group": "scifi",
+      "seconds": 2,
+      "loop": false,
+      "files": [
+        "ogg/scifi/energy-charge.ogg"
+      ]
+    },
+    {
+      "id": "shield-hit",
+      "name": "Shield hit",
+      "group": "scifi",
+      "seconds": 1,
+      "loop": false,
+      "files": [
+        "ogg/scifi/shield-hit.ogg"
+      ]
+    },
+    {
+      "id": "robot-servo",
+      "name": "Robot servo",
+      "group": "scifi",
+      "seconds": 1,
+      "loop": false,
+      "files": [
+        "ogg/scifi/robot-servo.ogg"
+      ]
+    },
+    {
+      "id": "ray-gun",
+      "name": "Ray gun",
+      "group": "scifi",
+      "seconds": 0.86,
+      "loop": false,
+      "files": [
+        "ogg/scifi/ray-gun.ogg"
+      ]
+    },
+    {
+      "id": "reload",
+      "name": "Reload",
+      "group": "scifi",
+      "seconds": 0.25,
+      "loop": false,
+      "files": [
+        "ogg/scifi/reload.ogg"
+      ]
+    },
+    {
+      "id": "force-field",
+      "name": "Force field",
+      "group": "scifi",
+      "seconds": 4.28,
+      "loop": true,
+      "files": [
+        "ogg/scifi/force-field.ogg"
+      ]
+    },
+    {
+      "id": "coin-bell",
+      "name": "Coin bell",
+      "group": "pickups",
+      "seconds": 1,
+      "loop": false,
+      "files": [
+        "ogg/pickups/coin-bell.ogg"
+      ]
+    },
+    {
+      "id": "coin-glockenspiel",
+      "name": "Coin glockenspiel",
+      "group": "pickups",
+      "seconds": 1,
+      "loop": false,
+      "files": [
+        "ogg/pickups/coin-glockenspiel.ogg"
+      ]
+    },
+    {
+      "id": "coin-drop",
+      "name": "Coin drop",
+      "group": "pickups",
+      "seconds": 0.85,
+      "loop": false,
+      "files": [
+        "ogg/pickups/coin-drop.ogg"
+      ]
+    },
+    {
+      "id": "gem",
+      "name": "Gem",
+      "group": "pickups",
+      "seconds": 1,
+      "loop": false,
+      "files": [
+        "ogg/pickups/gem.ogg"
+      ]
+    },
+    {
+      "id": "health",
+      "name": "Health",
+      "group": "pickups",
+      "seconds": 1.46,
+      "loop": false,
+      "files": [
+        "ogg/pickups/health.ogg"
+      ]
+    },
+    {
+      "id": "key",
+      "name": "Key",
+      "group": "pickups",
+      "seconds": 0.95,
+      "loop": false,
+      "files": [
+        "ogg/pickups/key.ogg"
+      ]
+    },
+    {
+      "id": "power-up",
+      "name": "Power up",
+      "group": "pickups",
+      "seconds": 1.5,
+      "loop": false,
+      "files": [
+        "ogg/pickups/power-up.ogg"
+      ]
+    },
+    {
+      "id": "chest-open",
+      "name": "Chest open",
+      "group": "pickups",
+      "seconds": 2,
+      "loop": false,
+      "files": [
+        "ogg/pickups/chest-open.ogg"
+      ]
+    },
+    {
+      "id": "jump",
+      "name": "Jump",
+      "group": "movement",
+      "seconds": 0.8,
+      "loop": false,
+      "files": [
+        "ogg/movement/jump.ogg"
+      ]
+    },
+    {
+      "id": "land",
+      "name": "Land",
+      "group": "movement",
+      "seconds": 0.65,
+      "loop": false,
+      "files": [
+        "ogg/movement/land.ogg"
+      ]
+    },
+    {
+      "id": "steps-grass",
+      "name": "Footsteps on grass",
+      "group": "movement",
+      "seconds": 3,
+      "loop": false,
+      "files": [
+        "ogg/movement/steps-grass.ogg"
+      ]
+    },
+    {
+      "id": "steps-stone",
+      "name": "Footsteps on stone",
+      "group": "movement",
+      "seconds": 2.93,
+      "loop": false,
+      "files": [
+        "ogg/movement/steps-stone.ogg"
+      ]
+    },
+    {
+      "id": "steps-wood",
+      "name": "Footsteps on wood",
+      "group": "movement",
+      "seconds": 2.96,
+      "loop": false,
+      "files": [
+        "ogg/movement/steps-wood.ogg"
+      ]
+    },
+    {
+      "id": "dash",
+      "name": "Dash",
+      "group": "movement",
+      "seconds": 0.9,
+      "loop": false,
+      "files": [
+        "ogg/movement/dash.ogg"
+      ]
+    },
+    {
+      "id": "ladder",
+      "name": "Ladder climb",
+      "group": "movement",
+      "seconds": 2.83,
+      "loop": false,
+      "files": [
+        "ogg/movement/ladder.ogg"
+      ]
+    },
+    {
+      "id": "splash",
+      "name": "Splash",
+      "group": "movement",
+      "seconds": 1.92,
+      "loop": false,
+      "files": [
+        "ogg/movement/splash.ogg"
+      ]
+    },
+    {
+      "id": "click",
+      "name": "Button click",
+      "group": "interface",
+      "seconds": 0.15,
+      "loop": false,
+      "files": [
+        "ogg/interface/click.ogg"
+      ]
+    },
+    {
+      "id": "tap",
+      "name": "Tap",
+      "group": "interface",
+      "seconds": 0.5,
+      "loop": false,
+      "files": [
+        "ogg/interface/tap.ogg"
+      ]
+    },
+    {
+      "id": "toggle",
+      "name": "Toggle",
+      "group": "interface",
+      "seconds": 0.1,
+      "loop": false,
+      "files": [
+        "ogg/interface/toggle.ogg"
+      ]
+    },
+    {
+      "id": "menu-open",
+      "name": "Menu open",
+      "group": "interface",
+      "seconds": 0.46,
+      "loop": false,
+      "files": [
+        "ogg/interface/menu-open.ogg"
+      ]
+    },
+    {
+      "id": "menu-close",
+      "name": "Menu close",
+      "group": "interface",
+      "seconds": 0.47,
+      "loop": false,
+      "files": [
+        "ogg/interface/menu-close.ogg"
+      ]
+    },
+    {
+      "id": "error",
+      "name": "Error",
+      "group": "interface",
+      "seconds": 0.91,
+      "loop": false,
+      "files": [
+        "ogg/interface/error.ogg"
+      ]
+    },
+    {
+      "id": "confirm",
+      "name": "Confirm",
+      "group": "interface",
+      "seconds": 1,
+      "loop": false,
+      "files": [
+        "ogg/interface/confirm.ogg"
+      ]
+    },
+    {
+      "id": "notification",
+      "name": "Notification",
+      "group": "interface",
+      "seconds": 0.96,
+      "loop": false,
+      "files": [
+        "ogg/interface/notification.ogg"
+      ]
+    },
+    {
+      "id": "game-over",
+      "name": "Game over",
+      "group": "moments",
+      "seconds": 1.76,
+      "loop": false,
+      "files": [
+        "ogg/moments/game-over.ogg"
+      ]
+    },
+    {
+      "id": "level-complete",
+      "name": "Level complete",
+      "group": "moments",
+      "seconds": 2.49,
+      "loop": false,
+      "files": [
+        "ogg/moments/level-complete.ogg"
+      ]
+    },
+    {
+      "id": "victory",
+      "name": "Victory",
+      "group": "moments",
+      "seconds": 1.95,
+      "loop": false,
+      "files": [
+        "ogg/moments/victory.ogg"
+      ]
+    },
+    {
+      "id": "countdown",
+      "name": "Countdown",
+      "group": "moments",
+      "seconds": 3.56,
+      "loop": false,
+      "files": [
+        "ogg/moments/countdown.ogg"
+      ]
+    },
+    {
+      "id": "clock-tick",
+      "name": "Clock tick",
+      "group": "moments",
+      "seconds": 3.11,
+      "loop": false,
+      "files": [
+        "ogg/moments/clock-tick.ogg"
+      ]
+    },
+    {
+      "id": "alarm",
+      "name": "Alarm",
+      "group": "moments",
+      "seconds": 2.8,
+      "loop": false,
+      "files": [
+        "ogg/moments/alarm.ogg"
+      ]
+    },
+    {
+      "id": "monster-growl",
+      "name": "Monster growl",
+      "group": "creatures",
+      "seconds": 0.95,
+      "loop": false,
+      "files": [
+        "ogg/creatures/monster-growl.ogg"
+      ]
+    },
+    {
+      "id": "creature-squeak",
+      "name": "Creature squeak",
+      "group": "creatures",
+      "seconds": 0.95,
+      "loop": false,
+      "files": [
+        "ogg/creatures/creature-squeak.ogg"
+      ]
+    },
+    {
+      "id": "dragon-roar",
+      "name": "Dragon roar",
+      "group": "creatures",
+      "seconds": 2.81,
+      "loop": false,
+      "files": [
+        "ogg/creatures/dragon-roar.ogg"
+      ]
+    },
+    {
+      "id": "zombie-groan",
+      "name": "Zombie groan",
+      "group": "creatures",
+      "seconds": 2.4,
+      "loop": false,
+      "files": [
+        "ogg/creatures/zombie-groan.ogg"
+      ]
+    },
+    {
+      "id": "bat-wings",
+      "name": "Bat wings",
+      "group": "creatures",
+      "seconds": 1.97,
+      "loop": false,
+      "files": [
+        "ogg/creatures/bat-wings.ogg"
+      ]
+    },
+    {
+      "id": "insect-buzz",
+      "name": "Insect buzz",
+      "group": "creatures",
+      "seconds": 3,
+      "loop": false,
+      "files": [
+        "ogg/creatures/insect-buzz.ogg"
+      ]
+    },
+    {
+      "id": "wolf-howl",
+      "name": "Wolf howl",
+      "group": "creatures",
+      "seconds": 3.96,
+      "loop": false,
+      "files": [
+        "ogg/creatures/wolf-howl.ogg"
+      ]
+    },
+    {
+      "id": "slime",
+      "name": "Slime",
+      "group": "creatures",
+      "seconds": 1.43,
+      "loop": false,
+      "files": [
+        "ogg/creatures/slime.ogg"
+      ]
+    },
+    {
+      "id": "spell-cast",
+      "name": "Spell cast",
+      "group": "magic",
+      "seconds": 1.32,
+      "loop": false,
+      "files": [
+        "ogg/magic/spell-cast.ogg"
+      ]
+    },
+    {
+      "id": "fireball",
+      "name": "Fireball",
+      "group": "magic",
+      "seconds": 1.47,
+      "loop": false,
+      "files": [
+        "ogg/magic/fireball.ogg"
+      ]
+    },
+    {
+      "id": "ice",
+      "name": "Ice",
+      "group": "magic",
+      "seconds": 1.48,
+      "loop": false,
+      "files": [
+        "ogg/magic/ice.ogg"
+      ]
+    },
+    {
+      "id": "lightning",
+      "name": "Lightning",
+      "group": "magic",
+      "seconds": 2.5,
+      "loop": false,
+      "files": [
+        "ogg/magic/lightning.ogg"
+      ]
+    },
+    {
+      "id": "heal",
+      "name": "Heal",
+      "group": "magic",
+      "seconds": 1.9,
+      "loop": false,
+      "files": [
+        "ogg/magic/heal.ogg"
+      ]
+    },
+    {
+      "id": "teleport",
+      "name": "Teleport",
+      "group": "magic",
+      "seconds": 1.37,
+      "loop": false,
+      "files": [
+        "ogg/magic/teleport.ogg"
+      ]
+    },
+    {
+      "id": "potion",
+      "name": "Potion",
+      "group": "magic",
+      "seconds": 1.94,
+      "loop": false,
+      "files": [
+        "ogg/magic/potion.ogg"
+      ]
+    },
+    {
+      "id": "portal",
+      "name": "Portal",
+      "group": "magic",
+      "seconds": 3.53,
+      "loop": true,
+      "files": [
+        "ogg/magic/portal.ogg"
+      ]
+    },
+    {
+      "id": "rain",
+      "name": "Rain",
+      "group": "ambient",
+      "seconds": 13.2,
+      "loop": true,
+      "files": [
+        "ogg/ambient/rain.ogg"
+      ]
+    },
+    {
+      "id": "wind",
+      "name": "Wind",
+      "group": "ambient",
+      "seconds": 13.2,
+      "loop": true,
+      "files": [
+        "ogg/ambient/wind.ogg"
+      ]
+    },
+    {
+      "id": "campfire",
+      "name": "Campfire",
+      "group": "ambient",
+      "seconds": 13.2,
+      "loop": true,
+      "files": [
+        "ogg/ambient/campfire.ogg"
+      ]
+    },
+    {
+      "id": "forest",
+      "name": "Forest",
+      "group": "ambient",
+      "seconds": 13.2,
+      "loop": true,
+      "files": [
+        "ogg/ambient/forest.ogg"
+      ]
+    },
+    {
+      "id": "cave",
+      "name": "Cave",
+      "group": "ambient",
+      "seconds": 13.2,
+      "loop": true,
+      "files": [
+        "ogg/ambient/cave.ogg"
+      ]
+    },
+    {
+      "id": "ocean",
+      "name": "Ocean",
+      "group": "ambient",
+      "seconds": 13.2,
+      "loop": true,
+      "files": [
+        "ogg/ambient/ocean.ogg"
+      ]
+    },
+    {
+      "id": "river",
+      "name": "River",
+      "group": "ambient",
+      "seconds": 13.2,
+      "loop": true,
+      "files": [
+        "ogg/ambient/river.ogg"
+      ]
+    },
+    {
+      "id": "night",
+      "name": "Night",
+      "group": "ambient",
+      "seconds": 13.2,
+      "loop": true,
+      "files": [
+        "ogg/ambient/night.ogg"
+      ]
+    }
+  ]
+}

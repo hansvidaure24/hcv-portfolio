@@ -7,6 +7,7 @@ import { useMotionSettings } from "../providers/MotionPreferenceProvider";
 import { playSound } from "../../lib/sound";
 import { DUR, steps } from "../../lib/motion";
 import { useOptions } from "../providers/OptionsProvider";
+import PixelIcon from "../ui/PixelIcon";
 import styles from "./Navigation.module.scss";
 
 type MenuItem = {
@@ -20,7 +21,6 @@ type MenuItem = {
 const ITEMS: MenuItem[] = [
   { label: "EXPERIENCE", id: "experience" },
   { label: "WORK", id: "projects" },
-  { label: "ABOUT", id: "about" },
   { label: "CONTACT", id: "contact" },
   { label: "NOTES", href: "/notes" },
   { label: "RESUME", href: "/resume" },
@@ -166,8 +166,11 @@ export default function Navigation() {
         }}
         aria-expanded={menuOpen}
         aria-controls="battle-menu"
+        aria-label="Menu"
       >
-        Menu
+        {/* Three bars instead of the word, so the bar has room for Resume
+            on narrow phones; screen readers still hear "Menu". */}
+        <PixelIcon name="menu" size={20} />
       </button>
 
       <AnimatePresence>

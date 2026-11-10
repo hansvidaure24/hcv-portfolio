@@ -1,0 +1,198 @@
+@use '../../../scss/mixins' as *;
+
+// A blueprint inside the case study: a dashed frame, boxes like the site's
+// panels, and arrows drawn in the same ink. A column on phones; a row once
+// the frame is wide enough (a container query, so it follows the article,
+// not the window).
+.diagram {
+  container-type: inline-size;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgb(var(--ink-rgb) / 0.04);
+  border: 2px dashed rgb(var(--ink-rgb) / 0.35);
+}
+
+.caption {
+  margin-bottom: 0.9rem;
+  @include display-text(var(--text-sm));
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.flow {
+  display: flex;
+  flex-direction: column;
+}
+
+.node {
+  padding: 0.6rem 0.75rem;
+  background: var(--cream);
+  border: 3px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--shadow-color);
+}
+
+.nodeTitle {
+  display: block;
+  @include display-text(var(--text-md));
+  color: var(--ink);
+}
+
+.nodeDetail {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+// Between two boxes: an arrow on, and maybe one back, side by side.
+.link {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 0.45rem 0;
+}
+
+.arrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.line {
+  position: relative;
+  flex-shrink: 0;
+  width: 3px;
+  height: 1.75rem;
+  background: var(--ink);
+
+  // The arrowhead: down for "on", up for "back".
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    width: 12px;
+    height: 8px;
+    background: var(--ink);
+    transform: translateX(-50%);
+  }
+}
+
+.forward .line::after {
+  bottom: -2px;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.back .line::after {
+  top: -2px;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.label {
+  font-size: var(--text-xs);
+  line-height: 1.3;
+  color: var(--ink-muted);
+}
+
+// From the last box back to the first: said in words on phones, drawn as a
+// U under the row where there's room.
+.loop {
+  margin-top: 0.75rem;
+}
+
+.loopLine {
+  display: none;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+// A row once each box gets about 170px (three boxes, two links).
+@container (min-width: 42rem) {
+  .flow {
+    flex-direction: row;
+  }
+
+  .node {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .link {
+    flex: 0 0 6rem;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.9rem;
+    padding: 0 0.5rem;
+  }
+
+  // The label above an "on" arrow, below a "back" one.
+  .arrow {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 0.25rem;
+    text-align: center;
+  }
+
+  .back {
+    flex-direction: column;
+  }
+
+  .line {
+    width: 100%;
+    height: 3px;
+
+    &::after {
+      top: 50%;
+      left: auto;
+      width: 8px;
+      height: 12px;
+      transform: translateY(-50%);
+    }
+  }
+
+  .forward .line::after {
+    right: -2px;
+    bottom: auto;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+
+  .back .line::after {
+    left: -2px;
+    clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  }
+
+  .loop {
+    margin-top: 0.3rem;
+    text-align: center;
+  }
+
+  // Under the row, from the middle of the last box to the middle of the
+  // first, ending in an arrowhead pointing up into it.
+  .loopLine {
+    position: relative;
+    display: block;
+    height: 1.1rem;
+    margin: 0 12% 0.4rem;
+    border: 3px solid var(--ink);
+    border-top: 0;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: -7.5px;
+      width: 12px;
+      height: 8px;
+      background: var(--ink);
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    }
+  }
+}

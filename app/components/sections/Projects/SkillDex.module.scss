@@ -1,0 +1,150 @@
+@use '../../../scss/mixins' as *;
+
+// The container the rows below query (an element can't query itself).
+.dex {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+// One skill per line: the name, then its proof, all visible at once.
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+// Narrow (phones): the name and its sources flow as one line, the details
+// left to the linked pages, so the core skills stay a short list.
+.row {
+  display: block;
+  padding: 0.4rem 0.4rem;
+  border-top: 1px solid rgb(var(--ink-rgb) / 0.15);
+  // A "#dex-..." link scrolls here; clear the fixed top bar.
+  scroll-margin-top: calc(var(--topbar-height) + 1.25rem);
+  transition: background-color var(--dur-base) steps(3, end);
+
+  &:first-child {
+    border-top: 0;
+  }
+
+  // Skills outside the core list until "Show all" (display: grid above would
+  // otherwise beat the hidden attribute).
+  &[hidden] {
+    display: none;
+  }
+
+  // Just reached from a link: a moment of gold, so the eye finds it.
+  &[data-flash] {
+    background: var(--gold-light);
+  }
+}
+
+.name {
+  margin-right: 0.6rem;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--ink);
+  overflow-wrap: break-word;
+}
+
+.detail {
+  display: none;
+}
+
+// The few skills learned in training or an unreleased game, not yet used for
+// real: marked, so the rest can be taken at their word.
+.learned {
+  @include display-text(var(--text-xs));
+  margin-left: 0.5rem;
+  padding: 0 0.35rem;
+  font-weight: normal;
+  color: var(--ink-muted);
+  border: 1px solid rgb(var(--ink-rgb) / 0.35);
+  vertical-align: 1px;
+}
+
+.proof {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  user-select: text;
+  -webkit-user-select: text;
+
+  a {
+    font-weight: 700;
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+
+    &:hover,
+    &:focus-visible {
+      background: rgb(var(--ink-rgb) / 0.12);
+    }
+  }
+}
+
+.dot {
+  color: var(--ink-muted);
+}
+
+// The day-job stack on one line: the skills in bold, then the proof under
+// them. Each name is a link target ("#dex-csharp"), so it scrolls and flashes
+// on its own.
+.stack {
+  display: block;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.stackSkill {
+  padding: 0 0.15rem;
+  scroll-margin-top: calc(var(--topbar-height) + 1.25rem);
+  transition: background-color var(--dur-base) steps(3, end);
+
+  &[data-flash] {
+    background: var(--gold-light);
+  }
+}
+
+.workProof {
+  display: block;
+}
+
+// "Show all 33 skills" / "Show the 14 core skills"
+.more {
+  align-self: flex-start;
+  min-height: 1.5rem;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  color: var(--ink);
+  background: none;
+  border: none;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+// Wide enough: names in a column of their own, so they line up, and the
+// strongest proof written out. Last in the file, so it overrides the base
+// rules above (same specificity).
+@container (min-width: 34rem) {
+  .row {
+    display: grid;
+    grid-template-columns: 10rem minmax(0, 1fr);
+    gap: 1rem;
+  }
+  .name {
+    margin-right: 0;
+  }
+  .detail {
+    display: inline;
+  }
+}

@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* The pixel font's stand-in until it loads (app/layout.tsx): Arial, sized
+   and spaced like Pixelify Sans at the 134% the site draws it, so text
+   doesn't rewrap and shift the page when the real font arrives. The size
+   is the median fit over the site's own display text (most strings within
+   10%; Arial's capitals run wider). The ascent and descent make each line
+   exactly as tall as the real font's. */
+@font-face {
+  font-family: 'Pixelify Fallback';
+  src: local('Arial');
+  size-adjust: 130%;
+  ascent-override: 94.83%;
+  descent-override: 28.86%;
+  line-gap-override: 0%;
+}
+
 /* Design tokens: the one source of truth for color, type, borders, shadows
    and motion. Component stylesheets use these instead of raw values, and
    tailwind.config.ts points at the same variables. */
@@ -33,9 +48,9 @@
      12.7:1 on cream). The old #22c55e green was about 2:1 on cream. */
   --focus-ring: var(--gold);
 
-  /* Type: PokePixel for display, labels and buttons (never below --text-xs);
+  /* Type: Pixelify Sans for display, labels and buttons (never below --text-xs);
      Inter for all body text. */
-  --font-display: var(--font-pokepixel), monospace;
+  --font-display: var(--font-pixel), monospace;
   --font-body: var(--font-inter), system-ui, sans-serif;
   --font-mono: ui-monospace, monospace;
   --text-2xs: 0.8rem;   /* body font only: chips, fine print */
@@ -47,7 +62,7 @@
   --text-2xl: 2.75rem;
 
   /* Borders and hard pixel shadows. Corners are square: the only rounded
-     shapes are genuinely round things (the Pokéball, status dots). */
+     shapes are genuinely round things (status dots). */
   --border: 3px;
   --border-thin: 2px;
   --shadow-color: rgba(0, 0, 0, 0.4);
@@ -104,6 +119,7 @@
   --scene-tint: rgba(16, 32, 80, 0.55);
   --sky-scrim: rgb(4 20 43 / 0.15);
   --stars: 1;
+  --page-edge: #345766;
 }
 
 :root[data-time="morning"] {
@@ -129,6 +145,7 @@
   --scene-tint: rgba(255, 190, 150, 0.22);
   --sky-scrim: rgb(4 20 43 / 0.25);
   --stars: 0;
+  --page-edge: #82a286;
 }
 
 :root[data-time="day"] {
@@ -154,6 +171,7 @@
   --scene-tint: transparent;
   --sky-scrim: rgb(4 20 43 / 0.35);
   --stars: 0;
+  --page-edge: #5f9a81;
 }
 
 :root[data-time="dusk"] {
@@ -179,6 +197,7 @@
   --scene-tint: rgba(220, 110, 80, 0.35);
   --sky-scrim: rgb(4 20 43 / 0.1);
   --stars: 1;
+  --page-edge: #8b8b70;
 }
 
 * {
@@ -212,11 +231,24 @@ button,
 html, body {
   width: 100%;
   min-height: 100vh;
+  // Nothing here is meant to scroll sideways, so nothing can make the page
+  // wider than the screen: a stray element (or one a browser extension adds)
+  // would otherwise let a phone drag the page and show a white strip. `clip`,
+  // unlike `hidden`, doesn't make a scroll box, so sticky elements still work
+  // and fixed ones (the top bar, dialogs) aren't cut off.
+  overflow-x: clip;
 }
 
 html {
   scroll-behavior: smooth;
   --topbar-height: 3.5rem;
+  // What shows past the ends when a phone (or a trackpad) stretches the page
+  // at the top or bottom: the meadow's grass, which both ends of the page
+  // are (the hero's field above, the shore's grass below), in the time of
+  // day's tint. It was the browser's default white. --page-edge is the
+  // field's grass after its filter (saturate 0.82, brightness 0.95), mixed
+  // with --scene-tint.
+  background-color: var(--page-edge);
 }
 
 
@@ -247,8 +279,8 @@ html.reduce-motion {
 
 /* Visible keyboard-focus ring, site-wide, styled like the corner-bracket
    selection cursor from Pokemon Emerald's menus (four floating corner
-   brackets instead of a solid ring), bobbing the same way the Pokedex art
-   does on the hero (see `pokedexBob` in Hero.module.scss). Individual
+   brackets instead of a solid ring), bobbing the same way the photo frame
+   does on the hero (see `photoBob` in Hero.module.scss). Individual
    components may still define their own focus-visible treatment; this is
    the fallback for anything that doesn't. Colour: --focus-ring (gold on the
    scenery, ink inside panels), with a 1px ink edge so gold brackets still

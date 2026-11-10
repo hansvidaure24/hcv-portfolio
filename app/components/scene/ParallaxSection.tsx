@@ -10,6 +10,8 @@ import styles from "./ParallaxSection.module.scss";
 type ParallaxSectionProps = {
   id: string;
   bgClassName?: string;
+  /** Drawn inside the background layer, so it slides with it (a painted backdrop). */
+  background?: ReactNode;
   contentClassName?: string;
   /** Rendered as a section-level sibling to the centered content, positioned relative to
    * the section itself rather than the centered flex content (e.g. a corner-pinned sign). */
@@ -25,6 +27,7 @@ const CONTENT_TRANSITION = { duration: DUR.scene, ease: EASE_OUT };
 export default function ParallaxSection({
   id,
   bgClassName = "",
+  background,
   contentClassName = "",
   overlay,
   reveal = true,
@@ -47,9 +50,13 @@ export default function ParallaxSection({
   return (
     <section id={id} ref={sectionRef} className={styles.section}>
       {reduceMotion ? (
-        <div aria-hidden="true" className={`${styles.bgLayer} ${bgClassName}`} />
+        <div aria-hidden="true" className={`${styles.bgLayer} ${bgClassName}`}>
+          {background}
+        </div>
       ) : (
-        <motion.div aria-hidden="true" className={`${styles.bgLayer} ${bgClassName}`} style={{ y: bgY }} />
+        <motion.div aria-hidden="true" className={`${styles.bgLayer} ${bgClassName}`} style={{ y: bgY }}>
+          {background}
+        </motion.div>
       )}
 
       {reduceMotion || textFast || !reveal ? (

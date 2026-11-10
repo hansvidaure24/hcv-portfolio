@@ -46,8 +46,14 @@ type Block =
  * "## " and "### " headings, "- " lists, ``` fenced code blocks, **bold**,
  * `code` and [label](url) links (https:// or an on-site /path). Blank lines
  * separate paragraphs.
+ *
+ * `headingLevel` is the element a "## " heading becomes (h2 by default; h3
+ * under a case study's Overview / Decisions / Results headings). It looks the
+ * same either way.
  */
-export default function ProjectDescription({ text }: { text: string }) {
+export default function ProjectDescription({ text, headingLevel = 2 }: { text: string; headingLevel?: 2 | 3 }) {
+  const Major = headingLevel === 3 ? "h3" : "h2";
+  const Minor = headingLevel === 3 ? "h4" : "h3";
   const blocks: Block[] = [];
   let current: Block | null = null;
 
@@ -90,7 +96,15 @@ export default function ProjectDescription({ text }: { text: string }) {
     <div className={styles.description}>
       {blocks.map((block, i) => {
         if (block.kind === "heading") {
-          return block.level === 3 ? <h3 key={i}>{block.text}</h3> : <h2 key={i}>{block.text}</h2>;
+          return block.level === 3 ? (
+            <Minor key={i} className={styles.minor}>
+              {block.text}
+            </Minor>
+          ) : (
+            <Major key={i} className={styles.major}>
+              {block.text}
+            </Major>
+          );
         }
         if (block.kind === "code") {
           return (

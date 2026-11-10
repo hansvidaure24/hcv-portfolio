@@ -6,23 +6,28 @@ import PixelPanel from "../../components/ui/PixelPanel";
 import TopBar from "../../components/navigation/TopBar";
 import ProjectMedia from "../../components/sections/Projects/ProjectMedia";
 import ProjectDescription from "../../components/sections/Projects/ProjectDescription";
-import CaseStudyTabs, { type CaseStudyTab } from "../../components/sections/Projects/CaseStudyTabs";
 import StatBars from "../../components/sections/Projects/StatBars";
+import SystemDiagram from "../../components/sections/Projects/SystemDiagram";
+import { DIAGRAMS } from "../../data/diagrams";
 import { morphNames } from "../../lib/morphNavigation";
 import { ProjectLinks } from "../../components/sections/Projects/ProjectCard";
 import { CONTACT_EMAIL, RESUME_URL } from "../../lib/site";
+import { pageMetadata } from "../../lib/pageMetadata";
 import { dexEntryFor, dexHash } from "../../data/dex";
 import styles from "./page.module.scss";
 
 type Params = { slug: string };
 
-type TabId = "overview" | "decisions" | "results";
+type SectionId = "overview" | "decisions" | "results";
 
-const TAB_LABELS: Record<TabId, string> = { overview: "Overview", decisions: "Decisions", results: "Results" };
+// One page in three parts, with links to jump between them. (They were tabs,
+// but then the decisions, what a hiring manager most wants to read, were a
+// click away and easy to miss.)
+const SECTION_TITLES: Record<SectionId, string> = { overview: "Overview", decisions: "Decisions", results: "Results" };
 
-// Which tab each write-up heading belongs to. Unknown headings (and the intro
-// above the first heading) go to Overview.
-const TAB_FOR_HEADING: Record<string, TabId> = {
+// Which part each write-up heading belongs to. Unknown headings (and the
+// intro above the first heading) go to Overview.
+const SECTION_FOR_HEADING: Record<string, SectionId> = {
   "Problem": "overview",
   "Constraints": "overview",
   "What I built": "overview",
@@ -38,13 +43,13 @@ const TAB_FOR_HEADING: Record<string, TabId> = {
   "Built with": "results",
 };
 
-/** Splits a write-up into the three tabs, keeping each section's Markdown as-is. */
-function splitIntoTabs(body: string): Record<TabId, string> {
-  const parts: Record<TabId, string[]> = { overview: [], decisions: [], results: [] };
-  let current: TabId = "overview";
+/** Splits a write-up into its three parts, keeping each part's Markdown as-is. */
+function splitIntoSections(body: string): Record<SectionId, string> {
+  const parts: Record<SectionId, string[]> = { overview: [], decisions: [], results: [] };
+  let current: SectionId = "overview";
   for (const line of body.replace(/\r\n/g, "\n").split("\n")) {
     const heading = line.match(/^## (.+)$/);
-    if (heading) current = TAB_FOR_HEADING[heading[1]!.trim()] ?? "overview";
+    if (heading) current = SECTION_FOR_HEADING[heading[1]!.trim()] ?? "overview";
     parts[current].push(line);
   }
   return {
@@ -66,12 +71,13 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) return {};
-  return {
+  // The preview image is this route's own (opengraph-image.tsx, twitter-image.tsx).
+  return pageMetadata({
     title: `${project.title} — Hans Vidaure`,
     description: project.tagline,
-    alternates: { canonical: `/projects/${project.slug}` },
-    openGraph: { title: `${project.title} — Hans Vidaure`, description: project.tagline },
-  };
+    path: `/projects/${project.slug}`,
+    ownImage: true,
+  });
 }
 
 export default async function ProjectPage({ params }: { params: Promise<Params> }) {
@@ -79,19 +85,14 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
   const project = getProject(slug);
   if (!project) notFound();
   const body = getProjectBody(project.slug);
-  const sections = splitIntoTabs(body);
-  const tabs: CaseStudyTab[] = (Object.keys(TAB_LABELS) as TabId[])
-    .filter((id) => sections[id] || (id === "results" && project.stats?.length))
-    .map((id) => ({
-      id,
-      label: TAB_LABELS[id],
-      content: (
-        <>
-          {id === "results" && project.stats?.length ? <StatBars stats={project.stats} /> : null}
-          {sections[id] && <ProjectDescription text={sections[id]} />}
-        </>
-      ),
-    }));
+  // The next case study, in the home page's order, back round to the first.
+  const published = getPublishedProjects();
+  const next = published[(published.findIndex((p) => p.slug === project.slug) + 1) % published.length];
+  const text = splitIntoSections(body);
+  const diagram = DIAGRAMS[project.slug];
+  const sections = (Object.keys(SECTION_TITLES) as SectionId[]).filter(
+    (id) => text[id] || (id === "results" && project.stats?.length),
+  );
 
   return (
     <>
@@ -162,7 +163,27 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
           </div>
         )}
 
-        {tabs.length > 0 && <CaseStudyTabs tabs={tabs} />}
+        {sections.length > 1 && (
+          <nav className={styles.jump} aria-label="On this page">
+            {sections.map((id) => (
+              <a key={id} href={`#${id}`} className={styles.jumpLink}>
+                {SECTION_TITLES[id]}
+              </a>
+            ))}
+          </nav>
+        )}
+
+        {sections.map((id) => (
+          <section key={id} id={id} aria-labelledby={`${id}-title`} className={styles.section}>
+            <h2 id={`${id}-title`} className={styles.sectionTitle}>
+              {SECTION_TITLES[id]}
+            </h2>
+            {id === "results" && project.stats?.length ? <StatBars stats={project.stats} /> : null}
+            {text[id] && <ProjectDescription text={text[id]} headingLevel={3} />}
+            {/* How the parts fit together, before the decisions that shaped them. */}
+            {id === "overview" && diagram && <SystemDiagram diagram={diagram} />}
+          </section>
+        ))}
 
         <footer className={styles.cta}>
           <p className={styles.ctaTitle}>Hiring for a full-stack role?</p>
@@ -176,6 +197,18 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
           </div>
         </footer>
       </PixelPanel>
+
+      {/* Keep reading instead of ending at a dead end. */}
+      <nav className={styles.moreNav} aria-label="More case studies">
+        <Link href="/#projects" className={styles.back}>
+          <span aria-hidden="true">←</span> All projects
+        </Link>
+        {next && next.slug !== project.slug && (
+          <Link href={`/projects/${next.slug}`} className={styles.next}>
+            Next: {next.title} <span aria-hidden="true">▶</span>
+          </Link>
+        )}
+      </nav>
     </main>
     </>
   );

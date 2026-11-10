@@ -21,11 +21,21 @@ const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 // so text paints right away without a layout shift when the font arrives.
 // Inter ships as a small latin-only WOFF2 instead of the 874 KB variable TTF.
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' })
-const pokePixel = localFont({
-  src: '../public/fonts/pokepixel-gba.ttf',
+// The pixel display font: Pixelify Sans (SIL Open Font License, see
+// public/fonts/OFL-pixelify-sans.txt), the regular weight as a local file so
+// the link-preview image (lib/ogImage.tsx) can use the same one. It draws
+// small for its size, so it's scaled up 134% (its width and x-height then
+// match the font it replaced, and every size and layout tuned for that one
+// still holds). next/font's own stand-in for it is sized for 100%, so text
+// set in it rewrapped when the real font arrived and pushed the page down;
+// "Pixelify Fallback" (globals.scss) is sized for the 134%.
+const pixel = localFont({
+  src: '../public/fonts/pixelify-sans.ttf',
   display: 'swap',
-  variable: '--font-pokepixel',
-  fallback: ['monospace'],
+  variable: '--font-pixel',
+  adjustFontFallback: false,
+  fallback: ['Pixelify Fallback', 'monospace'],
+  declarations: [{ prop: 'size-adjust', value: '134%' }],
 })
 
 export const metadata: Metadata = {
@@ -95,7 +105,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" dir="ltr" className={`${inter.variable} ${pokePixel.variable}`} suppressHydrationWarning>
+    <html lang="en" dir="ltr" className={`${inter.variable} ${pixel.variable}`} suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" type="image/svg+xml" href="/icons/folder.svg" />
@@ -125,7 +135,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(WEBSITE_JSON_LD) }}
         />
       </head>
-      <body>
+      {/* Browser extensions add classes to <body> before React loads (an ad
+          blocker's "TotalExt-Lang-en", for one); that isn't a bug in the page. */}
+      <body suppressHydrationWarning>
         {GA_ID && (
           <>
             {/* lazyOnload: the 177 KB analytics script waits until the page has

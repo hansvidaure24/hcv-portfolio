@@ -47,6 +47,11 @@ const SECURITY_HEADERS = [
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Wakebound's case study was at /projects/nebula (its old working title).
+  // Old links, and previews that cached its cover, still land.
+  async redirects() {
+    return [{ source: '/projects/nebula/:path*', destination: '/projects/wakebound/:path*', permanent: true }]
+  },
   async headers() {
     return [
       { source: '/:path*', headers: SECURITY_HEADERS },

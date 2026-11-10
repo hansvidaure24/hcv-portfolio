@@ -5,7 +5,7 @@ panels, headings and motion), then add features that make it memorable for
 recruiters without breaking that consistency.
 
 **Rule for every change:** reuse the existing vocabulary — cream panel, 3px
-ink border, hard drop shadow, PokePixel for display/labels, Inter for body,
+ink border, hard drop shadow, Pixelify Sans for display/labels, Inter for body,
 stepped motion. No new visual languages.
 
 Pace: back-to-back phases. Dates are targets, not promises; each phase ends
@@ -21,6 +21,7 @@ with a desktop + phone check in the browser before the next one starts.
 | 11. Readable by AI tools | Nov 27–29 | Live Nov 8 |
 | Audit fixes (a full outside-in review) | Nov 8 | Live Nov 8 (art, RJN numbers wait on Hans) |
 | 12. Explore mode | December | Stretch |
+| 13. Living hero (SpritePilot CC0 packs) | Nov 9– | 13a–13c built on `prototype/ambient-town` |
 
 ---
 
@@ -72,9 +73,11 @@ first, or build from a separate copy.
 
 **Waiting on other people**
 
-- [ ] **Fiserv case studies** (`fiserv-pagination`, `fiserv-cve-upgrade`):
-      publish once cleared against Fiserv's disclosure policy. They already
-      score highest for the C# / .NET focus.
+- [x] **Fiserv stays general** (Hans's decision, Nov 8): the site and
+      resume say employer, title, dates, stack and general responsibilities,
+      nothing about its systems, data, performance or security. Proof comes
+      from public projects. Any write-up about Fiserv work needs Fiserv's
+      approval first.
 - [ ] **Teammate quotes:** `TESTIMONIALS` in `app/data/party.ts` is empty,
       so the panel is hidden. Ask 2–3 teammates; a LinkedIn recommendation
       is the easiest to link.
@@ -99,11 +102,13 @@ first, or build from a separate copy.
 
 **Kept by choice, with a deadline**
 
-- [ ] **Borrowed Pokémon assets still in use** (the Pokédex frame, the
-      Pokéball menu, the Contact background, the pixel font and possibly the
-      UI sounds; see `ASSET-SPECS.md`). Torchic, the music, the trading card
-      and the Piplup photo came out in audit round 5. Everything new in this
-      plan uses original art only.
+- [x] **No borrowed Pokémon assets left** (Nov 9). Torchic, the music, the
+      trading card and the Piplup photo came out in audit round 5, the UI
+      sounds were replaced with CC0 ones in Phase 13b, the Contact
+      background was redrawn in code in Phase 13e, and the last three went
+      on Nov 9: the pixel font (now Pixelify Sans, OFL), the Pokédex photo
+      frame (now a panel-style frame) and the Pokéballs (a menu icon and a
+      status light). The GBA look stays; it's the site's own now.
 
 **Housekeeping**
 
@@ -596,6 +601,300 @@ Only after the original mascot exists (Phase 7, kept by choice).
       the same free tiers Pocket Quest uses.
 - [ ] Reduced motion: no walking animation; tap a building to go there.
 
+## Phase 13 — Living hero (SpritePilot CC0 packs)
+
+Hans's call (Nov 9): a hero that feels alive, like the fish in
+[mandyslai.com][mandy]'s pond, but stays clean and readable. It replaced
+the townsfolk and village prototypes, which are gone from the site; their
+draft art stays in `assets-src/explore/`. The code is in
+`app/components/sections/Hero/field/`.
+
+The art and sound come from SpritePilot's ten free packs, all CC0 (public
+domain, no credit required): `assets-src/spritepilot/<pack>/LICENSE.txt`.
+They're drawn by code, not AI-generated or traced, which keeps the "original
+only" rule in `ASSET-SPECS.md`.
+
+Rules for every slice:
+
+- **Never in the way.** Nothing goes on or over the text panel, the photo
+  or the buttons; life happens in the field around them. Everything is
+  optional to notice and to touch.
+- **Calm by default.** The ground stays soft grass, its patches only a
+  shade apart; a handful of small things move at a time, slowly.
+- **Follows Options.** TIME OF DAY picks who's out and recolors the field;
+  ANIMATIONS reduced freezes everything; sound plays only after the
+  visitor turns it on.
+- One pixel scale for the whole scene (2 CSS px per art pixel, whole-pixel
+  scaling), so nothing has bigger pixels than its neighbor. Sizes come
+  from the pack's two drawings instead: 16 px for small things (bee,
+  beetle, finds), 32 px for big ones (bird, bat, ghost, slime, spider,
+  tall grass). Drawn on the hero's canvas, paused off screen.
+- The field isn't flat, but it sits back: soft dithered patches a shade
+  lighter and darker, pixel cloud shadows (solid core, dithered edge)
+  drifting across, a little less color and light than the content, the
+  edges darker, and on wide screens the outer edges slightly out of focus.
+  The text panel and photo carry soft shadows so they float above it.
+- It notices the visitor: birds and bats flutter off when the cursor gets
+  close, bees drift over and hover around it, ghosts float toward it, the
+  slime edges closer, the beetle turns to face it, the spider climbs back
+  up, and at night a firefly or two follows it. Grass rustles when the
+  cursor or a walker passes through. On phones, a tap on the grass stands
+  in for the cursor for 1.5 s. At most five critters at once. Flyers
+  cast small pixel shadows.
+
+**13a. Field life** (built Nov 9)
+
+- [x] Critters by time of day: bees, birds, a beetle and a slime by day;
+      bats at dusk; bats, ghosts and a spider dropping from under the top
+      bar at night. Hover one and it pipes up; click it and it points the
+      way in the dialogue box (the work, the resume, the site's build note,
+      Contact). Those lines don't repeat the proof points beside them or
+      make claims of their own (`cast.ts`).
+- [x] Tall grass swaying in clumps along the screen's edges, which walkers
+      can pass behind.
+- [x] Fireflies at dusk and night, on a glow layer above the time-of-day
+      tint so they actually light up.
+- [x] ~~A few leaves drifting across by day.~~ Cut (Hans, Nov 9): the
+      pack's leaf animation looked awkward drifting across the field.
+- [x] Clicking a critter pops a small heart over it.
+- [x] While the field loads (and without JavaScript) the hero shows its
+      plain grass: the same color, darker edges and tint, so loading only
+      adds the life. It replaced the painted sky, hills and water, which
+      flashed a different scene for the first second or two.
+- [x] Over the hero the top bar drops its dark band, so the field runs to
+      the top edge; a soft shade keeps the links readable (4.6:1 or better
+      on the lightest grass, at every time of day). It's solid everywhere
+      else.
+
+**13b. Sound** (done Nov 9; `assets-src/spritepilot/build_sounds.py` rebuilds them)
+
+- [x] Replace the UI sounds `ASSET-SPECS.md` #8 flags as game rips
+      (`button`, `menu-navigation`, `press-start`, `type`) with the pack's
+      interface sounds (click, toggle, confirm, tap), converted to MP3 for
+      Safari and trimmed so they start at once.
+- [x] Critters answer a click in sound too, quietly: slime, bat wings, a
+      squeak, a short buzz.
+
+**13c. Something to find** (built Nov 9)
+
+- [x] Now and then a gem or a star twinkles in the grass for a while.
+      Clicking it collects it (gem or coin sound, a sparkle). The third one
+      plays the level-up burst and the dialogue box points at the work.
+      Counted for the visit only; nothing to lose, nothing that blocks.
+      The first shows after 20 s on the hero, then one every 30–50 s,
+      each for 16 s; none after the third. Analytics records
+      `hero_finds_complete` (nothing else). The lines are in `finds.ts`.
+
+**13e. Section backdrops in the field's style** (built Nov 9)
+
+Only the hero moves; the other sections are where people read, so their
+backdrops are still and sit back. They share the field's pixel size,
+dithering and grass (`app/lib/pixelArt.ts`) and one component
+(`scene/PixelBackdrop.tsx`): each is painted once, when its section comes
+near (10–25 ms), and again only on a resize or a new time of day. Until
+then, and without JavaScript, the section's old CSS background shows. All
+the text in these sections sits on its own panel, so the backdrops never
+touch its contrast.
+
+- [x] Contact: an original pixel shore (sky, clouds, sea, a strip of beach,
+      then the hero's grass), so the page opens on the meadow and ends at
+      the sea. It replaced the borrowed Pokémon background. Each time of day
+      paints its own sky, sea and clouds (stars at dusk and night), so night
+      looks like night rather than a darkened day; the beach and grass take
+      the hero's tint, so the grass still matches the field at the top.
+- [x] Experience: deep, still water with faint light shafts from the
+      surface, seagrass up the left and right edges and a few bubbles.
+- [x] Work: a dark mown lawn (wide stair-step stripes, soft patches,
+      scattered grass marks), as dark as the old CSS one under the cards.
+- [x] Experience and Work keep their own colors (`--water-*`, `--grass*`),
+      which already change with the time of day. (About had a forest
+      clearing for a day; it went with the section, 13f.)
+
+- [x] Seams: the backdrops slide at their own speeds, so where two
+      sections meet was a straight cut between two scenes. A thin pixel
+      strip pinned to the top of each section (`scene/seams.ts`) joins
+      them: the meadow's grass over the pond with foam, the pond lapping at
+      the lawn's bank, and a bank of cloud between the lawn and the sky.
+      Each matches the colors on both sides at every time of day, and sits
+      in the section's top padding, clear of every heading.
+
+- [x] Fewer boxes: each project card ends in one button (Case study) and
+      a quiet row of icon-and-word links (live demo, code, write-up) that
+      wrap as a group, never one left alone; the Contact card likewise
+      (Send a message, then GitHub, LinkedIn and the resume as links). The
+      phone menu button and the email's Copy button are pixel icons (their
+      names are still spoken), which leaves room for Resume in the top bar
+      down to 340px. Icons are placeholders (`ui/PixelIcon.tsx`,
+      ASSET-SPECS #15); 11 unused old icon files are gone.
+
+- [x] The skills panel is a short list instead of a tab browser: one line
+      per skill, its proof as linked names (detail on hover). Only proof
+      the cards don't already show is written out (training, this site, a
+      field note), and only where there's room; a project's detail stayed
+      off once "200+ tests on every push" turned up three times in Work. No more
+      "No.001" numbers, counts or legend; the few skills only learned get
+      a small "learned" tag. Every core skill's proof is visible at once
+      (it was one skill at a time, behind a click). The six core skills
+      Fiserv proves first share one line ("At Fiserv: C# · .NET · ASP.NET ·
+      SQL · React · REST APIs") instead of six lines that all said "online
+      banking features"; the rest are the skills his projects prove. Links
+      to a skill (stack chips, case studies, Type Matchup) jump to its line,
+      or its name on the Fiserv line, and flash it gold.
+
+- [x] Field notes: a draft, "A living hero that stays out of the way"
+      (`content/notes/a-living-hero.md`, hidden in production), for Hans to
+      rewrite in his own words and publish.
+
+**13f. Experience and About in one** (Nov 9)
+
+Hans's call, after Mandy Lai's resume page: one list you can read in ten
+seconds beats two sections that half repeat each other ("3 YRS" in both,
+"Owns it end to end" restating the Fiserv bullets, education in About).
+
+- [x] Experience is a timeline, newest first: when, role @ place, and the
+      resume's own lines (Fiserv ×2, CUNY Building Performance Lab, QC
+      TROPA, Queens College). It reads straight from `app/data/resume.ts`,
+      so it can't drift from the resume. The profile (photo clip, the
+      "Looking for…" line, live stats and Now) sits beside it, and
+      teammate quotes go under it once there are any.
+- [x] "Why hire me" is gone: both of its proofs restated the projects and
+      Fiserv. The Skill Dex moved under Work, next to the projects its
+      proof links to.
+- [x] The page is Hero → Experience → Work → Contact; About is gone from
+      the top bar and the phone menu.
+- [ ] One line of approved Fiserv results (a feature, its scale) would do
+      more than anything else here; ask what can be said publicly.
+
+**13g. A simpler hero, on every screen** (Nov 9)
+
+- [x] The hero copy follows Mandy Lai's shape: who he is now, then what he
+      builds on the side, as two sentences instead of a list (the projects
+      have their own section). The stack line names Unity, so game studios
+      see themselves too; the summary says how he works (API to UI, review,
+      testing, production support) instead of repeating the stack. "~207
+      tests" is "200+ tests" everywhere (site and resume HTML; the PDF
+      still needs re-printing).
+- [x] Phones: a small framed portrait beside the name replaces the lonely
+      mini-Pokédex row, so the buttons land on the first screen down to
+      360×740. Phones turned sideways and laptops zoomed to 200% put the
+      text and a smaller Pokédex side by side; short laptop screens (and
+      150% zoom) tighten the spacing. Checked from 360×740 to 2880×1800:
+      no overlap, no sideways scroll.
+- [x] Browser zoom: the field and the section backdrops also re-lay
+      themselves out on window resizes and pixel-density changes (zoom
+      changes both; a resize observer alone missed it, leaving the field
+      covering only part of the hero). A resize that changes nothing (a
+      phone's address bar sliding away) leaves the critters where they are.
+
+**13h. Work, tightened** (Nov 9)
+
+- [x] "Also building" names Hold Steadfast (the game the Behavior Tree
+      Editor runs, linking to that case study) as well as Wakebound, and
+      runs the full width like the other panels.
+- [x] Wakebound's case study is at `/projects/wakebound`, not its old
+      working title; `/projects/nebula/*` redirects there (308), so old
+      links and cached previews still land.
+- [x] RJN Visuals has a second highlight, from its case study: recompressed
+      video and embeds that load only when needed.
+- [x] Tablets (768–1023px) show one card per row; two columns had squeezed
+      each card into about 340px.
+- [x] Phones: "Choose your focus" is one row that swipes sideways (the
+      panel went from 223px to 144px tall at 375px). Keyboard focus scrolls
+      a chip fully into view, and the focus brackets aren't clipped.
+
+**13i. Shared links, speed and the resume** (Nov 9)
+
+- [x] Link previews: a page that set its own `openGraph` dropped the
+      layout's image, URL and site name (Next.js replaces the object, it
+      doesn't merge it), and X showed the home page's title. Every page now
+      builds its preview with `lib/pageMetadata.ts`. Each case study has
+      its own 1200×630 card (the site card's frame, the project's name,
+      summary and cover), drawn at build.
+- [x] Each case study ends with "Next: <project> ▶" (looping back to the
+      first) as well as "All projects", instead of the resume and email
+      links as a dead end.
+- [x] Lighthouse, mobile, production build, clean browser: the home page
+      is 100/100/100/100 on five runs (LCP 1.06s, 16–36 ms blocking, no
+      layout shift); the resume and notes 100 across the board; the case
+      studies 100 for accessibility, best practices and SEO, and 94–96 for
+      performance. The claims now say "the home page".
+- [x] The case-study cover loads at high priority (`fetchPriority`;
+      `priority` alone only preloaded it).
+- [x] Layout shift: the pixel font's stand-in was sized for the font at
+      100%, not the 134% the site draws it, so text rewrapped when the
+      font arrived. "Pixelify Fallback" (globals.scss) matches it; case
+      studies went from up to 0.114 to 0.000–0.081.
+- [x] The resume PDF is reprinted from `resume/hcv-resume.html` ("200+
+      tests", still one page, same 24 links).
+- [ ] Case studies to 100 performance: Lighthouse counts the ~210 KB of
+      JavaScript that starts loading before the cover paints. That means
+      less JavaScript on those pages, a project of its own.
+
+**13j. Case studies show their engineering** (Nov 9)
+
+After an AI review of the home page asked for "engineering decisions" the
+case studies already had: they were behind a tab, hidden until clicked.
+
+- [x] One page instead of tabs: Overview, Decisions and Results in order,
+      each under a chapter title, with jump links where the tabs were. The
+      write-up's own headings sit one level below (h3), so the outline
+      reads H1 → part → section. Nothing is hidden any more.
+- [x] A diagram on each game and tool case study (SliceOfPie, Behavior
+      Tree Editor, Pocket Quest, Wakebound): three boxes and what passes
+      between them, a row on wide screens and a column on phones, all real
+      text (`SystemDiagram.tsx`, data in `app/data/diagrams.ts`). Every box
+      was checked against the project's code, not just its write-up.
+- [x] RJN Visuals has Decisions too, drafted from the studio's own brief
+      and change list and checked against the RJN repo and its commits
+      (films re-encoded and served from the site, embeds that load when
+      needed, the 100 MB file limit). Hans to read it in his own voice.
+
+**13k. Work and the phone hero, tightened again** (Nov 9)
+
+- [x] Work: Unity and Game AI join the default skills list (game studios
+      saw nothing of theirs before "Show all"); the "Game tools" chip is
+      "Game dev"; the Behavior Tree Editor no longer says what "Also
+      building" says; SliceOfPie and Pocket Quest lose highlights that
+      repeated their taglines (Pocket Quest's is now its scope: classes,
+      enemies, bosses); RJN's are proof from its case study.
+- [x] Phone hero: the status chip breaks after its dot ("NYC / remote"
+      stays whole; "remote" was left alone on a line); the two buttons are
+      full width and equal (stacked, they were 212 and 202px wide); the
+      edge-to-edge panel's light inner line is top and bottom only (on the
+      sides it traced the screen's edge).
+- [x] Top bar: a 16px edge on phones like every section (it was 12px, so
+      the name sat 4px left of the text below it, and from 340 to 359px the
+      menu button was 5px from the edge). Resume steps out of the bar below
+      360px instead of 340px; it's still in the menu and the hero.
+- [x] No sideways drag on phones: `html` and `body` clip anything wider
+      than the screen (`overflow-x: clip`). The site itself never overflowed
+      (every section clips its own contents), but an element a browser
+      extension added did, leaving a white strip. `<body>` also ignores the
+      classes extensions add to it, which Next's dev overlay reported as a
+      hydration "issue".
+- [x] Past the top and bottom: when a phone or trackpad stretches the page
+      at either end, the gap was the browser's white. On the home page it's
+      now the meadow's grass in the time of day's tint (`--page-edge`; both
+      ends of the page are grass); on the case studies, notes and resume
+      it's their night sky (`--sky-1`).
+- [x] The phone focus row says it scrolls: an edge with more picks past it
+      fades out (it cut "C# / .NET & security" off mid-word, which read as
+      broken), and the fade leaves once you reach that end. "Paste a job
+      post" starts at the left on phones, under the label and picks.
+
+**13d. Maybe**
+
+- [ ] Ambient loops behind the Sound setting: forest by day, night at night.
+- [ ] On wide screens, a small pond in a corner with fish and bubbles (the
+      animated water tile), the nod to the pond that started this.
+- [ ] Weather in Options (rain, snow), off by default.
+
+Not for the hero: the combat, magic and items packs. They stay in
+`assets-src/spritepilot/` (items could become Skill Dex icons, the portal a
+flourish for section jumps).
+
+[mandy]: https://mandyslai.com/
+
 ## Considered and parked
 
 - **Not doing: an AI chat NPC ("Ask Hans").** Hans's call (Nov 7).
@@ -641,8 +940,8 @@ Everything from Phases 1–6 still applies. For the new features:
   wipe. No new transitions.
 - Every feature reads Options: TEXT SPEED fast skips typing, ANIMATIONS
   reduced removes motion, TIME OF DAY recolors scenery.
-- Colors and type come only from the tokens in `globals.scss`; PokePixel
-  never below 14px.
+- Colors and type come only from the tokens in `globals.scss`; the pixel
+  display font never below 14px.
 - New art is original. No new borrowed assets.
 - Each phase ends with a desktop + phone check, Lighthouse accessibility
   100, and no horizontal overflow at 375, 768 and 1440px.

@@ -127,6 +127,12 @@ $bp-step: 0.0625em;   // 1px
   padding: calc(var(--topbar-height) + 1.5rem) clamp(1rem, 4vw, 2rem) 4rem;
   background-color: var(--sky-1);
   background-image: radial-gradient(circle at 50% 0%, var(--sky-3) 0%, var(--sky-1) 60%);
+
+  // Past the page's ends (a phone stretching it at the top or bottom), this
+  // sky, not the home page's grass (globals.scss, --page-edge).
+  @at-root :global(html):has(#{&}) {
+    background-color: var(--sky-1);
+  }
 }
 
 // The "← All projects" link above a subpage's panel.

@@ -1,7 +1,8 @@
 # Hans Chandler Vidaure — Portfolio
 
-A Pokémon Emerald–themed personal portfolio site: a scrollable "scene" flow
-(Hero → Experience → Work → About → Contact) styled after the GBA Pokédex/menu UI, with a
+A personal portfolio site in the style of a handheld pixel RPG: a scrollable
+"scene" flow (Hero → Experience → Work → Contact) with GBA-style menus and
+panels, original or CC0 art only, and a
 working contact form that emails through Resend. The design system (tokens,
 mixins, motion rules) and the plan behind it are in
 [`docs/DESIGN-ROADMAP.md`](docs/DESIGN-ROADMAP.md).
@@ -38,13 +39,13 @@ Don't run `npm run build` while `npm run dev` is running: they share
 | --- | --- |
 | Project cards, case-study metadata, "Choose your focus" scores (`focus`) and stat bars (`stats`) | [`app/data/projects.ts`](app/data/projects.ts) |
 | Focus options (the chips each one highlights come from the dex's `focus` tags) | [`app/data/focus.ts`](app/data/focus.ts) |
-| Skills panel (About), stack-chip links and focus highlights: every skill with its proof | [`app/data/dex.ts`](app/data/dex.ts). Each entry needs evidence a visitor can follow, and every project stack chip must match an entry's name or alias. `CORE_DEX_IDS` picks the skills shown before "Show all". |
+| Skills panel (under Work), stack-chip links and focus highlights: every skill with its proof | [`app/data/dex.ts`](app/data/dex.ts). Each entry needs evidence a visitor can follow, and every project stack chip must match an entry's name or alias. `CORE_DEX_IDS` picks the skills shown before "Show all". |
 | Type Matchup: skills job posts ask for that have no proof on the site, with the nearest ones that do | [`app/data/nearby.ts`](app/data/nearby.ts). The matcher is [`app/lib/matchup.ts`](app/lib/matchup.ts); when it reads a real post wrong, add the post to `tests/fixtures/jobPosts.ts`. |
 | `/llms.txt`, `/resume.json` and the read-only MCP endpoint (`/api/mcp`) | Generated from the files above by [`app/lib/machineReadable.ts`](app/lib/machineReadable.ts); nothing to edit by hand. |
 | Case-study write-ups | `content/projects/<slug>.md` (`## ` headings, `- ` lists, `**bold**`, `[links](https://…)`). Headings are sorted into the Overview / Decisions / Results tabs by `TAB_FOR_HEADING` in [`app/projects/[slug]/page.tsx`](app/projects/[slug]/page.tsx). |
-| Fiserv highlights (Experience) | [`app/components/sections/Experience/Experience.tsx`](app/components/sections/Experience/Experience.tsx); keep it in sync with the resume |
-| Education and next role (About) | [`app/components/sections/Bio/Evolution.tsx`](app/components/sections/Bio/Evolution.tsx); keep it in sync with the resume |
-| "Why hire me" moves and testimonials (About) | [`app/data/party.ts`](app/data/party.ts) |
+| Experience timeline (jobs, QC TROPA, school) | Read from [`app/data/resume.ts`](app/data/resume.ts); [`Experience.tsx`](app/components/sections/Experience/Experience.tsx) only picks which entries show |
+| Profile line ("Looking for…") | [`app/components/sections/Experience/Experience.tsx`](app/components/sections/Experience/Experience.tsx) |
+| Teammate quotes (under the timeline, hidden until there's one) | [`app/data/party.ts`](app/data/party.ts) |
 | Quick view resume (`/resume`) | [`app/data/resume.ts`](app/data/resume.ts); the PDF is still printed from `resume/hcv-resume.html`, so change both together |
 | Trainer card "Now" line and play-time start date | [`app/data/now.ts`](app/data/now.ts) |
 | Field notes (`/notes`) | [`app/data/notes.ts`](app/data/notes.ts) for title, date and summary; the text in `content/notes/<slug>.md` (case-study Markdown plus ``` code blocks and `inline code`) |

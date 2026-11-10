@@ -18,6 +18,22 @@
   margin: 0 auto;
 }
 
+// Under the article: back to the list, or on to the next case study.
+.moreNav {
+  max-width: 50rem;
+  margin: 1.5rem auto 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.next {
+  @include pixel-button(var(--gold), var(--ink), var(--text-md), 3px);
+  margin-left: auto;
+}
+
 .header {
   display: flex;
   flex-direction: column;
@@ -91,6 +107,49 @@
 
 .media {
   margin-bottom: 1.5rem;
+}
+
+// Overview · Decisions · Results: links down the page, where the tabs were.
+.jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-bottom: 0.9rem;
+  margin-bottom: 0.5rem;
+  border-bottom: var(--border) solid var(--ink);
+}
+
+.jumpLink {
+  @include pixel-button(var(--paper), var(--ink), var(--text-md), 2px);
+  padding: 0.35rem 0.9rem;
+}
+
+.section {
+  // A jump link lands the part's title just below the fixed top bar.
+  scroll-margin-top: calc(var(--topbar-height) + 1rem);
+
+  & + & {
+    margin-top: 2.25rem;
+  }
+}
+
+// A part's title: a label on a rule, so the three parts read as chapters and
+// the write-up's own headings sit under them.
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.5rem 0 0.25rem;
+  @include display-text(var(--text-md));
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+
+  &::after {
+    content: '';
+    flex: 1;
+    border-top: 3px solid var(--ink);
+  }
 }
 
 .cta {

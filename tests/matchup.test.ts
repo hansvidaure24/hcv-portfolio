@@ -127,7 +127,7 @@ describe("project order", () => {
   };
 
   it("puts game work first for a game post", () => {
-    expect(ranked(JOB_POSTS[4]!.text).slice(0, 2).sort()).toEqual(["behavior-tree-editor", "nebula"]);
+    expect(ranked(JOB_POSTS[4]!.text).slice(0, 2).sort()).toEqual(["behavior-tree-editor", "wakebound"]);
   });
 
   it("puts web apps first for a frontend post", () => {
