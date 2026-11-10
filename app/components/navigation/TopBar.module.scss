@@ -14,11 +14,50 @@
   justify-content: space-between;
   gap: 1rem;
 
-  background: rgba(10, 30, 42, 0.82);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border-bottom: 3px solid var(--ink);
-  box-shadow: 0 3px 0 rgb(var(--cream-rgb) / 0.12);
+  // The band and the soft shade that replaces it over the hero are layers
+  // behind the links, so one can fade into the other (a gradient can't
+  // transition).
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    transition: opacity var(--dur-base) steps(3, end);
+  }
+
+  // The band: over the page's content, so the links never sit on text.
+  &::before {
+    background: rgba(10, 30, 42, 0.82);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-bottom: 3px solid var(--ink);
+    box-shadow: 0 3px 0 rgb(var(--cream-rgb) / 0.12);
+  }
+
+  // Over the hero the bar steps back: no band, so the field runs to the top
+  // edge, just a soft shade so the links stay readable on the grass.
+  &::after {
+    opacity: 0;
+    background: linear-gradient(rgb(4 20 43 / 0.6), rgb(4 20 43 / 0.25) 70%, rgb(4 20 43 / 0));
+  }
+
+  &[data-over='hero'] {
+    &::before {
+      opacity: 0;
+    }
+    &::after {
+      opacity: 1;
+    }
+    .link,
+    .iconButton {
+      text-shadow: 2px 2px 0 var(--ink);
+    }
+    .iconButton {
+      background: rgb(4 20 43 / 0.45);
+    }
+  }
 }
 
 .brand {
@@ -99,8 +138,9 @@
 
 // Phones: section links and Options move into the Menu button.
 @media (max-width: $bp-nav) {
+  // The same 16px edge as the sections below, so the brand lines up with them.
   .bar {
-    padding: 0 0.75rem;
+    padding: 0 1rem;
     gap: 0.6rem;
   }
   .nav {
@@ -120,8 +160,9 @@
   }
 }
 
-// The narrowest phones (320px) can't fit the brand, Resume and Menu. Resume
-// is also a row in the menu and a button in the hero.
+// The narrowest phones (under 360px, like a 320px iPhone SE) can't fit the
+// brand, Resume and the menu button inside that edge. Resume is also a row
+// in the menu and a button in the hero.
 @media (max-width: 22.4375em) {
   .resume {
     display: none;

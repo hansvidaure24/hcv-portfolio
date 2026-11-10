@@ -1,148 +1,22 @@
 @use '../../../scss/mixins' as *;
 
-.heroBg {
-  background-color: var(--sky-1);
-  background-image: radial-gradient(circle at 50% 30%, var(--sky-3) 0%, var(--sky-1) 70%);
+// The field's grass as plain color: what the hero shows until the field is
+// drawn, and without JavaScript. The same base color as the field (after its
+// saturate/brightness filter), with the same darker edges and time-of-day
+// tint over it, so the field fading in only adds its patches and its life.
+.heroBg,
+.fieldFallback {
+  background:
+    linear-gradient(var(--scene-tint), var(--scene-tint)),
+    radial-gradient(ellipse 85% 75% at 50% 42%, transparent 40%, rgb(8 40 28 / 0.32) 100%),
+    #5f9a81;
 }
 
-/* Twinkling pixels only come out at dusk and night. */
-.layerParticles {
-  opacity: var(--stars);
-}
-
-.animatedBackdrop {
+.fieldFallback {
   position: absolute;
   inset: 0;
   z-index: 1;
-  overflow: hidden;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(10, 46, 69, 0.1), rgba(6, 30, 26, 0.25));
-}
-
-.animatedBackdrop::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0.1;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
-  mix-blend-mode: soft-light;
-}
-
-.animatedBackdrop svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-/* --- Layer drift / morph / pulse animations --- */
-.cloudDriftSlow {
-  animation: driftRight 52s ease-in-out infinite;
-}
-.cloudDriftSlowReverse {
-  animation: driftLeft 60s ease-in-out infinite;
-}
-.cloudDriftMed {
-  animation: driftRight 38s ease-in-out infinite;
-}
-.cloudDriftMedReverse {
-  animation: driftLeft 44s ease-in-out infinite;
-}
-.pixelPulseA {
-  animation: pixelPulse 6s ease-in-out infinite;
-}
-.pixelPulseB {
-  animation: pixelPulse 7.5s ease-in-out infinite 1.2s;
-}
-.pixelPulseC {
-  animation: pixelPulse 5.2s ease-in-out infinite 2.4s;
-}
-.waveShimmerA {
-  animation: waveDriftRight 9s linear infinite;
-}
-.waveShimmerB {
-  animation: waveDriftLeft 12s linear infinite;
-}
-
-.transitionClouds {
-  position: absolute;
-  inset: 0;
-  // Same layer as the backdrop, under the section content, so the clouds
-  // never cover the text or the photo.
-  z-index: 1;
-  pointer-events: none;
-}
-
-.cloudPopLeft {
-  animation: cloudPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s both;
-  transform-origin: left center;
-}
-
-.cloudPopRight {
-  animation: cloudPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s both;
-  transform-origin: right center;
-}
-
-@keyframes cloudPopIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.4) translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-:global(.reduce-motion) {
-  .cloudPopLeft,
-  .cloudPopRight {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes waveDriftRight {
-  0% { transform: translateX(0); }
-  50% { transform: translateX(45px); }
-  100% { transform: translateX(0); }
-}
-@keyframes waveDriftLeft {
-  0% { transform: translateX(0); }
-  50% { transform: translateX(-45px); }
-  100% { transform: translateX(0); }
-}
-
-@keyframes driftRight {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(70px, 6px); }
-  100% { transform: translate(0, 0); }
-}
-@keyframes driftLeft {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(-70px, -6px); }
-  100% { transform: translate(0, 0); }
-}
-@keyframes pixelPulse {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 0.9; }
-}
-
-:global(.reduce-motion) {
-  .animatedBackdrop svg animate {
-    display: none;
-  }
-  .cloudDriftSlow,
-  .cloudDriftSlowReverse,
-  .cloudDriftMed,
-  .cloudDriftMedReverse,
-  .pixelPulseA,
-  .pixelPulseB,
-  .pixelPulseC,
-  .waveShimmerA,
-  .waveShimmerB {
-    animation: none;
-  }
 }
 
 .heroContent {
@@ -165,6 +39,24 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 1.1rem;
+  // A dark GBA-style window, so the light text reads over the field
+  // behind it. Always on (not only once the field loads) to avoid a layout
+  // shift.
+  padding: clamp(1rem, 2.2vw, 1.6rem);
+  background: rgb(4 20 43 / 0.82);
+  border: 3px solid var(--ink);
+  // Plus a soft shadow well below it, so the panel floats above the field.
+  box-shadow:
+    inset 0 0 0 2px rgb(var(--cream-rgb) / 0.55),
+    var(--shadow-md),
+    0 20px 50px rgb(4 20 43 / 0.35);
+}
+
+/* Once the field is drawn, its plain stand-in steps aside (after the field's
+   own fade, so nothing flashes between them). */
+:global([data-field='ready']) .fieldFallback {
+  visibility: hidden;
+  transition: visibility 0s linear var(--dur-base);
 }
 
 .heroPhoto {
@@ -246,6 +138,10 @@
   border: 2px solid rgb(var(--cream-rgb) / 0.7);
 }
 
+.nowrap {
+  white-space: nowrap;
+}
+
 .statusDot {
   width: 10px;
   height: 10px;
@@ -257,9 +153,9 @@
   margin: 0;
 
   font-family: var(--font-display);
-  // The cap keeps the name on one line in the hero's capped text column
-  // (about 700px wide from roughly 1300px up).
-  font-size: clamp(3.25rem, 5.4vw, 4.6rem);
+  // The cap keeps the name on one line inside the text panel (about 650px
+  // wide from roughly 1300px up; the name is about 9.1× its font size).
+  font-size: clamp(2.9rem, 4.9vw, 4.2rem);
   line-height: 1;
   letter-spacing: 0.03em;
 
@@ -291,14 +187,30 @@
   color: var(--gold);
 }
 
+// Two short sentences: who he is now, then what he builds on the side, with
+// the side projects linked in the email's gold.
 .summary {
   max-width: 36rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
   font-size: clamp(1rem, 1.25vw, 1.15rem);
   line-height: 1.6;
   color: #e8f4ef;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
   user-select: text;
   -webkit-user-select: text;
+
+  a {
+    color: var(--gold);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+
+    &:hover {
+      color: var(--gold-light);
+    }
+  }
 }
 
 /* --- Calls to action --- */
@@ -348,11 +260,14 @@
   }
 }
 
+// A copy icon (its label, "Copy email", is spoken and shown on hover), sized
+// as a comfortable tap target.
 .copyBtn {
-  font-family: var(--font-display);
-  font-size: var(--text-sm);
-  letter-spacing: 0.04em;
-  padding: 0.1rem 0.55rem;
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
   color: var(--cream);
   background: rgba(4, 20, 43, 0.55);
   border: 2px solid rgb(var(--cream-rgb) / 0.7);
@@ -364,92 +279,99 @@
   }
 }
 
-.proofStrip {
-  list-style: none;
+/* --- Photo frame: a panel like the rest of the site's --- */
+.photoFrame {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  margin-top: 0.4rem;
-
-  font-family: var(--font-display);
-  font-size: var(--text-md);
-  letter-spacing: 0.02em;
-  color: rgb(var(--cream-rgb) / 0.9);
-  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
-
-  li {
-    display: flex;
-    gap: 0.6rem;
-  }
-
-  li::before {
-    content: '◆';
-    flex: none;
-    font-size: 0.7em;
-    line-height: 1.6;
-    color: var(--green);
-  }
+  gap: 0.55rem;
+  padding: 0.6rem;
+  background: var(--cream);
+  border: 3px solid var(--ink);
+  // The panel's inner highlight and hard pixel shadow, plus a soft one that
+  // lifts it off the field.
+  box-shadow:
+    inset 0 0 0 2px var(--paper),
+    6px 8px 0 rgba(0, 0, 0, 0.5),
+    0 18px 32px rgb(4 20 43 / 0.35);
+  animation: photoBob 2s steps(1, end) infinite;
 }
 
-/* --- Pokédex photo frame --- */
-.pokedexContainer {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 380 / 480;
-  filter: drop-shadow(6px 8px 0 rgba(0, 0, 0, 0.5));
-  animation: pokedexBob 2s steps(1, end) infinite;
-}
-
-@keyframes pokedexBob {
+@keyframes photoBob {
   0%, 50% { transform: translateY(0); }
   50.01%, 100% { transform: translateY(-4px); }
 }
 
 :global(.reduce-motion) {
-  .pokedexContainer {
+  .photoFrame,
+  .scanLine {
     animation: none;
+  }
+  .scanLine {
+    display: none;
   }
 }
 
-.pokedexSvg {
-  width: 100%;
-  height: 100%;
-  display: block;
+// The gold title bar, like a panel's.
+.photoBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.2rem 0.55rem;
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  background: var(--gold);
+  border: 2px solid var(--ink);
 }
 
-/* Sized and positioned here instead of on the image itself, so next/image's
-   `fill` mode (which claims 100%/100%/inset:0 of its own nearest positioned
-   ancestor) gets handed exactly this inset box instead of the whole
-   .pokedexContainer. */
-.pokedexImageFrame {
-  position: absolute;
-  top: 28.75%;
-  left: 7.4%;
-  width: 85.3%;
-  height: 50.8%;
-  z-index: 1;
-  border-radius: 4px;
+// Three status lights.
+.photoLights {
+  display: flex;
+  gap: 4px;
+
+  span {
+    width: 8px;
+    height: 8px;
+    border: 1px solid var(--ink);
+    background: var(--green);
+  }
+  span:nth-child(2) {
+    background: var(--gold-deep);
+  }
+  span:nth-child(3) {
+    background: #7dd3fc;
+  }
+}
+
+.photoScreen {
+  position: relative; // next/image's `fill` sizes to this box
+  aspect-ratio: 4 / 3;
   overflow: hidden;
+  background: #000;
+  border: 3px solid var(--ink);
 }
 
-.pokedexImage {
-  border-radius: 4px;
-}
-
-.scanLineGroup {
+// A line of light sweeping down the screen: a box the screen's height with
+// the line along its top edge, moved by its own height.
+.scanLine {
+  position: absolute;
+  inset: 0;
+  border-top: 2px solid rgb(0 255 255 / 0.55);
+  pointer-events: none;
   animation: scanSweep 3s ease-in-out infinite;
 }
 
 @keyframes scanSweep {
   0% {
-    transform: translateY(-244px);
+    transform: translateY(-2px);
     opacity: 0.8;
   }
   50% {
     opacity: 0.4;
   }
   100% {
-    transform: translateY(244px);
+    transform: translateY(100%);
     opacity: 0;
   }
 }
@@ -463,38 +385,141 @@
   }
 }
 
-/* Phones: a small Pokédex above the name, so the photo and the pitch both
-   fit in the first screens instead of the photo trailing far below. Sized so
-   the two calls to action also land on a 375×740 first screen. */
+/* Phones: the photo frame gives way to a small portrait framed like the panel,
+   beside the name (an avatar, like a profile card), instead of a row of its
+   own above it. That leaves the first screen to the name, the pitch and the
+   two buttons, down to a 360×740 phone. */
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.avatar {
+  display: none;
+}
+
 @media (max-width: $bp-phone) {
   .heroGrid {
     gap: 1rem;
   }
   .heroPhoto {
-    order: -1;
-    justify-self: start;
-    width: min(26vw, 96px);
+    display: none;
+  }
+  .avatar {
+    display: block;
+    position: relative;
+    flex: none;
+    width: 64px;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    box-shadow:
+      inset 0 0 0 2px rgb(var(--cream-rgb) / 0.55),
+      3px 3px 0 var(--shadow-color);
+  }
+  .avatarImage {
+    object-fit: cover;
+    object-position: 50% 30%;
   }
 }
 
 @media (max-width: $bp-phone) {
   .heroText {
     gap: 0.85rem;
+    // The panel runs edge to edge on phones, so the text keeps its full width.
+    margin-inline: calc(clamp(1rem, 4vw, 3rem) * -1);
+    padding-inline: clamp(1rem, 4vw, 3rem);
+    border-inline: 0;
+    // Its light inner line only along the top and bottom: on the sides it
+    // traced the screen's edges.
+    box-shadow:
+      inset 0 2px 0 rgb(var(--cream-rgb) / 0.55),
+      inset 0 -2px 0 rgb(var(--cream-rgb) / 0.55),
+      0 20px 50px rgb(4 20 43 / 0.35);
   }
-  // Still two lines (the pixel font is about 10em wide for the full name),
-  // just shorter ones, so the calls to action reach a 375×740 first screen.
+  // The two buttons share a row only where both fit, which is never on a
+  // phone: stacked, they were two different widths. Full width, they read as
+  // a menu and are easy to hit.
+  .ctaRow {
+    align-self: stretch;
+    flex-direction: column;
+  }
+  .primaryCta,
+  .secondaryCta {
+    justify-content: center;
+  }
+  // Two lines beside the portrait (the full name is about 9em wide, more
+  // than a phone leaves), shorter ones, so the calls to action reach a
+  // 360×740 first screen.
   .title {
     font-size: clamp(2.2rem, 11vw, 4rem);
   }
   .role {
     font-size: var(--text-md);
   }
-  .statusChip,
-  .proofStrip {
+  .statusChip {
     font-size: var(--text-sm);
   }
   .primaryCta,
   .secondaryCta {
     font-size: var(--text-md);
+  }
+}
+
+/* Short, wide screens (a laptop zoomed to 150%, a small laptop): the same
+   layout with less air, so the buttons stay on the first screen. */
+@media (min-width: $bp-compact + $bp-step) and (max-height: 43.75em) {
+  .heroContent {
+    padding-block: 1rem;
+  }
+  .heroText {
+    gap: 0.8rem;
+  }
+  .summary {
+    line-height: 1.5;
+  }
+  .heroPhoto {
+    width: clamp(200px, 22vw, 300px);
+  }
+}
+
+/* Phones turned sideways, or a laptop zoomed to 200% (short and wide): text
+   and a smaller photo frame side by side again, since stacked the photo would
+   trail a whole screen below, with tighter type so the name and the pitch
+   come before the fold. */
+@media (orientation: landscape) and (max-height: 31.25em) {
+  .heroContent {
+    padding-block: 0.75rem;
+  }
+  .summary {
+    line-height: 1.5;
+  }
+  .heroGrid {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1.5rem;
+  }
+  .heroPhoto {
+    order: 0;
+    width: clamp(140px, 22vw, 200px);
+  }
+  .heroText {
+    gap: 0.6rem;
+    padding: 0.8rem 1rem;
+  }
+  .title {
+    font-size: clamp(2rem, 5.5vw, 2.8rem);
+  }
+  .role {
+    font-size: var(--text-md);
+  }
+  .statusChip {
+    font-size: var(--text-sm);
+  }
+  .primaryCta,
+  .secondaryCta {
+    font-size: var(--text-md);
+    padding: 0.45rem 0.9rem;
   }
 }

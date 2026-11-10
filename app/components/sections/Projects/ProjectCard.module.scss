@@ -96,26 +96,26 @@
   color: var(--ink-muted);
 }
 
-// A tiny pixel Pokéball, drawn with gradients so it needs no image.
-.kindBall {
-  width: 12px;
-  height: 12px;
+// A tiny square status light before the project's kind, in CSS so it needs
+// no image. Square, so its edges stay crisp pixels.
+.kindMark {
+  width: 10px;
+  height: 10px;
   border: 2px solid var(--ink);
-  border-radius: 50%;
-  background: linear-gradient(180deg, #e74c3c 0 45%, var(--ink) 45% 58%, #f5f5f5 58%);
+  background: var(--accent-green);
 }
 
-// Signature motion for Work: the Pokéball wobbles when you hover a card.
-.card:hover .kindBall {
-  animation: ballWobble 0.6s steps(1, end);
+// Signature motion for Work: the light hops when you hover a card.
+.card:hover .kindMark {
+  animation: markHop 0.6s steps(1, end);
 }
 
-@keyframes ballWobble {
-  0% { transform: rotate(0); }
-  20% { transform: rotate(-25deg); }
-  40% { transform: rotate(25deg); }
-  60% { transform: rotate(-15deg); }
-  80% { transform: rotate(0); }
+@keyframes markHop {
+  0% { transform: translateY(0); }
+  20% { transform: translateY(-3px); }
+  40% { transform: translateY(0); }
+  60% { transform: translateY(-2px); }
+  80% { transform: translateY(0); }
 }
 
 .title {
@@ -225,7 +225,8 @@
 .links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
+  align-items: center;
+  gap: 0.6rem 0.9rem;
   margin-top: auto;
   padding-top: 0.5rem;
 }
@@ -235,7 +236,47 @@
   padding: 0.35rem 0.8rem;
 }
 
+.quietLinks {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.9rem;
+}
+
+// Phones: the smallest size the display font is allowed, so the three quiet
+// links share a line instead of leaving one alone.
+@media (max-width: $bp-phone) {
+  .quietLinks {
+    gap: 0.4rem 0.6rem;
+  }
+  .quietLinks .link {
+    gap: 0.3rem;
+    font-size: var(--text-xs);
+    letter-spacing: 0;
+  }
+}
+
+// Secondary links: a pixel icon and a word, no box. The underline steps in
+// on hover, like the top bar's links.
 .link {
-  @include pixel-button(var(--paper), var(--ink), var(--text-md), 3px);
-  padding: 0.35rem 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0 0.2rem;
+  font-family: var(--font-display);
+  // A size under the case study button: the hierarchy reads at a glance.
+  font-size: var(--text-sm);
+  letter-spacing: 0.03em;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+
+  svg {
+    flex: none;
+    color: var(--accent-green);
+  }
+
+  &:hover {
+    border-bottom-color: currentColor;
+  }
 }

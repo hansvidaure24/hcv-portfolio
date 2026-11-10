@@ -6,7 +6,17 @@
   display: inline-block;
   max-width: 100%;
   padding: 0.8rem 1.6rem;
-  background: linear-gradient(180deg, #C97C3D 0%, #A85A2A 55%, #9A4E22 100%);
+  // Stepped pixel shading, like the scenery behind it: three flat tones of
+  // wood, a light pixel line along the top and a dark one along the bottom,
+  // so the board reads as carved rather than airbrushed.
+  background: linear-gradient(
+    180deg,
+    #d88c4b 0 2px,
+    #c97c3d 2px 34%,
+    #b4692f 34% 67%,
+    #9a4e22 67% calc(100% - 2px),
+    #7a3c18 calc(100% - 2px)
+  );
   border: 4px solid #3D2213;
   box-shadow: var(--shadow-md);
 }

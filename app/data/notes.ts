@@ -23,6 +23,15 @@ export type Note = {
 
 // Newest first.
 const NOTES: Note[] = [
+  // Draft for Hans to rewrite in his own words before publishing.
+  {
+    slug: "a-living-hero",
+    title: "A living hero that stays out of the way",
+    summary:
+      "How the pixel field at the top of this site stays crisp, cheap and calm, and the zoom bug my screen-size tests didn't catch.",
+    date: "2026-11-09",
+    published: false,
+  },
   {
     slug: "how-this-site-is-built",
     title: "How this site is built",

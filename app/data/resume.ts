@@ -69,7 +69,7 @@ export const RESUME = {
       ],
       points: [
         "Chose PaddleOCR over Tesseract.js after it read every price on 16/16 test receipts vs 4/16; runs offline in a Web Worker",
-        "Reached 99 Lighthouse mobile performance with ~25 KB of startup JavaScript; ~207 Vitest and Playwright tests run on every push",
+        "Reached 99 Lighthouse mobile performance with ~25 KB of startup JavaScript; 200+ Vitest and Playwright tests run on every push",
       ],
     },
     {

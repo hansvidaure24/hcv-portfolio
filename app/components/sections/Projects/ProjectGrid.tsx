@@ -53,6 +53,7 @@ export default function ProjectGrid({ projects, ci = {} }: { projects: Project[]
   const [matchupUsed, setMatchupUsed] = useState(false);
   const optionRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const matchupButtonRef = useRef<HTMLButtonElement>(null);
+  const focusRowRef = useRef<HTMLDivElement>(null);
   const { say } = useDialogue();
   const scene = useScene();
 
@@ -78,6 +79,27 @@ export default function ProjectGrid({ projects, ci = {} }: { projects: Project[]
   }, [projects]);
 
   useEffect(() => whenIdle(() => void loadTypeMatchup()), []);
+
+  // Phones swipe the picks sideways (Projects.module.scss): mark which ends
+  // have more to see, so that edge fades out instead of cutting a pick in
+  // half as if the row were broken. Nothing to mark where they all fit.
+  useEffect(() => {
+    const row = focusRowRef.current;
+    if (!row) return;
+    const mark = () => {
+      const max = row.scrollWidth - row.clientWidth;
+      row.toggleAttribute("data-more-start", row.scrollLeft > 1);
+      row.toggleAttribute("data-more-end", row.scrollLeft < max - 1);
+    };
+    mark();
+    row.addEventListener("scroll", mark, { passive: true });
+    const resize = new ResizeObserver(mark);
+    resize.observe(row);
+    return () => {
+      row.removeEventListener("scroll", mark);
+      resize.disconnect();
+    };
+  }, []);
 
   const closeMatchup = useCallback(() => setMatchupOpen(false), []);
 
@@ -151,7 +173,7 @@ export default function ProjectGrid({ projects, ci = {} }: { projects: Project[]
         <span id="focus-label" className={styles.focusLabel}>
           CHOOSE YOUR FOCUS
         </span>
-        <div className={styles.focusOptions} role="radiogroup" aria-labelledby="focus-label">
+        <div ref={focusRowRef} className={styles.focusOptions} role="radiogroup" aria-labelledby="focus-label">
           {FOCUSES.map((f, i) => (
             <button
               key={f.id}

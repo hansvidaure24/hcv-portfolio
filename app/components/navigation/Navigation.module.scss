@@ -13,9 +13,11 @@
 
 .menuToggle {
   @include pixel-button(var(--gold), var(--ink), var(--text-sm), 3px);
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
   min-height: 2.5rem;
-  padding: 0.2rem 0.45rem;
-  white-space: nowrap;
+  padding: 0;
 }
 
 .battleMenu {

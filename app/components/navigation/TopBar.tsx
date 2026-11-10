@@ -10,7 +10,6 @@ import styles from "./TopBar.module.scss";
 const LINKS = [
   { label: "Experience", id: "experience" },
   { label: "Work", id: "projects" },
-  { label: "About", id: "about" },
   { label: "Contact", id: "contact" },
 ];
 
@@ -49,7 +48,8 @@ export default function TopBar() {
     <a href="#content" className={styles.skip}>
       Skip to content
     </a>
-    <header className={styles.bar}>
+    {/* Over the hero (home page, hero in view) the bar drops its band. */}
+    <header className={styles.bar} data-over={scene?.activeId === "hero" ? "hero" : undefined}>
       <a href={scene ? "#hero" : "/"} className={styles.brand} onClick={(e) => go(e, "hero")}>
         HANS VIDAURE
       </a>

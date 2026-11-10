@@ -1,16 +1,64 @@
 @use '../../../scss/mixins' as *;
 
+// Until the pixel shore is painted (or without JavaScript), the same scene
+// in plain bands: sky, sea, beach, grass, in the shore's colors for the time
+// of day (shore.ts). Night is the default, as in globals.scss.
 .contactBg {
-  background: url('/backgrounds/pokemonbackground.png') center center/cover no-repeat;
+  background: linear-gradient(
+    to bottom,
+    #0b1532 0%,
+    #26446e 50%,
+    #2a4670 50%,
+    #0f2039 62%,
+    #6f6f7a 62%,
+    #6f6f7a 66%,
+    #2f5a5a 66%
+  );
 }
 
-/* The painted daytime scene is tinted to match the time of day. */
-.contactBg::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--scene-tint);
-  mix-blend-mode: multiply;
+:global(:root[data-time='morning']) .contactBg {
+  background: linear-gradient(
+    to bottom,
+    #8f96c0 0%,
+    #fbd9b0 50%,
+    #c9b3c4 50%,
+    #5778b4 62%,
+    #eed5ad 62%,
+    #eed5ad 66%,
+    #78ad8e 66%
+  );
+}
+
+:global(:root[data-time='day']) .contactBg {
+  background: linear-gradient(
+    to bottom,
+    #6aa8db 0%,
+    #a8d2ee 50%,
+    #6aa3dc 50%,
+    #4a83c8 62%,
+    #eadba9 62%,
+    #eadba9 66%,
+    #5aa585 66%
+  );
+}
+
+:global(:root[data-time='dusk']) .contactBg {
+  background: linear-gradient(
+    to bottom,
+    #4a3a78 0%,
+    #f4a35e 50%,
+    #d98a6a 50%,
+    #3e3a6e 62%,
+    #d8a983 62%,
+    #d8a983 66%,
+    #6b8b6a 66%
+  );
+}
+
+// The shore (shore.ts), painted in code. A little less color and light than
+// the content, like the hero's field.
+.shore {
+  filter: saturate(0.82) brightness(0.95);
 }
 
 .contactContent {
@@ -92,26 +140,30 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
 }
 
-.cardName {
-  margin: 0;
-  padding-bottom: 0.4rem;
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
-  border-bottom: var(--border-thin) solid var(--ink);
-  user-select: text;
-}
-
+// The card's facts as plain label-and-value rows with dashed lines between
+// them, like the Experience timeline, rather than boxes inside the card.
 .cardStatRow {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  padding: 0.5rem 0.7rem;
-  background: var(--paper);
-  border: var(--border-thin) solid var(--ink);
-  box-shadow: var(--shadow-xs);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.15rem;
+  padding: 0.65rem 0;
+  border-top: var(--border-thin) dashed rgb(var(--ink-rgb) / 0.25);
+
+  &:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+
+// Labels in a column of their own once there's room, so the values line up.
+@media (min-width: $bp-tablet) {
+  .cardStatRow {
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: baseline;
+  }
 }
 
 .cardStatLabel {
@@ -139,17 +191,64 @@
 }
 
 /* The main call to action and the links, as labeled buttons. */
+// "Send a message" is the one button; GitHub, LinkedIn and the resume are
+// quiet links beside it (an underline steps in on hover), so the card ends
+// in one clear action instead of a row of boxes.
 .actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-top: 0.25rem;
+  align-items: center;
+  gap: 0.6rem 0.9rem;
+  margin-top: 1rem;
 }
 
 .primaryAction {
   @include pixel-button(var(--gold), var(--ink), var(--text-md), 3px);
 }
 
+.quietActions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.9rem;
+}
+
 .action {
-  @include pixel-button(var(--paper), var(--ink), var(--text-md), 3px);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0 0.2rem;
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  letter-spacing: 0.03em;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+
+  &:hover {
+    border-bottom-color: currentColor;
+  }
+}
+
+// The icon credit: small, on the same dark strip as the typing line, so it
+// reads on the shore at any time of day.
+.credits {
+  align-self: flex-start;
+  padding: 0.3rem 0.6rem;
+  font-size: var(--text-2xs);
+  line-height: 1.5;
+  color: rgb(var(--cream-rgb) / 0.9);
+  background: rgba(4, 20, 43, 0.62);
+  user-select: text;
+  -webkit-user-select: text;
+
+  a {
+    color: var(--cream);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:hover {
+      color: var(--gold);
+    }
+  }
 }

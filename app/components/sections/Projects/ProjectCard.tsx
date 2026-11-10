@@ -1,5 +1,6 @@
 import Link from "next/link";
 import PixelPanel from "../../ui/PixelPanel";
+import PixelIcon, { type PixelIconName } from "../../ui/PixelIcon";
 import ProjectMedia from "./ProjectMedia";
 import CaseStudyLink from "./CaseStudyLink";
 import { morphNames } from "../../../lib/morphNavigation";
@@ -8,6 +9,18 @@ import type { CiStatus } from "../../../lib/github";
 import { dexEntryFor, dexHash } from "../../../data/dex";
 import styles from "./ProjectCard.module.scss";
 
+/** Which icon a project link gets, from where it goes. */
+function linkIcon(href: string): PixelIconName {
+  if (href.startsWith("/")) return "page"; // a field note on this site
+  if (href.includes("github.com/")) return "code";
+  return "play"; // a live demo or site
+}
+
+/**
+ * The case study is the one button; the live demo, code and write-up are a
+ * quiet row of icon-and-word links beside it, so a card doesn't end in a
+ * wall of boxes.
+ */
 export function ProjectLinks({ project, showCaseStudy = true }: { project: Project; showCaseStudy?: boolean }) {
   return (
     <div className={styles.links}>
@@ -16,18 +29,28 @@ export function ProjectLinks({ project, showCaseStudy = true }: { project: Proje
           Case study <span aria-hidden="true">→</span>
         </CaseStudyLink>
       )}
-      {project.links.map((link) =>
-        // On-site pages (a field note) open in the same tab; everything else is external.
-        link.href.startsWith("/") ? (
-          <Link key={link.href} href={link.href} className={styles.link}>
-            {link.label} <span aria-hidden="true">→</span>
-          </Link>
-        ) : (
-          <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className={styles.link}>
-            {link.label} <span aria-hidden="true">↗</span>
-          </a>
-        )
-      )}
+      {/* Kept together: beside the button when they fit, otherwise all on
+          the next line, never one left alone. */}
+      <span className={styles.quietLinks}>
+        {project.links.map((link) => {
+          const content = (
+            <>
+              <PixelIcon name={linkIcon(link.href)} />
+              {link.label}
+            </>
+          );
+          // On-site pages (a field note) open in the same tab; everything else is external.
+          return link.href.startsWith("/") ? (
+            <Link key={link.href} href={link.href} className={styles.link}>
+              {content}
+            </Link>
+          ) : (
+            <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className={styles.link}>
+              {content}
+            </a>
+          );
+        })}
+      </span>
     </div>
   );
 }
@@ -61,7 +84,7 @@ export default function ProjectCard({ project, featured = Boolean(project.featur
 
         <div className={styles.body}>
           <p className={styles.kind}>
-            <span className={styles.kindBall} aria-hidden="true" />
+            <span className={styles.kindMark} aria-hidden="true" />
             {project.kind}
           </p>
           <h3 className={styles.title} style={{ viewTransitionName: morphNames.title(project.slug) }}>
@@ -97,7 +120,7 @@ export default function ProjectCard({ project, featured = Boolean(project.featur
               );
               return (
                 <li key={tech} className={match ? styles.chipMatch : undefined}>
-                  {/* Opens the skill's proof in About's SKILL DEX. */}
+                  {/* Opens the skill's proof in the SKILL DEX, under the projects. */}
                   {entry ? (
                     <a href={dexHash(entry)} className={styles.chipLink}>
                       {label}

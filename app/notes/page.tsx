@@ -5,16 +5,16 @@ import PixelPanel from "../components/ui/PixelPanel";
 import { formatNoteDate, getNotes } from "../data/notes";
 import { getProject } from "../data/projects";
 import { CONTACT_EMAIL } from "../lib/site";
+import { pageMetadata } from "../lib/pageMetadata";
 import styles from "./notes.module.scss";
 
 const DESCRIPTION = "Short write-ups from building things: what broke, what I measured, and what I'd do differently.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Field notes — Hans Vidaure",
   description: DESCRIPTION,
-  alternates: { canonical: "/notes" },
-  openGraph: { title: "Field notes — Hans Vidaure", description: DESCRIPTION },
-};
+  path: "/notes",
+});
 
 export default function NotesPage() {
   const notes = getNotes();

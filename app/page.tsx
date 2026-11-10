@@ -4,12 +4,11 @@ import SceneStage from '@/app/components/scene/SceneStage'
 import Hero from '@/app/components/sections/Hero/Hero'
 import Experience from '@/app/components/sections/Experience/Experience'
 import Projects from '@/app/components/sections/Projects/Projects'
-import Bio from '@/app/components/sections/Bio/Bio'
 import Contact from '@/app/components/sections/Contact/Contact'
 import { getPublishedProjects } from '@/app/data/projects'
 import { getCiBySlug, getTrainerStats } from '@/app/lib/github'
 
-const SECTION_IDS = ['hero', 'experience', 'projects', 'about', 'contact']
+const SECTION_IDS = ['hero', 'experience', 'projects', 'contact']
 
 // Every section renders straight into the HTML, so visitors and crawlers
 // without JavaScript get the whole page, not just the hero.
@@ -33,9 +32,8 @@ export default async function Home() {
         <SceneStage
           sections={[
             { id: 'hero', node: <Hero /> },
-            { id: 'experience', node: <Experience /> },
+            { id: 'experience', node: <Experience trainer={trainer} /> },
             { id: 'projects', node: <Projects ci={ci} /> },
-            { id: 'about', node: <Bio trainer={trainer} /> },
             { id: 'contact', node: <Contact /> },
           ]}
         />

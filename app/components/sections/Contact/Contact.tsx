@@ -10,6 +10,9 @@ import { getTextSpeed } from "../../../lib/preferences";
 import { useContactDialog } from "../../providers/ContactDialogProvider";
 import { CONTACT_EMAIL, RESUME_URL } from "../../../lib/site";
 import PixelPanel from "../../ui/PixelPanel";
+import PixelBackdrop from "../../scene/PixelBackdrop";
+import Seam from "../../scene/Seam";
+import { paintShore, SHORE_COLORS } from "./shore";
 import SectionHeading from "../../ui/SectionHeading";
 import styles from "./Contact.module.scss";
 
@@ -39,6 +42,8 @@ export default function Contact() {
   const typingRef = useRef<HTMLDivElement>(null);
   const typingIntervalRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
   const typingDoneRef = useRef(false);
+  // When the line started typing, so the blips line up with what's left of it.
+  const typingStartRef = useRef(0);
   // Decode the typing sound once so playback starts with the text.
   const audioCtxRef = useRef<AudioContext | null>(null);
   const typeBufferRef = useRef<AudioBuffer | null>(null);
@@ -110,25 +115,40 @@ export default function Contact() {
     return { ctx, buffer };
   }
 
+  // The typing sound is one short blip, scheduled every other character for
+  // the rest of the line, each a touch higher or lower so it sounds typed
+  // rather than looped. Finishing the line early stops the ones still queued.
   function beginTypeSoundPlayback(ctx: AudioContext, buffer: AudioBuffer) {
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
-    source.connect(ctx.destination);
-    source.start(0);
-    // Once the clip finishes on its own, drop the stale stop-handle so a
-    // later stopTypeSound() call (e.g. leaving the section) doesn't try to
-    // stop an already-finished source.
-    source.onended = () => {
-      if (stopTypeSoundRef.current === stopThisSource) stopTypeSoundRef.current = null;
-    };
-    function stopThisSource() {
-      try {
-        source.stop();
-      } catch {
-        // The source may already have ended.
+    const lineMs = TYPING_MESSAGE.length * TYPING_INTERVAL_MS;
+    const leftSeconds = Math.max(0, lineMs - (performance.now() - typingStartRef.current)) / 1000;
+    const everySeconds = (TYPING_INTERVAL_MS * 2) / 1000;
+    const sources: AudioBufferSourceNode[] = [];
+    for (let t = 0; t < leftSeconds; t += everySeconds) {
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.playbackRate.value = 0.92 + Math.random() * 0.16;
+      source.connect(ctx.destination);
+      source.start(ctx.currentTime + t);
+      sources.push(source);
+    }
+    function stopAll() {
+      for (const source of sources) {
+        try {
+          source.stop();
+        } catch {
+          // Already ended.
+        }
       }
     }
-    stopTypeSoundRef.current = stopThisSource;
+    // Once the last blip ends on its own, drop the stale stop-handle so a
+    // later stopTypeSound() call (e.g. leaving the section) has nothing to do.
+    const last = sources[sources.length - 1];
+    if (last) {
+      last.onended = () => {
+        if (stopTypeSoundRef.current === stopAll) stopTypeSoundRef.current = null;
+      };
+    }
+    stopTypeSoundRef.current = stopAll;
   }
 
   function stopTypeSound() {
@@ -150,6 +170,7 @@ export default function Contact() {
 
     // Start the visual effect independently of audio permissions.
     let i = 0;
+    typingStartRef.current = performance.now();
     typingIntervalRef.current = setInterval(() => {
       i += 1;
       setTypedLength(i);
@@ -167,10 +188,12 @@ export default function Contact() {
     if (ready) {
       beginTypeSoundPlayback(ready.ctx, ready.buffer);
     } else {
-      // Fall back to HTML audio if Web Audio is unavailable.
-      const audio = new Audio("/sounds/type.mp3");
-      audio.play().catch(() => {});
-      stopTypeSoundRef.current = () => audio.pause();
+      // Fall back to HTML audio if Web Audio is unavailable: the same blip on
+      // a timer, until the line is done.
+      const timer = setInterval(() => {
+        new Audio("/sounds/type.mp3").play().catch(() => {});
+      }, TYPING_INTERVAL_MS * 2);
+      stopTypeSoundRef.current = () => clearInterval(timer);
     }
   }
 
@@ -217,6 +240,8 @@ export default function Contact() {
     <ParallaxSection
       id="contact"
       bgClassName={styles.contactBg}
+      background={<PixelBackdrop paint={paintShore} colors={SHORE_COLORS} className={styles.shore} />}
+      overlay={<Seam kind="lawn-sky" />}
       contentClassName={styles.contactContent}
     >
       <div className={styles.contactScene}>
@@ -231,13 +256,12 @@ export default function Contact() {
         </div>
 
         <PixelPanel
-          title="Contact card"
+          // The name in the gold title bar, like the top of a business card.
+          title="Hans Vidaure"
           className={styles.trainerCard}
           bodyClassName={styles.cardBody}
         >
           <div className={styles.cardInfo}>
-            <p className={styles.cardName}>NAME: Hans Vidaure</p>
-
             <div className={styles.cardStatRow}>
               <span className={styles.cardStatLabel}>STATUS</span>
               <span className={styles.cardStatValue}>Open to full-stack roles · NYC / remote</span>
@@ -281,30 +305,42 @@ export default function Contact() {
               >
                 Send a message <span aria-hidden="true">▶</span>
               </button>
-              {Socials.links.map((link) => (
+              {/* Kept together, so they wrap as a set rather than one at a time. */}
+              <span className={styles.quietActions}>
+                {Socials.links.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.action}
+                    onClick={() => playSound("/sounds/button.mp3")}
+                  >
+                    {link.name} <span aria-hidden="true">↗</span>
+                  </a>
+                ))}
                 <a
-                  key={link.name}
-                  href={link.url}
+                  href={RESUME_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.action}
                   onClick={() => playSound("/sounds/button.mp3")}
                 >
-                  {link.name} <span aria-hidden="true">↗</span>
+                  Resume (PDF) <span aria-hidden="true">↗</span>
                 </a>
-              ))}
-              <a
-                href={RESUME_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.action}
-                onClick={() => playSound("/sounds/button.mp3")}
-              >
-                Resume (PDF) <span aria-hidden="true">↗</span>
-              </a>
+              </span>
             </div>
           </div>
         </PixelPanel>
+
+        {/* Flaticon's free license asks for a credit for the small UI icons
+            (docs/ASSET-SPECS.md #15). */}
+        <p className={styles.credits}>
+          Icons by menon, Taufik Ramadhan, Disha Vaghasiya and frelayasia from{" "}
+          <a href="https://www.flaticon.com" target="_blank" rel="noopener noreferrer">
+            Flaticon
+          </a>
+        </p>
       </div>
     </ParallaxSection>
   )

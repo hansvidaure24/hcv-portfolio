@@ -9,7 +9,7 @@ export const FOCUSES: { id: FocusId; label: string; said: string }[] = [
   { id: "all", label: "All", said: "Showing every project." },
   { id: "fullstack", label: "Full-stack", said: "Full-stack picked! Web apps and tools first." },
   { id: "dotnet", label: "C# / .NET & security", said: "C# / .NET picked! C# work first." },
-  { id: "games", label: "Game tools", said: "Game tools picked! Game AI and games first." },
+  { id: "games", label: "Game dev", said: "Game dev picked! Games and game AI first." },
 ];
 
 /**

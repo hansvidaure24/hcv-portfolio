@@ -1,0 +1,25 @@
+// A seam strip (Seam.tsx) along the top edge of a section: over the
+// backdrop, under the content, and inside the section's top padding (the
+// top bar's height), so it never covers a heading or a panel.
+.seam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+// Heights in CSS pixels; the art is two CSS pixels to a pixel.
+.fieldWater {
+  height: 28px;
+}
+
+.waterLawn {
+  height: 32px;
+}
+
+.lawnSky {
+  height: 64px;
+}

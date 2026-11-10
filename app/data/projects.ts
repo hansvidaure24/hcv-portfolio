@@ -49,7 +49,7 @@ const PROJECTS: Project[] = [
     metrics: [
       "PaddleOCR read every price on 16/16 test receipts; Tesseract.js managed 4/16",
       "25 KB of startup JavaScript; the 36 MB scanner downloads only on request",
-      "Works offline with no server; ~207 tests on every push",
+      "No accounts or server; 200+ tests on every push",
     ],
     cover: {
       src: "/projects/sliceofpie/cover.jpg",
@@ -78,12 +78,11 @@ const PROJECTS: Project[] = [
     slug: "behavior-tree-editor",
     title: "Behavior Tree Editor",
     kind: "Dev tool",
-    tagline:
-      "A visual editor, replay debugger and Unity runtime for game AI. It runs the enemy AI in Hold Steadfast, my co-op horde-defense game.",
+    tagline: "A visual editor, replay debugger and Unity runtime for game AI.",
     role: "Solo: design, build and test",
     stack: ["JavaScript + JSDoc", "Canvas 2D", "Tauri (Rust)", "Unity / C#", "GitHub Actions"],
     metrics: [
-      "13 of 14 enemy trees run through both runtimes, every command compared over 9,000 ticks",
+      "13 of Hold Steadfast's 14 enemy trees run through both runtimes, every command compared over 9,000 ticks",
       "Saved edits reach a running game within a second",
       "2.5 MB desktop installer, same code in the browser",
     ],
@@ -111,7 +110,7 @@ const PROJECTS: Project[] = [
     role: "Solo: design, build and test",
     stack: ["JavaScript", "HTML5 Canvas", "WebRTC (PeerJS)", "Cloudflare Workers", "Playwright"],
     metrics: [
-      "No installs or accounts: scan and play",
+      "4 classes, 11 enemy types and 5 bosses with telegraphed attacks",
       "3 network transports; dropped phones rejoin",
       "Bots play a full campaign in CI on every push",
     ],
@@ -136,7 +135,10 @@ const PROJECTS: Project[] = [
     tagline: "A video-heavy portfolio and booking site for a photography and videography studio.",
     role: "Solo: design and build for the studio",
     stack: ["Next.js 16", "React 19", "TypeScript", "SCSS Modules", "EmailJS"],
-    metrics: ["Case studies with YouTube and Instagram embeds"],
+    metrics: [
+      "Built from the studio's page-by-page brief, then a round of revisions",
+      "A 372 MB 4K film re-encoded to 17 MB; embeds load only when needed",
+    ],
     cover: {
       src: "/projects/rjn-visuals/cover.jpg",
       alt: "RJN Visuals home page: a camera operator filming an interview in a classroom",
@@ -151,7 +153,7 @@ const PROJECTS: Project[] = [
     published: true,
   },
   {
-    slug: "nebula",
+    slug: "wakebound",
     title: "Wakebound",
     kind: "Game",
     tagline: "A souls-like action RPG with online co-op, built solo in Unity 6 and C#.",
@@ -159,12 +161,12 @@ const PROJECTS: Project[] = [
     stack: ["Unity 6", "C#", "Netcode for GameObjects", "URP"],
     metrics: ["~58k lines of C# across 329 scripts", "Host/client online co-op", "17 data-driven AI states"],
     cover: {
-      src: "/projects/nebula/cover.jpg",
+      src: "/projects/wakebound/cover.jpg",
       alt: "Wakebound gameplay: an armored skeleton with a sword and shield in a foggy dungeon",
       width: 1280,
       height: 720,
     },
-    video: { src: "/projects/nebula/demo.mp4" },
+    video: { src: "/projects/wakebound/demo.mp4" },
     // The repo (hansvidaure24/Nebula) is private, so a Code link 404s for visitors.
     // Add { label: "Code", href: "https://github.com/hansvidaure24/Nebula" } back if it goes public.
     links: [],

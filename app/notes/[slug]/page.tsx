@@ -7,6 +7,7 @@ import ProjectDescription from "../../components/sections/Projects/ProjectDescri
 import { formatNoteDate, getNote, getNoteBody, getNotes } from "../../data/notes";
 import { getProject } from "../../data/projects";
 import { CONTACT_EMAIL } from "../../lib/site";
+import { pageMetadata } from "../../lib/pageMetadata";
 import styles from "../notes.module.scss";
 
 type Params = { slug: string };
@@ -21,12 +22,12 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { slug } = await params;
   const note = getNote(slug);
   if (!note) return {};
-  return {
+  return pageMetadata({
     title: `${note.title} — Hans Vidaure`,
     description: note.summary,
-    alternates: { canonical: `/notes/${note.slug}` },
-    openGraph: { title: note.title, description: note.summary, type: "article", publishedTime: note.date },
-  };
+    path: `/notes/${note.slug}`,
+    publishedTime: note.date,
+  });
 }
 
 export default async function NotePage({ params }: { params: Promise<Params> }) {

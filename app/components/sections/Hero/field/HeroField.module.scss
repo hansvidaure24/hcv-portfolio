@@ -1,0 +1,118 @@
+@use '../../../../scss/mixins' as *;
+
+// Same layer as the painted sky it replaces: under the hero's text and photo.
+.field {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-base) steps(3, end);
+
+  &[data-ready] {
+    opacity: 1;
+  }
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  // The field sits back: a little less color and light than the content in
+  // front of it, so the text and photo are what the eye lands on.
+  filter: saturate(0.82) brightness(0.95);
+}
+
+// Depth of field: the outer edges of the field go slightly soft while the
+// middle, around the content, stays sharp. Wide screens only: on phones
+// little of the field shows, and the blur isn't worth the battery.
+.focus {
+  display: none;
+}
+
+@media (min-width: $bp-desktop) {
+  .focus {
+    display: block;
+    position: absolute;
+    inset: 0;
+    -webkit-backdrop-filter: blur(1.5px);
+    backdrop-filter: blur(1.5px);
+    -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 45%, transparent 55%, #000 95%);
+    mask-image: radial-gradient(ellipse 75% 70% at 50% 45%, transparent 55%, #000 95%);
+  }
+}
+
+// Light: the middle left as it is, darker toward the edges, so the field
+// falls away and the eye settles on the text.
+.shade {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 85% 75% at 50% 42%, transparent 40%, rgb(8 40 28 / 0.32) 100%);
+}
+
+// Morning, dusk and night recolor the field like every other scene.
+.tint {
+  position: absolute;
+  inset: 0;
+  background: var(--scene-tint);
+}
+
+// Above the tint: things that give off light (fireflies) stay bright at night.
+.glow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.bubble {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin-top: -6px;
+  padding: 0.2rem 0.45rem 0.1rem;
+
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  line-height: 1.1;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  color: var(--ink);
+  background: var(--cream);
+  border: 2px solid var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+  transform-origin: 50% 100%;
+  animation: bubblePop var(--dur-fast) steps(2, end);
+
+  // The tail, a pixel triangle pointing at the speaker.
+  &::after {
+    content: '';
+    position: absolute;
+    left: calc(50% - 4px);
+    top: 100%;
+    width: 8px;
+    height: 5px;
+    background: var(--ink);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  }
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+@keyframes bubblePop {
+  from {
+    scale: 0.6;
+  }
+  to {
+    scale: 1;
+  }
+}
+
+:global(.reduce-motion) .bubble {
+  animation: none;
+}
