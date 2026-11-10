@@ -30,6 +30,34 @@
   background: var(--ink);
   border-radius: 0;
   box-shadow: var(--shadow-md);
+  transform-origin: top right;
+  // Drops in from 8px up in four steps, and back out the same way.
+  animation: battleMenuIn var(--dur-base) steps(4, end);
+}
+
+.battleMenuClosing {
+  animation: battleMenuOut var(--dur-base) steps(4, end) forwards;
+  // On its way out: taps go to what's behind it.
+  pointer-events: none;
+}
+
+// The site's own motion setting (it can override the OS): no animation.
+.battleMenuStill {
+  animation: none;
+}
+
+@keyframes battleMenuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes battleMenuOut {
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
 }
 
 .battleMenuInner {

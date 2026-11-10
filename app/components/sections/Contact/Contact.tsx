@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import ParallaxSection from "../../scene/ParallaxSection";
-import { useScene } from "../../scene/SceneProvider";
+import { useScene } from "../../scene/sceneContext";
 import { getFirstGesturePromise, isSoundEnabled, playSound } from "../../../lib/sound";
 import { getEffectiveReducedMotion } from "../../../lib/motionPreference";
 import { getTextSpeed } from "../../../lib/preferences";

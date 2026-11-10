@@ -6,7 +6,7 @@
  * down or rate-limits us, the site just leaves the live bits out.
  *
  * Without a token GitHub allows 60 requests an hour per IP; one refresh uses
- * about a dozen. Set GITHUB_TOKEN (a fine-grained token with read-only access
+ * under twenty. Set GITHUB_TOKEN (a fine-grained token with read-only access
  * to public repositories, which is free) to raise that to 5,000.
  */
 
@@ -59,13 +59,16 @@ type WorkflowRun = {
 };
 
 /**
- * The latest finished "CI" workflow run on the repo's main branch. Returns it
- * only when it passed: a chip that says "passing" must be true, and a repo
- * with a red or missing run simply shows no chip.
+ * The latest finished "CI" workflow run on the repo's default branch (main,
+ * or master on older repos like RJN Visuals). Returns it only when it passed:
+ * a chip that says "passing" must be true, and a repo with a red or missing
+ * run simply shows no chip.
  */
 export async function getCiStatus(repo: string): Promise<CiStatus | null> {
+  const { data: info } = await github<{ default_branch: string }>(`/repos/${GITHUB_USER}/${repo}`);
+  if (!info) return null;
   const { data } = await github<{ workflow_runs: WorkflowRun[] }>(
-    `/repos/${GITHUB_USER}/${repo}/actions/runs?branch=main&event=push&per_page=20`
+    `/repos/${GITHUB_USER}/${repo}/actions/runs?branch=${encodeURIComponent(info.default_branch)}&event=push&per_page=20`
   );
   const latest = data?.workflow_runs.find((run) => run.name === "CI" && run.status === "completed");
   if (!latest || latest.conclusion !== "success") return null;

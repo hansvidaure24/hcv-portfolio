@@ -1,27 +1,10 @@
 "use client";
 import { useAnimate } from "framer-motion";
-import { ReactNode, RefObject, createContext, useContext, useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
+import { SceneContext } from "./sceneContext";
 import { useMotionSettings } from "../providers/MotionPreferenceProvider";
 import { DUR, steps } from "../../lib/motion";
 import styles from "./SceneTransition.module.scss";
-
-type SceneContextValue = {
-  activeIndex: number;
-  activeId: string;
-  sectionIds: string[];
-  /** Calls onStart when navigation begins and resolves with whether it ran. */
-  goTo: (id: string, onStart?: () => void) => Promise<boolean>;
-  /** The section a jump is landing on, so it can skip its own fade-in. */
-  jumpTargetRef: RefObject<string | null>;
-  /** Flips the tiles in to cover the screen, e.g. before leaving for a case study. */
-  cover: () => Promise<void>;
-};
-
-const SceneContext = createContext<SceneContextValue | null>(null);
-
-export function useScene() {
-  return useContext(SceneContext);
-}
 
 // The same tile grid as the hero's intro wipe, so the site has one transition.
 export const TILE_COLS = 10;

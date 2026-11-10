@@ -1,5 +1,6 @@
 import TopBar from '@/app/components/navigation/TopBar'
 import SceneProvider from '@/app/components/scene/SceneProvider'
+import FramerMotionConfig from '@/app/components/providers/FramerMotionConfig'
 import SceneStage from '@/app/components/scene/SceneStage'
 import Hero from '@/app/components/sections/Hero/Hero'
 import Experience from '@/app/components/sections/Experience/Experience'
@@ -26,18 +27,20 @@ export default async function Home() {
   const [ci, trainer] = await Promise.all([getCiBySlug(getPublishedProjects()), getTrainerStats()])
 
   return (
-    <SceneProvider sectionIds={SECTION_IDS}>
-      <TopBar />
-      <main className="min-h-screen">
-        <SceneStage
-          sections={[
-            { id: 'hero', node: <Hero /> },
-            { id: 'experience', node: <Experience trainer={trainer} /> },
-            { id: 'projects', node: <Projects ci={ci} /> },
-            { id: 'contact', node: <Contact /> },
-          ]}
-        />
-      </main>
-    </SceneProvider>
+    <FramerMotionConfig>
+      <SceneProvider sectionIds={SECTION_IDS}>
+        <TopBar />
+        <main className="min-h-screen">
+          <SceneStage
+            sections={[
+              { id: 'hero', node: <Hero /> },
+              { id: 'experience', node: <Experience trainer={trainer} /> },
+              { id: 'projects', node: <Projects ci={ci} /> },
+              { id: 'contact', node: <Contact /> },
+            ]}
+          />
+        </main>
+      </SceneProvider>
+    </FramerMotionConfig>
   );
 }

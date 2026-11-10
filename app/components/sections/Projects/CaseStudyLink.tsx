@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { useMotionSettings } from "../../providers/MotionPreferenceProvider";
-import { useScene } from "../../scene/SceneProvider";
+import { useScene } from "../../scene/sceneContext";
 import { morphTo } from "../../../lib/morphNavigation";
 import { playSound } from "../../../lib/sound";
 

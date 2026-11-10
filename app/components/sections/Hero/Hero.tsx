@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import ParallaxSection from "../../scene/ParallaxSection";
-import { useScene } from "../../scene/SceneProvider";
+import { useScene } from "../../scene/sceneContext";
 import { playSound } from "../../../lib/sound";
 import { CONTACT_EMAIL, RESUME_URL } from "../../../lib/site";
 import { useDialogue } from "../../providers/DialogueProvider";

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useScene } from "../scene/SceneProvider";
+import { useScene } from "../scene/sceneContext";
 import { useOptions } from "../providers/OptionsProvider";
 import { playSound } from "../../lib/sound";
 import Navigation from "./Navigation";

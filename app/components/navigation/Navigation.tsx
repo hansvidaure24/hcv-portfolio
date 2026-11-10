@@ -1,11 +1,9 @@
 "use client";
-import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { useScene } from "../scene/SceneProvider";
+import { useScene } from "../scene/sceneContext";
 import { useMotionSettings } from "../providers/MotionPreferenceProvider";
 import { playSound } from "../../lib/sound";
-import { DUR, steps } from "../../lib/motion";
 import { useOptions } from "../providers/OptionsProvider";
 import PixelIcon from "../ui/PixelIcon";
 import styles from "./Navigation.module.scss";
@@ -41,6 +39,9 @@ const TOTAL_ROWS = ITEMS.length + 1;
  */
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
+  // The panel stays in the page while its closing animation plays
+  // (Navigation.module.scss), then leaves when the animation ends.
+  const [shown, setShown] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const rootRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -59,8 +60,17 @@ export default function Navigation() {
 
   function open() {
     setActiveIndex(0);
+    setShown(true);
     setMenuOpen(true);
   }
+
+  // If the closing animation never reports its end (a background tab, say),
+  // the panel still leaves: it must never stay on screen once closed.
+  useEffect(() => {
+    if (menuOpen || !shown) return;
+    const timer = window.setTimeout(() => setShown(false), 400);
+    return () => window.clearTimeout(timer);
+  }, [menuOpen, shown]);
 
   // Focus follows the menu: into the first row on open, back to the button
   // when Escape closed it.
@@ -175,16 +185,14 @@ export default function Navigation() {
         <PixelIcon name="menu" size={20} />
       </button>
 
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
+      {(menuOpen || (shown && !reduceMotion)) && (
+          <div
             id="battle-menu"
-            className={styles.battleMenu}
-            style={{ transformOrigin: "top right" }}
-            initial={reduceMotion ? false : { opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduceMotion ? undefined : { opacity: 0, y: -8 }}
-            transition={{ duration: DUR.base, ease: steps(4) }}
+            className={`${styles.battleMenu}${menuOpen ? "" : " " + styles.battleMenuClosing}${reduceMotion ? " " + styles.battleMenuStill : ""}`}
+            onAnimationEnd={(e) => {
+              // Its own closing animation, not one inside it (a row's cursor).
+              if (e.target === e.currentTarget && !menuOpen) setShown(false);
+            }}
           >
             <div className={styles.battleMenuInner}>
               <ul className={styles.menuList} onKeyDown={onListKey}>
@@ -218,9 +226,8 @@ export default function Navigation() {
                 </li>
               </ul>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+      )}
     </nav>
   );
 }

@@ -4,7 +4,7 @@ import { flushSync } from "react-dom";
 import Link from "next/link";
 import { CORE_DEX_IDS, DEX, STATUS_LABEL, STATUS_MEANING, type DexEvidence } from "../../../data/dex";
 import { useMotionSettings } from "../../providers/MotionPreferenceProvider";
-import { useScene } from "../../scene/SceneProvider";
+import { useScene } from "../../scene/sceneContext";
 import { playSound } from "../../../lib/sound";
 import styles from "./SkillDex.module.scss";
 

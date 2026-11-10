@@ -1,6 +1,5 @@
 "use client";
 
-import { MotionConfig } from "framer-motion";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import {
   applyMotionClass,
@@ -65,7 +64,7 @@ export default function MotionPreferenceProvider({ children }: { children: React
 
   return (
     <MotionSettingsContext.Provider value={{ preference, reduced, setPreference, toggleReduced }}>
-      <MotionConfig reducedMotion={reduced ? "always" : "never"}>{children}</MotionConfig>
+      {children}
     </MotionSettingsContext.Provider>
   );
 }

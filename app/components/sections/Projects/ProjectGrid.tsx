@@ -7,7 +7,7 @@ import type { AppliedMatchup } from "./matchupApply";
 import { whenIdle } from "../../../lib/whenIdle";
 import PixelPanel from "../../ui/PixelPanel";
 import { useDialogue } from "../../providers/DialogueProvider";
-import { useScene } from "../../scene/SceneProvider";
+import { useScene } from "../../scene/sceneContext";
 import { FOCUSES, FOCUS_STACK, FOCUS_STORAGE_KEY, type FocusId } from "../../../data/focus";
 import type { Project } from "../../../data/projects";
 import type { CiStatus } from "../../../lib/github";

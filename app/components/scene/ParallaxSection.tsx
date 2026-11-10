@@ -1,7 +1,7 @@
 "use client";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ReactNode, useRef, useState } from "react";
-import { useScene } from "./SceneProvider";
+import { useScene } from "./sceneContext";
 import { useTextSpeed } from "../../lib/preferences";
 import { useMotionSettings } from "../providers/MotionPreferenceProvider";
 import { DUR, EASE_OUT } from "../../lib/motion";
