@@ -204,6 +204,7 @@ function ProjectOgCard({ slug }: { slug: string }) {
 /** For app/projects/[slug]/opengraph-image.tsx and twitter-image.tsx: drawn once per project at build. */
 export const projectOgImageParams = () => getPublishedProjects().map((p) => ({ slug: p.slug }));
 export const PROJECT_OG_ALT = "The case study's link preview: the project's name, what it is, and a screenshot";
-export function projectOgImage({ params }: { params: { slug: string } }) {
-  return new ImageResponse(<ProjectOgCard slug={params.slug} />, { ...OG_SIZE, fonts: getOgFonts() });
+export async function projectOgImage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  return new ImageResponse(<ProjectOgCard slug={slug} />, { ...OG_SIZE, fonts: getOgFonts() });
 }

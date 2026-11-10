@@ -14,11 +14,19 @@ export function supportsViewTransitions(): boolean {
   return typeof document !== "undefined" && typeof (document as ViewTransitionDocument).startViewTransition === "function";
 }
 
-/** Called by MorphWatcher once the new route has rendered. */
-export function resolvePendingMorph() {
+/**
+ * Called by MorphWatcher once the new route has rendered (`arrived`), or by
+ * the timeout below if it never does. On arrival the case study starts at
+ * its top: Next resets the scroll on its own outside a view transition, but
+ * from Next 16 not inside one, so the page opened wherever the home page had
+ * been scrolled to. Done before the new snapshot, so the morph lands there.
+ */
+export function resolvePendingMorph(arrived = false) {
   const resolve = pendingResolve;
   pendingResolve = null;
-  resolve?.();
+  if (!resolve) return;
+  if (arrived && !window.location.hash) window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  resolve();
 }
 
 /** Runs `navigate` inside a view transition. Returns false if the browser can't. */

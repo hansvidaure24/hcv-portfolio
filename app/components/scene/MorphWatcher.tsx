@@ -9,8 +9,8 @@ export default function MorphWatcher() {
   useLayoutEffect(() => {
     // A timer, not requestAnimationFrame: while a view transition waits for
     // its update, the browser suppresses rendering, so rAF callbacks never
-    // run. The zero-delay timer still lets Next reset the scroll position first.
-    const timer = window.setTimeout(() => resolvePendingMorph(), 0);
+    // run.
+    const timer = window.setTimeout(() => resolvePendingMorph(true), 0);
     return () => window.clearTimeout(timer);
   }, [pathname]);
   return null;

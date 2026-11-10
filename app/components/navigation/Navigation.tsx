@@ -140,6 +140,8 @@ export default function Navigation() {
 
   const rowProps = (i: number) => ({
     ref: (el: HTMLElement | null) => {
+      // React calls this when it attaches the row, not during render.
+      // eslint-disable-next-line react-hooks/refs
       rowRefs.current[i] = el;
     },
     className: styles.menuButton,

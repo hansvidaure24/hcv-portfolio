@@ -47,6 +47,11 @@ const SECURITY_HEADERS = [
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  images: {
+    // Next 15's default sizes. Next 16 dropped 16, which the cover's loading
+    // mosaic starts from (ProjectMedia.tsx: 16, 32, then 64px wide).
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
   // Wakebound's case study was at /projects/nebula (its old working title).
   // Old links, and previews that cached its cover, still land.
   async redirects() {
