@@ -57,9 +57,13 @@ export default function Turnstile({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
-  // The latest callback, so a new function each render doesn't re-render the widget.
+  // The latest callback, so a new function each render doesn't re-render the
+  // widget. Updated after each render (refs aren't written during one); this
+  // effect runs before the one below, so the widget always has it.
   const onTokenRef = useRef(onToken);
-  onTokenRef.current = onToken;
+  useEffect(() => {
+    onTokenRef.current = onToken;
+  });
 
   useEffect(() => {
     let cancelled = false;

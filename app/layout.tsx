@@ -105,7 +105,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" dir="ltr" className={`${inter.variable} ${pixel.variable}`} suppressHydrationWarning>
+    // data-scroll-behavior: page changes jump to the top instead of gliding
+    // there (globals.scss scrolls smoothly), as Next 15 did on its own.
+    <html
+      lang="en"
+      dir="ltr"
+      data-scroll-behavior="smooth"
+      className={`${inter.variable} ${pixel.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" type="image/svg+xml" href="/icons/folder.svg" />
