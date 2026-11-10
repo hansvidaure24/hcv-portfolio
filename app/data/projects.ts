@@ -138,6 +138,7 @@ const PROJECTS: Project[] = [
     metrics: [
       "Built from the studio's page-by-page brief, then a round of revisions",
       "Wedding films re-encoded to 1080p and served by the site; embeds load as they near the screen",
+      "Lighthouse accessibility 100 on every page",
     ],
     cover: {
       src: "/projects/rjn-visuals/cover.jpg",
