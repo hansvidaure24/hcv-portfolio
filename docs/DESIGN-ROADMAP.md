@@ -882,6 +882,26 @@ case studies already had: they were behind a tab, hidden until clicked.
       broken), and the fade leaves once you reach that end. "Paste a job
       post" starts at the left on phones, under the label and picks.
 
+**Next.js 16** (Nov 10, branch `upgrade/next-16`, not merged)
+
+- [x] Production dependencies have no known vulnerabilities. 7 moderate
+      ones remain in the lint toolchain only (typescript-eslint, pinned by
+      eslint-config-next 16.4.6), never shipped to visitors.
+- [x] Same layout as Next 15: every element's box and styles match on all
+      nine pages at phone, tablet and desktop widths (a scripted snapshot of
+      both builds). Clicking card → case study → next → back behaves the
+      same, with no errors.
+- [x] Fixed for Next 16: lint (ESLint 9, flat config, same rules), the
+      case-study preview cards (async params), the mosaic's 16px image,
+      page changes jumping to the top, and the card → case-study morph
+      scrolling the new page to its top itself.
+- [ ] The cost: Next 16's runtime adds about 40 KB of JavaScript (not the
+      bundler: a webpack build is the same size). The home page still
+      scores 100 (4 of 4 runs), with the largest paint at 1.21s and 66–88 ms
+      of blocking (Next 15: 1.06s, 20–49 ms). Case studies score 94–96 (were
+      96–100); layout shift is 0 everywhere. If this ships, the Nov 8
+      figures in "How this site is built" describe the Next 15 site.
+
 **13d. Maybe**
 
 - [ ] Ambient loops behind the Sound setting: forest by day, night at night.
