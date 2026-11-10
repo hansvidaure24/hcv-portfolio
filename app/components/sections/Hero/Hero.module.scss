@@ -81,13 +81,16 @@
   // Same tiles as the section-jump wipe (SceneTransition.module.scss).
   background-color: var(--ink);
   margin: -1px;
+  // No will-change: 60 layers of their own is a lot for a phone, and iOS
+  // could leave a tile's last frame on screen after its animation ended.
   animation: tileOut var(--dur-fast) steps(3, end) forwards;
-  will-change: transform;
 }
 
+// Hidden as well as shrunk at the end, so a missed repaint can't leave a
+// tile showing. Hero.tsx also takes them out of the page once they're done.
 @keyframes tileOut {
   0% { transform: scale(1); }
-  100% { transform: scale(0); }
+  100% { transform: scale(0); visibility: hidden; }
 }
 
 @keyframes revealFadeUp {

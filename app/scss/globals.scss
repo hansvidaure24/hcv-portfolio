@@ -336,9 +336,13 @@ html.reduce-motion {
 
 /* Hero scenery off screen (data-offscreen, set by Hero.tsx): every looping
    animation on the page is in the hero, so pausing them here leaves the rest
-   of the page with no idle animation work. Global because CSS Modules can't
-   target an attribute on another component's element. */
-#hero[data-offscreen] * {
+   of the page with no idle animation work. Not the one-shot entrances
+   (data-intro, and the intro's tiles): paused partway, a tile or a button
+   would stay half drawn. A loop inside an entrance (the CTA's cursor) still
+   pauses.
+   Global because CSS Modules can't target an attribute on another
+   component's element. */
+#hero[data-offscreen] *:not([data-intro], [data-intro="tiles"] *) {
   animation-play-state: paused !important;
 }
 

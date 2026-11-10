@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,11 +25,20 @@ const introTiles = Array.from({ length: TILE_COLS * TILE_ROWS }, (_, i) => {
   const delay = (col + row) * 0.018; // same diagonal timing as the section-jump wipe
   return { key: i, delay };
 });
+// The intro tiles are gone by about 0.4s; they leave the page after this,
+// whatever happened to their animation.
+const INTRO_MS = 1000;
 
 export default function Hero() {
   const scene = useScene();
   const { say } = useDialogue();
   const emailRef = useRef<HTMLAnchorElement>(null);
+  const [introDone, setIntroDone] = useState(false);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setIntroDone(true), INTRO_MS);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   // The hero's looping CSS animations (the scan line, the blinking cursor)
   // pause while it's off screen, so the rest of the page costs no animation
@@ -81,18 +90,21 @@ export default function Hero() {
         <>
         <div className={styles.fieldFallback} aria-hidden="true" />
         <HeroField />
-        <div className={styles.introTiles} aria-hidden="true">
-          {introTiles.map(({ key, delay }) => (
-            <span key={key} className={styles.tile} style={{ animationDelay: `${delay}s` }} />
-          ))}
-        </div>
+        {!introDone && (
+          // data-intro: one-shot, so never paused off screen (globals.scss).
+          <div className={styles.introTiles} data-intro="tiles" aria-hidden="true">
+            {introTiles.map(({ key, delay }) => (
+              <span key={key} className={styles.tile} style={{ animationDelay: `${delay}s` }} />
+            ))}
+          </div>
+        )}
 
         </>
       }
     >
       <div className={styles.heroGrid}>
         <div className={styles.heroText} data-field-avoid="">
-          <p className={`${styles.statusChip} ${styles.reveal1}`}>
+          <p className={`${styles.statusChip} ${styles.reveal1}`} data-intro="">
             <span className={styles.statusDot} aria-hidden="true" />
             {/* Where it wraps (phones), it breaks after the dot: the place stays whole. */}
             <span>
@@ -122,7 +134,7 @@ export default function Hero() {
               <Link href="/projects/behavior-tree-editor">visual game-AI editor</Link> that runs inside a Unity game.
             </p>
           </div>
-          <div className={`${styles.ctaRow} ${styles.reveal3}`}>
+          <div className={`${styles.ctaRow} ${styles.reveal3}`} data-intro="">
             <a
               href="#experience"
               className={styles.primaryCta}
@@ -139,7 +151,7 @@ export default function Hero() {
               Resume (PDF)
             </a>
           </div>
-          <div className={`${styles.emailRow} ${styles.reveal3}`}>
+          <div className={`${styles.emailRow} ${styles.reveal3}`} data-intro="">
             <a ref={emailRef} href={`mailto:${CONTACT_EMAIL}`} className={styles.email}>
               {CONTACT_EMAIL}
             </a>
@@ -156,7 +168,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className={`${styles.heroPhoto} ${styles.reveal2}`} data-field-avoid="">
+        <div className={`${styles.heroPhoto} ${styles.reveal2}`} data-field-avoid="" data-intro="">
           {/* The photo in a frame built like the site's own panels: cream with
               an ink border and a gold title bar, the photo on a screen with a
               scan line passing over it. Original, in place of the borrowed
