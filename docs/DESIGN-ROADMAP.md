@@ -882,11 +882,13 @@ case studies already had: they were behind a tab, hidden until clicked.
       broken), and the fade leaves once you reach that end. "Paste a job
       post" starts at the left on phones, under the label and picks.
 
-**Next.js 16** (Nov 10, branch `upgrade/next-16`, not merged)
+**Next.js 16** (live since Nov 10)
 
-- [x] Production dependencies have no known vulnerabilities. 7 moderate
-      ones remain in the lint toolchain only (typescript-eslint, pinned by
-      eslint-config-next 16.4.6), never shipped to visitors.
+- [x] No known vulnerabilities, production or development. The lint
+      parser (typescript-eslint, pinned by eslint-config-next 16.4.6) wanted
+      a minimatch with a denial-of-service bug; an npm override gives it
+      minimatch 11 (its one call, `minimatch(path, pattern, { dot: true })`,
+      is unchanged there). Drop the override once typescript-eslint moves on.
 - [x] Same layout as Next 15: every element's box and styles match on all
       nine pages at phone, tablet and desktop widths (a scripted snapshot of
       both builds). Clicking card → case study → next → back behaves the
@@ -899,8 +901,9 @@ case studies already had: they were behind a tab, hidden until clicked.
       bundler: a webpack build is the same size). The home page still
       scores 100 (4 of 4 runs), with the largest paint at 1.21s and 66–88 ms
       of blocking (Next 15: 1.06s, 20–49 ms). Case studies score 94–96 (were
-      96–100); layout shift is 0 everywhere. If this ships, the Nov 8
-      figures in "How this site is built" describe the Next 15 site.
+      96–100); layout shift is 0 everywhere. Live, from Vercel's CDN, the
+      home page is 100 on five runs: about 1s to the largest paint, 37–69 ms
+      of blocking. "How this site is built" now says so.
 
 **13d. Maybe**
 

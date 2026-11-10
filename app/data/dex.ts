@@ -239,7 +239,7 @@ export const DEX: DexEntry[] = [
     focus: ["fullstack"],
     evidence: [
       { ...P.rjn, text: "Next.js 16 App Router on a live client site" },
-      { ...SITE, text: "Next.js 15 App Router, with live GitHub data refreshed daily" },
+      { ...SITE, text: "Next.js 16 App Router, with live GitHub data refreshed daily" },
     ],
   },
   {
@@ -263,7 +263,7 @@ export const DEX: DexEntry[] = [
     focus: ["fullstack"],
     evidence: [
       { ...P.sliceofpie, text: "99 Lighthouse mobile performance with ~25 KB of startup JavaScript" },
-      { ...SITE, text: "100 mobile Lighthouse performance on the home page, three runs in a row" },
+      { ...SITE, text: "100 mobile Lighthouse performance on the home page, five runs in a row" },
     ],
   },
   {
