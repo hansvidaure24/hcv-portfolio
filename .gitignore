@@ -45,3 +45,7 @@ Thumbs.db
 
 # Write-ups about employer work: local only until cleared for publication
 content/projects/fiserv-*.md
+
+# Local tool settings (Claude Code), and the AI reference art Hans redraws from: never public.
+.claude/
+assets-src/explore/
